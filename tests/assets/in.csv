@@ -1,0 +1,107 @@
+ROOMS,,,,,,,,,,,,,,,
+Room Description,Shaft 214,Mech. 102,Linen 208,Master Bedroom 206,Master Bath 207,Bedroom 204,Bath 1 203,Bath 2 205,Bedroom 1 202,Entry Hall 201,Kitchen & Dining 101,Laundry 104,Bath 103,Hall 105,Living 106
+Assigned to System,Default System,Default System,Default System,Default System,Default System,Default System,Default System,Default System,Default System,Default System,Default System,Default System,Default System,Default System,Default System
+Assigned to Zone,Shaft 214,Mech. 102,Linen 208,Master Bedroom 206,Master Bath 207,Bedroom 204,Bath 1 203,Bath 2 205,Bedroom 1 202,Entry Hall 201,Kitchen & Dining 101,Laundry 104,Bath 103,Hall 105,Living 106
+Room Template,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default
+Thermostat Template,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default
+Construction Template,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default
+Floor Length (ft),9.92,28.363,19.013,309.461,87.748,161.109,49.36,48.231,160.891,359.31,807.975,64.977,36.532,267.196,794.35
+Floor Width (ft),1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+Flr to Flr Height (ft),16.059,9.843,16.885,19.4,19.4,19.4,15.049,19.4,19.4,19.4,9.843,9.843,9.843,9.843,9.022
+Plenum Height (ft),0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+Height Above Ground (ft),9.843,0.0,9.843,9.843,9.843,9.843,9.843,9.843,9.843,9.843,0.0,0.0,0.0,0.0,-1.804
+Acoustic Ceiling Resistance (hr-ft2-F/Btu),1.786,1.786,1.786,1.786,1.786,1.786,1.786,1.786,1.786,1.786,1.786,1.786,1.786,1.786,1.786
+Cooling Dry Bulb (F),75,75,75,75,75,75,75,75,75,75,75,75,75,75,75
+Heating Dry Bulb (F),70,70,70,70,70,70,70,70,70,70,70,70,70,70,70
+Relative Humidity (%)Cooling Driftpoint (F),50,50,50,50,50,50,50,50,50,50,50,50,50,50,50
+Heating Driftpoint (F),85,85,85,85,85,85,85,85,85,85,85,85,85,85,85
+Thermostat Cooling Schedule,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60
+Thermostat Heating Schedule,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None
+Thermostat Location,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None
+CO2 Sensor Location,Room,Room,Room,Room,Room,Room,Room,Room,Room,Room,Room,Room,Room,Room,Room
+Humidity Moisture Capacitance,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None
+Humidistat Location,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium
+Duplicate Floor Multiplier,Room,Room,Room,Room,Room,Room,Room,Room,Room,Room,Room,Room,Room,Room,Room
+Duplicate Rooms per Zone,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+Room Mass / # of Hours,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+Slab Construction Type,Time delay based on actual mass,Time delay based on actual mass,Time delay based on actual mass,Time delay based on actual mass,Time delay based on actual mass,Time delay based on actual mass,Time delay based on actual mass,Time delay based on actual mass,Time delay based on actual mass,Time delay based on actual mass,Time delay based on actual mass,Time delay based on actual mass,Time delay based on actual mass,Time delay based on actual mass,Time delay based on actual mass
+Room Type,4" LW Concrete,4" LW Concrete,4" LW Concrete,4" LW Concrete,4" LW Concrete,4" LW Concrete,4" LW Concrete,4" LW Concrete,4" LW Concrete,4" LW Concrete,4" LW Concrete,4" LW Concrete,4" LW Concrete,4" LW Concrete,4" LW Concrete
+Carpeted Floor,Conditioned,Conditioned,Conditioned,Conditioned,Conditioned,Conditioned,Conditioned,Conditioned,Conditioned,Conditioned,Conditioned,Conditioned,Conditioned,Conditioned,Conditioned
+Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+AIRFLOWS,,,,,,,,,,,,,,,
+Room Description,Shaft 214,Mech. 102,Linen 208,Master Bedroom 206,Master Bath 207,Bedroom 204,Bath 1 203,Bath 2 205,Bedroom 1 202,Entry Hall 201,Kitchen & Dining 101,Laundry 104,Bath 103,Hall 105,Living 106
+Adjacent Air Transfer from Room,<<No adjacent room>>,<<No adjacent room>>,<<No adjacent room>>,<<No adjacent room>>,<<No adjacent room>>,<<No adjacent room>>,<<No adjacent room>>,<<No adjacent room>>,<<No adjacent room>>,<<No adjacent room>>,<<No adjacent room>>,<<No adjacent room>>,<<No adjacent room>>,<<No adjacent room>>,<<No adjacent room>>
+Airflow Template,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default
+Ventilation Method,Sum of Outdoor Air,Sum of Outdoor Air,Sum of Outdoor Air,Sum of Outdoor Air,Sum of Outdoor Air,Sum of Outdoor Air,Sum of Outdoor Air,Sum of Outdoor Air,Sum of Outdoor Air,Sum of Outdoor Air,Sum of Outdoor Air,Sum of Outdoor Air,Sum of Outdoor Air,Sum of Outdoor Air,Sum of Outdoor Air
+Ventilation Type,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None
+Ventilation Cooling,1.2,3.4,2.3,26.7,5.3,13.9,3.0,2.9,13.9,21.6,69.7,7.8,2.2,16.0,68.5
+Ventilation Cooling Units,cfm,cfm,cfm,cfm,cfm,cfm,cfm,cfm,cfm,cfm,cfm,cfm,cfm,cfm,cfm
+Ventilation Heating,1.2,3.4,2.3,26.7,5.3,13.9,3.0,2.9,13.9,21.6,69.7,7.8,2.2,16.0,68.5
+Ventilation Heating Units,cfm,cfm,cfm,cfm,cfm,cfm,cfm,cfm,cfm,cfm,cfm,cfm,cfm,cfm,cfm
+People-based Rate (Rp),,,,,,,,,,,,,,,
+People-based Unit,,,,,,,,,,,,,,,
+Area-based Rate (Ra),,,,,,,,,,,,,,,
+Area-based Unit,,,,,,,,,,,,,,,
+Ventilation Schedule,Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%)
+Std62.1-2004-2010 Clg Ez,,,,,,,,,,,,,,,
+Std62.1-2004-2010 Clg Ez Pct,,,,,,,,,,,,,,,
+Std62.1-2004-2010 Htg Ez,,,,,,,,,,,,,,,
+Std62.1-2004-2010 Htg Ez Pct,,,,,,,,,,,,,,,
+Std62.1-2004-2010 Er,,,,,,,,,,,,,,,
+Std62.1-2004-2010 Er Pct,,,,,,,,,,,,,,,
+DCV Min OA Intake,,,,,,,,,,,,,,,
+DCV Min OA Intake Unit,,,,,,,,,,,,,,,
+Infiltration Type,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None
+Infiltration Cooling,0.112,0.112,0.112,0.112,0.112,0.112,0.112,0.112,0.112,0.112,0.112,0.112,0.112,0.112,0.112
+Infiltration Cooling Units,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall
+Infiltration Heating,0.112,0.112,0.112,0.112,0.112,0.112,0.112,0.112,0.112,0.112,0.112,0.112,0.112,0.112,0.112
+Infiltration Heating Units,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall,cfm/sq ft of wall
+Infiltration Schedule,Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%)
+Main Supply Cooling,,,,,,,,,,,,,,,
+Main Supply Cooling Units,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated
+Main Supply Heating,,,,,,,,,,,,,,,
+Main Supply Heating Units,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated
+Aux Supply Cooling,,,,,,,,,,,,,,,
+Aux Supply Cooling Units,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated
+Aux Supply Heating,,,,,,,,,,,,,,,
+Aux Supply Heating Units,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated,To be calculated
+Cooling VAV Min Airflow,,,,,,,,,,,,,,,
+Cooling VAV Min Airflow Units,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow
+Heating VAV Max Airflow,,,,,,,,,,,,,,,
+Heating VAV Max Airflow Units,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow,% Clg Airflow
+VAV Airflow Schedule,Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%)
+VAV Type,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default
+Room Exhaust,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Room Exhaust Units,air changes/hr,air changes/hr,air changes/hr,air changes/hr,air changes/hr,air changes/hr,air changes/hr,air changes/hr,air changes/hr,air changes/hr,air changes/hr,air changes/hr,air changes/hr,air changes/hr,air changes/hr
+Room Exhaust Schedule,Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%),Available (100%)
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+PEOPLE & LIGHTING,,,,,,,,,,,,,,,
+Room Description,Shaft 214,Mech. 102,Linen 208,Master Bedroom 206,Master Bath 207,Bedroom 204,Bath 1 203,Bath 2 205,Bedroom 1 202,Entry Hall 201,Kitchen & Dining 101,Laundry 104,Bath 103,Hall 105,Living 106
+Internal Loads Template,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default,Default
+People Activity,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None
+People Schedule,Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design)
+People Value,0,0,0,1.625,0,0.846,0,0,0.845,0,4.242,0,0,0,4.17
+People Value Units,People,People,People,People,People,People,People,People,People,People,People,People,People,People,People
+People Sensible (Btu/h),250,250,250,205,250,205,250,250,205,250,205,250,250,250,205
+People Latent (Btu/h),250,250,250,205,250,205,250,250,205,250,205,250,250,250,205
+Workstation Density,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+Workstation Density Units,workstation/person,workstation/person,workstation/person,workstation/person,workstation/person,workstation/person,workstation/person,workstation/person,workstation/person,workstation/person,workstation/person,workstation/person,workstation/person,workstation/person,workstation/person
+Lighting Type,LED Lighting 100% load to space,LED Lighting 100% load to space,LED Lighting 100% load to space,LED Lighting 100% load to space,LED Lighting 100% load to space,LED Lighting 100% load to space,LED Lighting 100% load to space,LED Lighting 100% load to space,LED Lighting 100% load to space,LED Lighting 100% load to space,LED Lighting 100% load to space,LED Lighting 100% load to space,LED Lighting 100% load to space,LED Lighting 100% load to space,LED Lighting 100% load to space
+ASHRAE Space/Area Type,,,,,,,,,,,,,,,
+Lighting Value,0.38,0.43,0.38,0.61,0.63,0.61,0.63,0.63,0.61,0.41,0.61,0.38,0.63,0.41,0.61
+Lighting Value Units,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft
+Lighting Schedule,Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design)
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+MISCELLANEOUS LOADS,,,,,,,,,,,,,,,
+Misc Load Description,Shaft 214 Misc Load,Mech. 102 Misc Load,Linen 208 Misc Load,Master Bedroom 206 Misc Load,Master Bath 207 Misc Load,Bedroom 204 Misc Load,Bath 1 203 Misc Load,Bath 2 205 Misc Load,Bedroom 1 202 Misc Load,Entry Hall 201 Misc Load,Kitchen & Dining 101 Misc Load,Laundry 104 Misc Load,Bath 103 Misc Load,Hall 105 Misc Load,Living 106 Misc Load
+Room Description,Shaft 214,Mech. 102,Linen 208,Master Bedroom 206,Master Bath 207,Bedroom 204,Bath 1 203,Bath 2 205,Bedroom 1 202,Entry Hall 201,Kitchen & Dining 101,Laundry 104,Bath 103,Hall 105,Living 106
+Type,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None
+Schedule,Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design),Cooling Only (Design)
+Value,0.0,0.27,0.0,0.96,0.27,0.96,0.27,0.27,0.96,0.29,0.96,0.0,0.27,0.29,0.96
+Units,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft,W/sq ft
+Energy Meter,Electricity,Electricity,Electricity,Electricity,Electricity,Electricity,Electricity,Electricity,Electricity,Electricity,Electricity,Electricity,Electricity,Electricity,Electricity
+Data Center Equipment,No,No,No,No,No,No,No,No,No,No,No,No,No,No,No

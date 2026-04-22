@@ -100,7 +100,7 @@ def rooms_to_trace700_matrix(rooms, si_units=False):
         room_attr = [
             room.display_name,
             'Default System',
-            room.zone,
+            room.display_name,
             'Default',
             'Default',
             'Default',
@@ -133,15 +133,21 @@ def rooms_to_trace700_matrix(rooms, si_units=False):
     # transpose the matrix and convert SI units to IP
     room_matrix = [list(row) for row in zip(*room_mtx)]
     if not si_units:
-        room_matrix[6] = list(area.to_ip(room_matrix[6], 'm2'))
-        room_matrix[8] = list(distance.to_ip(room_matrix[8], 'm'))
-        room_matrix[9] = list(distance.to_ip(room_matrix[9], 'm'))
-        room_matrix[10] = list(distance.to_ip(room_matrix[10], 'm'))
-        room_matrix[11] = list(r_value.to_ip(room_matrix[11], 'm2-K/W'))
-        room_matrix[12] = list(temperature.to_ip(room_matrix[12], 'C'))
-        room_matrix[13] = list(temperature.to_ip(room_matrix[13], 'C'))
-        room_matrix[15] = list(temperature.to_ip(room_matrix[15], 'C'))
-        room_matrix[16] = list(temperature.to_ip(room_matrix[16], 'C'))
+        room_matrix[6] = list(area.to_unit(room_matrix[6], 'ft2', 'm2'))
+        room_matrix[8] = list(distance.to_unit(room_matrix[8], 'ft', 'm'))
+        room_matrix[9] = list(distance.to_unit(room_matrix[9], 'ft', 'm'))
+        room_matrix[10] = list(distance.to_unit(room_matrix[10], 'ft', 'm'))
+        room_matrix[11] = list(r_value.to_unit(room_matrix[11], 'F-ft2-h/Btu', 'm2-K/W'))
+        room_matrix[12] = list(temperature.to_unit(room_matrix[12], 'F', 'C'))
+        room_matrix[13] = list(temperature.to_unit(room_matrix[13], 'F', 'C'))
+        room_matrix[15] = list(temperature.to_unit(room_matrix[15], 'F', 'C'))
+        room_matrix[16] = list(temperature.to_unit(room_matrix[16], 'F', 'C'))
+
+    # round the numbers so that they display nicely
+    for row_i in (6, 8, 9, 10, 11):
+        room_matrix[row_i] = [round(val, 3) for val in room_matrix[row_i]]
+    for row_i in (12, 13, 15, 16):
+        room_matrix[row_i] = [round(val) for val in room_matrix[row_i]]
 
     # insert the column for the row names
     for row_name, row in zip(row_names, room_matrix):
@@ -367,22 +373,25 @@ def model_to_trace700_csv(
     mtx_width = len(room_matrix[0]) - 1
     spacer_row = ',' * mtx_width
     # add the Room table
-    csv_matrix = ['Rooms{}'.format(spacer_row)]
+    csv_matrix = ['ROOMS{}'.format(spacer_row)]
     for row in room_matrix:
         csv_matrix.append(','.join([str(val) for val in row]))
     # add the Airflows table
     csv_matrix.append(spacer_row)
-    csv_matrix.append('Airflows{}'.format(spacer_row))
+    csv_matrix.append(spacer_row)
+    csv_matrix.append('AIRFLOWS{}'.format(spacer_row))
     for row in airflows_matrix:
         csv_matrix.append(','.join([str(val) for val in row]))
     # add the People & Lighting table
     csv_matrix.append(spacer_row)
-    csv_matrix.append('People & Lighting{}'.format(spacer_row))
+    csv_matrix.append(spacer_row)
+    csv_matrix.append('PEOPLE & LIGHTING{}'.format(spacer_row))
     for row in people_and_lights_matrix:
         csv_matrix.append(','.join([str(val) for val in row]))
     # add the Miscellaneous Loads table
     csv_matrix.append(spacer_row)
-    csv_matrix.append('Miscellaneous Loads{}'.format(spacer_row))
+    csv_matrix.append(spacer_row)
+    csv_matrix.append('MISCELLANEOUS LOADS{}'.format(spacer_row))
     for row in misc_loads_matrix:
         csv_matrix.append(','.join([str(val) for val in row]))
 
