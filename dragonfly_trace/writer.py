@@ -133,15 +133,15 @@ def rooms_to_trace700_matrix(rooms, si_units=False):
     # transpose the matrix and convert SI units to IP
     room_matrix = [list(row) for row in zip(*room_mtx)]
     if not si_units:
-        room_matrix[6] = area.to_ip(room_matrix[6], 'm2')
-        room_matrix[8] = distance.to_ip(room_matrix[8], 'm')
-        room_matrix[9] = distance.to_ip(room_matrix[9], 'm')
-        room_matrix[10] = distance.to_ip(room_matrix[10], 'm')
-        room_matrix[11] = r_value.to_ip(room_matrix[11], 'm2-K/W')
-        room_matrix[12] = temperature.to_ip(room_matrix[12], 'C')
-        room_matrix[13] = temperature.to_ip(room_matrix[13], 'C')
-        room_matrix[15] = temperature.to_ip(room_matrix[15], 'C')
-        room_matrix[15] = temperature.to_ip(room_matrix[15], 'C')
+        room_matrix[6] = list(area.to_ip(room_matrix[6], 'm2'))
+        room_matrix[8] = list(distance.to_ip(room_matrix[8], 'm'))
+        room_matrix[9] = list(distance.to_ip(room_matrix[9], 'm'))
+        room_matrix[10] = list(distance.to_ip(room_matrix[10], 'm'))
+        room_matrix[11] = list(r_value.to_ip(room_matrix[11], 'm2-K/W'))
+        room_matrix[12] = list(temperature.to_ip(room_matrix[12], 'C'))
+        room_matrix[13] = list(temperature.to_ip(room_matrix[13], 'C'))
+        room_matrix[15] = list(temperature.to_ip(room_matrix[15], 'C'))
+        room_matrix[16] = list(temperature.to_ip(room_matrix[16], 'C'))
 
     # insert the column for the row names
     for row_name, row in zip(row_names, room_matrix):
