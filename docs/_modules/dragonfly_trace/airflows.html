@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dragonfly_trace.airflows &#8212; dragonfly-trace  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=0bf093e7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0b9525ea" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<link rel="icon" type="image/x-icon" href="https://github.com/ladybug-tools/artwork/raw/refs/heads/master/icons_bugs/ico/dragonfly.ico">
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          dragonfly-trace</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/translate.html#dragonfly-trace-translate">dragonfly-trace translate</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/translate.html#dragonfly-trace-translate-model-to-trace700-csv">model-to-trace700-csv</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dragonfly_trace.html">dragonfly_trace package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dragonfly_trace.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../dragonfly_trace.cli.html">dragonfly_trace.cli package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.cli.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../dragonfly_trace.cli.translate.html">dragonfly_trace.cli.translate module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_csv"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_csv()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.cli.html#module-dragonfly_trace.cli">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dragonfly_trace.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../dragonfly_trace.airflows.html">dragonfly_trace.airflows module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.airflows.html#dragonfly_trace.airflows.airflows_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">airflows_trace700_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dragonfly_trace.loads.html">dragonfly_trace.loads module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.loads.html#dragonfly_trace.loads.miscellaneous_loads_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">miscellaneous_loads_trace700_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.loads.html#dragonfly_trace.loads.people_and_lights_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">people_and_lights_trace700_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dragonfly_trace.writer.html">dragonfly_trace.writer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_csv"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_csv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.writer.html#dragonfly_trace.writer.rooms_to_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">rooms_to_trace700_matrix()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dragonfly_trace.html#module-dragonfly_trace">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dragonfly_trace.html">dragonfly_trace package</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dragonfly_trace.html">dragonfly_trace package</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <h1>Source code for dragonfly_trace.airflows</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="sd">&quot;&quot;&quot;Methods to write room airflows to matrices for Trane TRACE tables.&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ladybug.datatype.volumeflowrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">VolumeFlowRate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ladybug.datatype.volumeflowrateintensity</span><span class="w"> </span><span class="kn">import</span> <span class="n">VolumeFlowRateIntensity</span>
+
+
+<div class="viewcode-block" id="airflows_trace700_matrix">
+<a class="viewcode-back" href="../../dragonfly_trace.airflows.html#dragonfly_trace.airflows.airflows_trace700_matrix">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">airflows_trace700_matrix</span><span class="p">(</span><span class="n">rooms</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a matrix for the &quot;Airflows&quot; table of the TRACE 700 Component Tree.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        rooms: A list of dragonfly Room2Ds and honeybee Rooms for which the</span>
+<span class="sd">            TRACE 700 &quot;Airflows&quot; matrix will be returned.</span>
+<span class="sd">        si_units: Boolean to note whether the units of the values in the resulting</span>
+<span class="sd">            matrix are in SI (True) instead of IP (False). (Default: False).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A list of list where each sublist represents a row of the Airflows</span>
+<span class="sd">        table of the TRACE 700 Component Tree.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># set up things for unit conversion</span>
+    <span class="n">flow_unit</span> <span class="o">=</span> <span class="s1">&#39;L/s&#39;</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">&#39;cfm&#39;</span>
+    <span class="n">flow_intensity_unit</span> <span class="o">=</span> <span class="s1">&#39;L/s/sq m&#39;</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">&#39;cfm/sq ft of wall&#39;</span>
+    <span class="n">flow</span><span class="p">,</span> <span class="n">fi</span> <span class="o">=</span> <span class="n">VolumeFlowRate</span><span class="p">(),</span> <span class="n">VolumeFlowRateIntensity</span><span class="p">()</span>
+
+    <span class="c1"># set up the names of the rows</span>
+    <span class="n">row_names</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;Room Description&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Adjacent Air Transfer from Room&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Airflow Template&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Ventilation Method&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Ventilation Type&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Ventilation Cooling&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Ventilation Cooling Units&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Ventilation Heating&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Ventilation Heating Units&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;People-based Rate (Rp)&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;People-based Unit&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Area-based Rate (Ra)&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Area-based Unit&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Ventilation Schedule&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Std62.1-2004-2010 Clg Ez&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Std62.1-2004-2010 Clg Ez Pct&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Std62.1-2004-2010 Htg Ez&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Std62.1-2004-2010 Htg Ez Pct&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Std62.1-2004-2010 Er&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Std62.1-2004-2010 Er Pct&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;DCV Min OA Intake&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;DCV Min OA Intake Unit&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Infiltration Type&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Infiltration Cooling&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Infiltration Cooling Units&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Infiltration Heating&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Infiltration Heating Units&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Infiltration Schedule&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Main Supply Cooling&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Main Supply Cooling Units&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Main Supply Heating&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Main Supply Heating Units&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Aux Supply Cooling&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Aux Supply Cooling Units&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Aux Supply Heating&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Aux Supply Heating Units&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Cooling VAV Min Airflow&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Cooling VAV Min Airflow Units&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Heating VAV Max Airflow&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Heating VAV Max Airflow Units&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;VAV Airflow Schedule&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;VAV Type&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Room Exhaust&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Room Exhaust Units&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Room Exhaust Schedule&#39;</span>
+    <span class="p">]</span>
+
+    <span class="c1"># loop through the rooms and add each of the attributes</span>
+    <span class="n">airflow_mtx</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">room</span> <span class="ow">in</span> <span class="n">rooms</span><span class="p">:</span>
+        <span class="c1"># calculate the total outdoor air ventilation and infiltration</span>
+        <span class="n">vent_obj</span> <span class="o">=</span> <span class="n">room</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">ventilation</span>
+        <span class="n">vent_flow</span> <span class="o">=</span> <span class="n">vent_obj</span><span class="o">.</span><span class="n">room_absolute_flow</span><span class="p">(</span><span class="n">room</span><span class="p">)</span> <span class="k">if</span> <span class="n">vent_obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">inf_obj</span> <span class="o">=</span> <span class="n">room</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">infiltration</span>
+        <span class="n">inf_flow</span> <span class="o">=</span> <span class="n">inf_obj</span><span class="o">.</span><span class="n">flow_per_exterior_area</span> <span class="k">if</span> <span class="n">inf_obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
+
+        <span class="c1"># put all attributes into a list</span>
+        <span class="n">airflow_attr</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">room</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span>
+            <span class="s1">&#39;&lt;&lt;No adjacent room&gt;&gt;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Default&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Sum of Outdoor Air&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;None&#39;</span><span class="p">,</span>
+            <span class="n">vent_flow</span><span class="p">,</span>
+            <span class="n">flow_unit</span><span class="p">,</span>
+            <span class="n">vent_flow</span><span class="p">,</span>
+            <span class="n">flow_unit</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Available (100%)&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;None&#39;</span><span class="p">,</span>
+            <span class="n">inf_flow</span><span class="p">,</span>
+            <span class="n">flow_intensity_unit</span><span class="p">,</span>
+            <span class="n">inf_flow</span><span class="p">,</span>
+            <span class="n">flow_intensity_unit</span><span class="p">,</span>
+            <span class="s1">&#39;Available (100%)&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;To be calculated&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;To be calculated&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;To be calculated&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;To be calculated&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;% Clg Airflow&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;% Clg Airflow&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Available (100%)&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Default&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;air changes/hr&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Available (100%)&#39;</span>
+        <span class="p">]</span>
+        <span class="n">airflow_mtx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">airflow_attr</span><span class="p">)</span>
+
+    <span class="c1"># transpose the matrix and convert SI units to IP</span>
+    <span class="n">airflow_matrix</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">airflow_mtx</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">si_units</span><span class="p">:</span>
+        <span class="n">airflow_matrix</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">to_unit</span><span class="p">(</span><span class="n">airflow_matrix</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="s1">&#39;cfm&#39;</span><span class="p">,</span> <span class="s1">&#39;m3/s&#39;</span><span class="p">))</span>
+        <span class="n">airflow_matrix</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">to_unit</span><span class="p">(</span><span class="n">airflow_matrix</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="s1">&#39;cfm&#39;</span><span class="p">,</span> <span class="s1">&#39;m3/s&#39;</span><span class="p">))</span>
+        <span class="n">airflow_matrix</span><span class="p">[</span><span class="mi">23</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">fi</span><span class="o">.</span><span class="n">to_unit</span><span class="p">(</span><span class="n">airflow_matrix</span><span class="p">[</span><span class="mi">23</span><span class="p">],</span> <span class="s1">&#39;cfm/ft2&#39;</span><span class="p">,</span> <span class="s1">&#39;m3/s-m2&#39;</span><span class="p">))</span>
+        <span class="n">airflow_matrix</span><span class="p">[</span><span class="mi">25</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">fi</span><span class="o">.</span><span class="n">to_unit</span><span class="p">(</span><span class="n">airflow_matrix</span><span class="p">[</span><span class="mi">25</span><span class="p">],</span> <span class="s1">&#39;cfm/ft2&#39;</span><span class="p">,</span> <span class="s1">&#39;m3/s-m2&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">airflow_matrix</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">to_unit</span><span class="p">(</span><span class="n">airflow_matrix</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="s1">&#39;L/s&#39;</span><span class="p">,</span> <span class="s1">&#39;m3/s&#39;</span><span class="p">))</span>
+        <span class="n">airflow_matrix</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">to_unit</span><span class="p">(</span><span class="n">airflow_matrix</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="s1">&#39;L/s&#39;</span><span class="p">,</span> <span class="s1">&#39;m3/s&#39;</span><span class="p">))</span>
+        <span class="n">airflow_matrix</span><span class="p">[</span><span class="mi">23</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">fi</span><span class="o">.</span><span class="n">to_unit</span><span class="p">(</span><span class="n">airflow_matrix</span><span class="p">[</span><span class="mi">23</span><span class="p">],</span> <span class="s1">&#39;L/s-m2&#39;</span><span class="p">,</span> <span class="s1">&#39;m3/s-m2&#39;</span><span class="p">))</span>
+        <span class="n">airflow_matrix</span><span class="p">[</span><span class="mi">25</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">fi</span><span class="o">.</span><span class="n">to_unit</span><span class="p">(</span><span class="n">airflow_matrix</span><span class="p">[</span><span class="mi">25</span><span class="p">],</span> <span class="s1">&#39;L/s-m2&#39;</span><span class="p">,</span> <span class="s1">&#39;m3/s-m2&#39;</span><span class="p">))</span>
+
+    <span class="c1"># round the numbers so that they display nicely</span>
+    <span class="k">for</span> <span class="n">row_i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
+        <span class="n">airflow_matrix</span><span class="p">[</span><span class="n">row_i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">airflow_matrix</span><span class="p">[</span><span class="n">row_i</span><span class="p">]]</span>
+    <span class="k">for</span> <span class="n">row_i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="mi">25</span><span class="p">):</span>
+        <span class="n">airflow_matrix</span><span class="p">[</span><span class="n">row_i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">airflow_matrix</span><span class="p">[</span><span class="n">row_i</span><span class="p">]]</span>
+
+    <span class="c1"># insert the column for the row names</span>
+    <span class="k">for</span> <span class="n">row_name</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">row_names</span><span class="p">,</span> <span class="n">airflow_matrix</span><span class="p">):</span>
+        <span class="n">row</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">row_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">airflow_matrix</span></div>
+
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2026, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.0.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

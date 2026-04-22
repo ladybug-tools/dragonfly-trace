@@ -1,0 +1,7 @@
+main
+====
+
+.. click:: dragonfly_trace.cli.__init__:trace
+   :prog: dragonfly-trace
+   :show-nested:
+   :commands: 

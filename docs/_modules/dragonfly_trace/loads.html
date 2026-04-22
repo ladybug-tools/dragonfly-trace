@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dragonfly_trace.loads &#8212; dragonfly-trace  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=0bf093e7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0b9525ea" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<link rel="icon" type="image/x-icon" href="https://github.com/ladybug-tools/artwork/raw/refs/heads/master/icons_bugs/ico/dragonfly.ico">
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          dragonfly-trace</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/translate.html#dragonfly-trace-translate">dragonfly-trace translate</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/translate.html#dragonfly-trace-translate-model-to-trace700-csv">model-to-trace700-csv</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dragonfly_trace.html">dragonfly_trace package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dragonfly_trace.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../dragonfly_trace.cli.html">dragonfly_trace.cli package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.cli.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../dragonfly_trace.cli.translate.html">dragonfly_trace.cli.translate module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_csv"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_csv()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.cli.html#module-dragonfly_trace.cli">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dragonfly_trace.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../dragonfly_trace.airflows.html">dragonfly_trace.airflows module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.airflows.html#dragonfly_trace.airflows.airflows_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">airflows_trace700_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dragonfly_trace.loads.html">dragonfly_trace.loads module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.loads.html#dragonfly_trace.loads.miscellaneous_loads_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">miscellaneous_loads_trace700_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.loads.html#dragonfly_trace.loads.people_and_lights_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">people_and_lights_trace700_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dragonfly_trace.writer.html">dragonfly_trace.writer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_csv"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_csv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.writer.html#dragonfly_trace.writer.rooms_to_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">rooms_to_trace700_matrix()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dragonfly_trace.html#module-dragonfly_trace">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dragonfly_trace.html">dragonfly_trace package</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dragonfly_trace.html">dragonfly_trace package</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <h1>Source code for dragonfly_trace.loads</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="sd">&quot;&quot;&quot;Methods to write room loads to matrices for Trane TRACE tables.&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ladybug.datatype.power</span><span class="w"> </span><span class="kn">import</span> <span class="n">Power</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ladybug.datatype.energyflux</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnergyFlux</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">honeybee.altnumber</span><span class="w"> </span><span class="kn">import</span> <span class="n">autocalculate</span>
+
+
+<div class="viewcode-block" id="people_and_lights_trace700_matrix">
+<a class="viewcode-back" href="../../dragonfly_trace.loads.html#dragonfly_trace.loads.people_and_lights_trace700_matrix">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">people_and_lights_trace700_matrix</span><span class="p">(</span><span class="n">rooms</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a matrix for the &quot;People &amp; Lighting&quot; table of the TRACE 700 Component Tree.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        rooms: A list of dragonfly Room2Ds and honeybee Rooms for which the</span>
+<span class="sd">            TRACE 700 &quot;People &amp; Lighting&quot; matrix will be returned.</span>
+<span class="sd">        si_units: Boolean to note whether the units of the values in the resulting</span>
+<span class="sd">            matrix are in SI (True) instead of IP (False). (Default: False).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A list of list where each sublist represents a row of the People &amp; Lighting</span>
+<span class="sd">        table of the TRACE 700 Component Tree.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># set up things for unit conversion</span>
+    <span class="n">power_unit</span> <span class="o">=</span> <span class="s1">&#39;kW&#39;</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">&#39;Btu/h&#39;</span>
+    <span class="n">flux_unit</span> <span class="o">=</span> <span class="s1">&#39;W/sq m&#39;</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">&#39;W/sq ft&#39;</span>
+    <span class="n">power</span><span class="p">,</span> <span class="n">flux</span> <span class="o">=</span> <span class="n">Power</span><span class="p">(),</span> <span class="n">EnergyFlux</span><span class="p">()</span>
+
+    <span class="c1"># set up the names of the rows</span>
+    <span class="n">row_names</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;Room Description&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Internal Loads Template&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;People Activity&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;People Schedule&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;People Value&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;People Value Units&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;People Sensible (</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">power_unit</span><span class="p">),</span>
+        <span class="s1">&#39;People Latent (</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">power_unit</span><span class="p">),</span>
+        <span class="s1">&#39;Workstation Density&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Workstation Density Units&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Lighting Type&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;ASHRAE Space/Area Type&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Lighting Value&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Lighting Value Units&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Lighting Schedule&#39;</span>
+    <span class="p">]</span>
+
+    <span class="c1"># loop through the rooms and add each of the attributes</span>
+    <span class="n">load_mtx</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">room</span> <span class="ow">in</span> <span class="n">rooms</span><span class="p">:</span>
+        <span class="c1"># calculate the total number of people</span>
+        <span class="n">ppl_obj</span> <span class="o">=</span> <span class="n">room</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">people</span>
+        <span class="k">if</span> <span class="n">ppl_obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ppl_count</span> <span class="o">=</span> <span class="n">room</span><span class="o">.</span><span class="n">floor_area</span> <span class="o">*</span> <span class="n">ppl_obj</span><span class="o">.</span><span class="n">people_per_area</span>
+            <span class="n">act_sch</span> <span class="o">=</span> <span class="n">ppl_obj</span><span class="o">.</span><span class="n">activity_schedule</span>
+            <span class="k">try</span><span class="p">:</span>  <span class="c1"># ScheduleRuleset</span>
+                <span class="n">vals</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">sch</span> <span class="ow">in</span> <span class="n">act_sch</span><span class="o">.</span><span class="n">typical_day_schedules</span><span class="p">:</span>
+                    <span class="n">vals</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sch</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+                <span class="n">act_level</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>  <span class="c1"># ScheduleFixedInterval</span>
+                <span class="n">act_level</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">act_sch</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+            <span class="n">latent_fract</span> <span class="o">=</span> <span class="n">ppl_obj</span><span class="o">.</span><span class="n">latent_fraction</span> \
+                <span class="k">if</span> <span class="n">ppl_obj</span><span class="o">.</span><span class="n">latent_fraction</span> <span class="o">!=</span> <span class="n">autocalculate</span> <span class="k">else</span> <span class="mf">0.5</span>
+            <span class="n">sensible_ppl</span> <span class="o">=</span> <span class="n">act_level</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">latent_fract</span><span class="p">)</span>
+            <span class="n">latent_ppl</span> <span class="o">=</span> <span class="n">act_level</span> <span class="o">*</span> <span class="n">latent_fract</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ppl_count</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">sensible_ppl</span> <span class="o">=</span> <span class="mf">73.26775</span>
+            <span class="n">latent_ppl</span> <span class="o">=</span> <span class="mf">73.26775</span>
+        <span class="c1"># get the lighting power density</span>
+        <span class="n">light_obj</span> <span class="o">=</span> <span class="n">room</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">lighting</span>
+        <span class="k">if</span> <span class="n">light_obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">lpd</span> <span class="o">=</span> <span class="n">light_obj</span><span class="o">.</span><span class="n">watts_per_area</span>
+            <span class="n">light_type</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;LED Lighting 100</span><span class="si">% lo</span><span class="s1">ad to space&#39;</span>
+
+        <span class="c1"># put all attributes into a list</span>
+        <span class="n">load_attr</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">room</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span>
+            <span class="s1">&#39;Default&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;None&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Cooling Only (Design)&#39;</span><span class="p">,</span>
+            <span class="n">ppl_count</span><span class="p">,</span>
+            <span class="s1">&#39;People&#39;</span><span class="p">,</span>
+            <span class="n">sensible_ppl</span><span class="p">,</span>
+            <span class="n">latent_ppl</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;workstation/person&#39;</span><span class="p">,</span>
+            <span class="n">light_type</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">lpd</span><span class="p">,</span>
+            <span class="n">flux_unit</span><span class="p">,</span>
+            <span class="s1">&#39;Cooling Only (Design)&#39;</span>
+        <span class="p">]</span>
+        <span class="n">load_mtx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">load_attr</span><span class="p">)</span>
+
+    <span class="c1"># transpose the matrix and convert SI units to IP</span>
+    <span class="n">load_matrix</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">load_mtx</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">si_units</span><span class="p">:</span>
+        <span class="n">load_matrix</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">power</span><span class="o">.</span><span class="n">to_unit</span><span class="p">(</span><span class="n">load_matrix</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="s1">&#39;Btu/h&#39;</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">))</span>
+        <span class="n">load_matrix</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">power</span><span class="o">.</span><span class="n">to_unit</span><span class="p">(</span><span class="n">load_matrix</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="s1">&#39;Btu/h&#39;</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">))</span>
+        <span class="n">load_matrix</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">flux</span><span class="o">.</span><span class="n">to_unit</span><span class="p">(</span><span class="n">load_matrix</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span> <span class="s1">&#39;W/ft2&#39;</span><span class="p">,</span> <span class="s1">&#39;W/m2&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">load_matrix</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">power</span><span class="o">.</span><span class="n">to_unit</span><span class="p">(</span><span class="n">load_matrix</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="s1">&#39;kW&#39;</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">))</span>
+        <span class="n">load_matrix</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">power</span><span class="o">.</span><span class="n">to_unit</span><span class="p">(</span><span class="n">load_matrix</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="s1">&#39;kW&#39;</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">))</span>
+
+    <span class="c1"># round the numbers so that they display nicely</span>
+    <span class="k">for</span> <span class="n">row_i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
+        <span class="n">load_matrix</span><span class="p">[</span><span class="n">row_i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">load_matrix</span><span class="p">[</span><span class="n">row_i</span><span class="p">]]</span>
+    <span class="k">for</span> <span class="n">row_i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">):</span>
+        <span class="n">load_matrix</span><span class="p">[</span><span class="n">row_i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">load_matrix</span><span class="p">[</span><span class="n">row_i</span><span class="p">]]</span>
+
+    <span class="c1"># insert the column for the row names</span>
+    <span class="k">for</span> <span class="n">row_name</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">row_names</span><span class="p">,</span> <span class="n">load_matrix</span><span class="p">):</span>
+        <span class="n">row</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">row_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">load_matrix</span></div>
+
+
+
+<div class="viewcode-block" id="miscellaneous_loads_trace700_matrix">
+<a class="viewcode-back" href="../../dragonfly_trace.loads.html#dragonfly_trace.loads.miscellaneous_loads_trace700_matrix">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">miscellaneous_loads_trace700_matrix</span><span class="p">(</span><span class="n">rooms</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a matrix for the &quot;People &amp; Lighting&quot; table of the TRACE 700 Component Tree.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        rooms: A list of dragonfly Room2Ds and honeybee Rooms for which the</span>
+<span class="sd">            TRACE 700 &quot;People &amp; Lighting&quot; matrix will be returned.</span>
+<span class="sd">        si_units: Boolean to note whether the units of the values in the resulting</span>
+<span class="sd">            matrix are in SI (True) instead of IP (False). (Default: False).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A list of list where each sublist represents a row of the People &amp; Lighting</span>
+<span class="sd">        table of the TRACE 700 Component Tree.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># set up things for unit conversion</span>
+    <span class="n">power_unit</span> <span class="o">=</span> <span class="s1">&#39;W&#39;</span>
+    <span class="n">flux_unit</span> <span class="o">=</span> <span class="s1">&#39;W/sq m&#39;</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">&#39;W/sq ft&#39;</span>
+    <span class="n">flux</span> <span class="o">=</span> <span class="n">EnergyFlux</span><span class="p">()</span>
+
+    <span class="c1"># set up the names of the rows</span>
+    <span class="n">row_names</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;Misc Load Description&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Room Description&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Type&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Schedule&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Value&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Units&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Energy Meter&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Data Center Equipment&#39;</span>
+    <span class="p">]</span>
+
+    <span class="c1"># loop through the rooms and add each of the attributes</span>
+    <span class="n">load_mtx</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">room</span> <span class="ow">in</span> <span class="n">rooms</span><span class="p">:</span>
+        <span class="c1"># calculate the total density of equipment</span>
+        <span class="n">epd</span><span class="p">,</span> <span class="n">e_type</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;None&#39;</span>
+        <span class="n">ele_obj</span> <span class="o">=</span> <span class="n">room</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">electric_equipment</span>
+        <span class="k">if</span> <span class="n">ele_obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">epd</span> <span class="o">+=</span> <span class="p">(</span><span class="n">ele_obj</span><span class="o">.</span><span class="n">watts_per_area</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">ele_obj</span><span class="o">.</span><span class="n">lost_fraction</span><span class="p">))</span>
+            <span class="n">e_type</span> <span class="o">=</span> <span class="s1">&#39;Electricity&#39;</span>
+        <span class="n">gas_obj</span> <span class="o">=</span> <span class="n">room</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">gas_equipment</span>
+        <span class="k">if</span> <span class="n">gas_obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">epd</span> <span class="o">+=</span> <span class="p">(</span><span class="n">gas_obj</span><span class="o">.</span><span class="n">watts_per_area</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">gas_obj</span><span class="o">.</span><span class="n">lost_fraction</span><span class="p">))</span>
+            <span class="n">e_type</span> <span class="o">=</span> <span class="s1">&#39;Gas&#39;</span>
+
+        <span class="c1"># if there are process loads assigned, specify load in absolute Watts</span>
+        <span class="n">process_load</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">load</span><span class="o">.</span><span class="n">watts</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">load</span><span class="o">.</span><span class="n">lost_fraction</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">load</span> <span class="ow">in</span> <span class="n">room</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">process_loads</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">process_load</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">load_value</span> <span class="o">=</span> <span class="n">process_load</span> <span class="o">+</span> <span class="p">(</span><span class="n">epd</span> <span class="o">*</span> <span class="n">room</span><span class="o">.</span><span class="n">floor_area</span><span class="p">)</span>
+            <span class="n">load_unit</span> <span class="o">=</span> <span class="n">power_unit</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">load_value</span> <span class="o">=</span> <span class="n">epd</span>
+            <span class="n">load_unit</span> <span class="o">=</span> <span class="n">flux_unit</span>
+
+        <span class="c1"># put all attributes into a list</span>
+        <span class="n">load_attr</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> Misc Load&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">room</span><span class="o">.</span><span class="n">display_name</span><span class="p">),</span>
+            <span class="n">room</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span>
+            <span class="s1">&#39;None&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Cooling Only (Design)&#39;</span><span class="p">,</span>
+            <span class="n">load_value</span><span class="p">,</span>
+            <span class="n">load_unit</span><span class="p">,</span>
+            <span class="n">e_type</span><span class="p">,</span>
+            <span class="s1">&#39;No&#39;</span>
+        <span class="p">]</span>
+        <span class="n">load_mtx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">load_attr</span><span class="p">)</span>
+
+    <span class="c1"># transpose the matrix and convert SI units to IP</span>
+    <span class="n">load_matrix</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">load_mtx</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">load_unit</span> <span class="o">==</span> <span class="n">flux_unit</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">si_units</span><span class="p">:</span>
+            <span class="n">load_matrix</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">flux</span><span class="o">.</span><span class="n">to_unit</span><span class="p">(</span><span class="n">load_matrix</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;W/ft2&#39;</span><span class="p">,</span> <span class="s1">&#39;W/m2&#39;</span><span class="p">))</span>
+        <span class="n">load_matrix</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">load_matrix</span><span class="p">[</span><span class="mi">4</span><span class="p">]]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">load_matrix</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">load_matrix</span><span class="p">[</span><span class="mi">4</span><span class="p">]]</span>
+
+    <span class="c1"># insert the column for the row names</span>
+    <span class="k">for</span> <span class="n">row_name</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">row_names</span><span class="p">,</span> <span class="n">load_matrix</span><span class="p">):</span>
+        <span class="n">row</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">row_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">load_matrix</span></div>
+
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2026, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.0.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

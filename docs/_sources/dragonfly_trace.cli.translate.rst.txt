@@ -1,0 +1,7 @@
+dragonfly\_trace.cli.translate module
+=====================================
+
+.. automodule:: dragonfly_trace.cli.translate
+   :members:
+   :undoc-members:
+   :show-inheritance:

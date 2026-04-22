@@ -1,0 +1,18 @@
+dragonfly\_trace.cli package
+============================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   dragonfly_trace.cli.translate
+
+Module contents
+---------------
+
+.. automodule:: dragonfly_trace.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:
