@@ -3,6 +3,10 @@
 from __future__ import division
 
 from collections import OrderedDict
+try:
+    import openpyxl
+except Exception:  # we are in Python 2 and Excel export is not possible
+    openpyxl = None
 
 from ladybug.datatype.area import Area
 from ladybug.datatype.distance import Distance
@@ -396,3 +400,106 @@ def model_to_trace700_csv(
         csv_matrix.append(','.join([str(val) for val in row]))
 
     return '\n'.join(csv_matrix)
+
+
+def model_to_trace700_workbook(
+    model, use_multiplier=True, exclude_plenums=True, merge_method=None,
+    si_units=False, geometry_names=False, resource_names=False
+):
+    """Generate an Excel Workbook (openpyxl) with TRACE 700 attributes of a Model.
+
+    The resulting openpyxl Workbook can be saved and opened in Excel. The data
+    in the tables can then be copied into the tables that appear in the Component
+    Tree view of TRACE 700. The order and organization of rooms in the resulting
+    matrix should match that of the gbXML produced from the same model.
+
+    Args:
+        model: A dragonfly Model for which a TRACE 700 Excel Workbook will be returned.
+        use_multiplier: If True, the multipliers on this Model's Stories will be
+            passed along to the Workbook. If False, full geometry objects will be written
+            for each and every floor in the building that are represented through
+            multipliers and all resulting multipliers will be 1. (Default: True).
+        exclude_plenums: Boolean to indicate whether ceiling/floor plenum depths
+            assigned to Room2Ds should be ignored during translation. This
+            results in each Room2D translating to a single Honeybee Room at
+            the full floor_to_ceiling_height instead of a base Room with (a)
+            plenum Room(s). (Default: True).
+        merge_method: An optional text string to describe how the Room2Ds should
+            be merged into individual Rooms during the translation. Specifying a
+            value here can be an effective way to reduce the number of Room
+            volumes in the resulting model and, ultimately, yield a faster
+            simulation time in the destination engine with fewer results
+            to manage. Note that Room2Ds will only be merged if they form a
+            continuous volume. Otherwise, there will be multiple Rooms per
+            zone or story, each with an integer added at the end of their
+            identifiers. Choose from the following options:
+
+            * None - No merging of Room2Ds will occur
+            * Zones - Room2Ds in the same zone will be merged
+            * PlenumZones - Only plenums in the same zone will be merged
+            * Stories - Rooms in the same story will be merged
+            * PlenumStories - Only plenums in the same story will be merged
+
+        si_units: Boolean to note whether the units of the values in the resulting
+            matrix are in SI (True) instead of IP (False). (Default: False).
+        geometry_names: Boolean to note whether a cleaned version of all geometry
+            display names should be used instead of identifiers when translating
+            the Model to OSM and IDF. Using this flag will affect all Rooms, Faces,
+            Apertures, Doors, and Shades. It will generally result in more read-able
+            names in the OSM and IDF but this means that it will not be easy to map
+            the EnergyPlus results back to the original Honeybee Model. Cases
+            of duplicate IDs resulting from non-unique names will be resolved
+            by adding integers to the ends of the new IDs that are derived from
+            the name. (Default: False).
+        resource_names: Boolean to note whether a cleaned version of all resource
+            display names should be used instead of identifiers when translating
+            the Model to OSM and IDF. Using this flag will affect all Materials,
+            Constructions, ConstructionSets, Schedules, Loads, and ProgramTypes.
+            It will generally result in more read-able names for the resources
+            in the OSM and IDF. Cases of duplicate IDs resulting from non-unique
+            names will be resolved by adding integers to the ends of the new IDs
+            that are derived from the name. (Default: False).
+
+    Returns:
+        A base64 string of content to be written into an Excel file. The contents
+        contain all tables
+        needed to specify room loads in TRACE 700.
+    """
+    # check that we could successfully import 
+    assert openpyxl is not None, 'Export to Excel is only available in Python 3. ' \
+        'Either switch to using Python 3 or use the model_to_trace700_csv instead.'
+
+    # get the matrices to be written to CSV format
+    room_matrix, airflows_matrix, people_and_lights_matrix, misc_loads_matrix = \
+        model_to_trace700_matrix(
+            model, use_multiplier, exclude_plenums, merge_method,
+            si_units, geometry_names, resource_names
+        )
+
+    # put all of the matrices into one master Excel workbook
+    workbook = openpyxl.Workbook()
+    # add the Room table
+    ws = workbook.active
+    ws.title = 'Rooms'
+    title_cell = ws['A1']
+    title_cell.value = 'Rooms'
+    title_cell.font = openpyxl.styles.Font(size=16, bold=True)
+    for row in room_matrix:
+        ws.append(row)
+    # add the Airflows table
+    ws = workbook.create_sheet('Airflows')
+    ws['A1'] = 'Airflows'
+    for row in airflows_matrix:
+        ws.append(row)
+    # add the People & Lighting table
+    ws = workbook.create_sheet('People & Lighting')
+    ws['A1'] = 'People & Lighting'
+    for row in people_and_lights_matrix:
+        ws.append(row)
+    # add the Miscellaneous Loads table
+    ws = workbook.create_sheet('Miscellaneous Loads')
+    ws['A1'] = 'Miscellaneous Loads'
+    for row in misc_loads_matrix:
+        ws.append(row)
+
+    return workbook

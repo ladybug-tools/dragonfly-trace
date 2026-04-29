@@ -4,7 +4,6 @@ from __future__ import division
 
 from ladybug.datatype.power import Power
 from ladybug.datatype.energyflux import EnergyFlux
-from honeybee.altnumber import autocalculate
 
 
 def people_and_lights_trace700_matrix(rooms, si_units=False):
@@ -51,18 +50,8 @@ def people_and_lights_trace700_matrix(rooms, si_units=False):
         ppl_obj = room.properties.energy.people
         if ppl_obj is not None:
             ppl_count = room.floor_area * ppl_obj.people_per_area
-            act_sch = ppl_obj.activity_schedule
-            try:  # ScheduleRuleset
-                vals = []
-                for sch in act_sch.typical_day_schedules:
-                    vals.extend(sch.values)
-                act_level = max(vals)
-            except AttributeError:  # ScheduleFixedInterval
-                act_level = max(act_sch.values)
-            latent_fract = ppl_obj.latent_fraction \
-                if ppl_obj.latent_fraction != autocalculate else 0.5
-            sensible_ppl = act_level * (1 - latent_fract)
-            latent_ppl = act_level * latent_fract
+            sensible_ppl = ppl_obj.activity_max_sensible
+            latent_ppl = ppl_obj.activity_max_latent
         else:
             ppl_count = 0
             sensible_ppl = 73.26775
