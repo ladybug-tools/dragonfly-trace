@@ -55,7 +55,7 @@ def rooms_to_trace700_matrix(rooms, si_units=False):
         'Acoustic Ceiling Resistance ({})'.format(r_unit),
         'Cooling Dry Bulb ({})'.format(temp_unit),
         'Heating Dry Bulb ({})'.format(temp_unit),
-        'Relative Humidity (%)'
+        'Relative Humidity (%)',
         'Cooling Driftpoint ({})'.format(temp_unit),
         'Heating Driftpoint ({})'.format(temp_unit),
         'Thermostat Cooling Schedule',
@@ -465,7 +465,7 @@ def model_to_trace700_workbook(
         contain all tables
         needed to specify room loads in TRACE 700.
     """
-    # check that we could successfully import 
+    # check that we could successfully import openpyxl
     assert openpyxl is not None, 'Export to Excel is only available in Python 3. ' \
         'Either switch to using Python 3 or use the model_to_trace700_csv instead.'
 
@@ -480,26 +480,71 @@ def model_to_trace700_workbook(
     workbook = openpyxl.Workbook()
     # add the Room table
     ws = workbook.active
-    ws.title = 'Rooms'
-    title_cell = ws['A1']
-    title_cell.value = 'Rooms'
-    title_cell.font = openpyxl.styles.Font(size=16, bold=True)
-    for row in room_matrix:
-        ws.append(row)
+    _add_workbook_table(ws, 'Rooms', room_matrix)
     # add the Airflows table
     ws = workbook.create_sheet('Airflows')
-    ws['A1'] = 'Airflows'
-    for row in airflows_matrix:
-        ws.append(row)
+    _add_workbook_table(ws, 'Airflows', airflows_matrix)
     # add the People & Lighting table
     ws = workbook.create_sheet('People & Lighting')
-    ws['A1'] = 'People & Lighting'
-    for row in people_and_lights_matrix:
-        ws.append(row)
+    _add_workbook_table(ws, 'People & Lighting', people_and_lights_matrix)
     # add the Miscellaneous Loads table
     ws = workbook.create_sheet('Miscellaneous Loads')
-    ws['A1'] = 'Miscellaneous Loads'
-    for row in misc_loads_matrix:
-        ws.append(row)
+    _add_workbook_table(ws, 'Miscellaneous Loads', misc_loads_matrix)
 
     return workbook
+
+
+def _add_workbook_table(ws, title, matrix):
+    # define formatting to be used throughout the excel
+    title_font = openpyxl.styles.Font(size=16, bold=True)
+    bold_font = openpyxl.styles.Font(bold=True)
+    side = openpyxl.styles.Side(border_style='thin', color='000000')
+    all_border = openpyxl.styles.Border(top=side, left=side, right=side, bottom=side)
+    grey_fill = openpyxl.styles.PatternFill(
+        start_color='D3D3D3', end_color='D3D3D3', fill_type='solid'
+    )
+    row_length = len(matrix[0])
+    column_letter = openpyxl.utils.get_column_letter(row_length)
+
+    # add the title and create a border around the top row
+    ws.title = title
+    title_cell = ws['A1']
+    title_cell.value = title
+    title_cell.font = title_font
+    for col_idx, cell in enumerate(ws['A1:{}1'.format(column_letter)][0]):
+        border = cell.border
+        left = side if col_idx == 0 else border.left
+        right = side if col_idx == row_length - 1 else border.right
+        cell.border = openpyxl.styles.Border(top=side, bottom=side, left=left, right=right)
+        cell.fill = grey_fill
+
+    # add each row of the matrix to the sheet
+    for row in matrix:
+        ws.append(row)
+        new_row_idx = ws.max_row
+        for cell in ws[new_row_idx]:
+            cell.border = all_border
+
+    # auto-fit the column width of the table to the text
+    for col in ws.columns:
+        max_length = 0
+        column_letter = openpyxl.utils.get_column_letter(col[0].column)
+        for cell in col:
+            try:
+                # measure length of the cell's string representation
+                if len(str(cell.value)) > max_length:
+                    max_length = len(str(cell.value))
+            except AttributeError:
+                pass  # not a cell that sets the max dimension
+        # apply width
+        adjusted_width = (max_length + 2)
+        ws.column_dimensions[column_letter].width = adjusted_width
+
+    # put the first column and row in bold
+    for cell in ws['A']:
+        cell.font = bold_font
+        cell.fill = grey_fill
+    for cell in ws['2:2']:
+        cell.font = bold_font
+        cell.fill = grey_fill
+    title_cell.font = title_font
