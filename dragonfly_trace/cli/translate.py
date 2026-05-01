@@ -288,9 +288,9 @@ def model_to_trace700_xlsx(
         # save workbook to a byte stream
         out = io.BytesIO()
         workbook.save(out)
-        # retrieve bytes and write them directly to file objects with wb encoding
+        workbook.close()
         out.seek(0)  # reset stream position to the beginning
-        excel_bytes = out.read()
+        excel_bytes = out.getvalue()
         if output_file is not None and output_file.name != '<stdout>' and \
                 output_file.mode == 'wb':
             output_file.write(excel_bytes)
