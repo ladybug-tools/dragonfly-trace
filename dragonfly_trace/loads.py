@@ -5,6 +5,35 @@ from __future__ import division
 from ladybug.datatype.power import Power
 from ladybug.datatype.energyflux import EnergyFlux
 
+PEOPLE_AND_LIGHTS_TABLE_FORMAT = (
+    'user',
+    'default',
+    'default',
+    'default',
+    'user',
+    'user',
+    'varies',
+    'varies',
+    'default',
+    'default',
+    'user',
+    'locked',
+    'user',
+    'user',
+    'default'
+)
+
+MISCELLANEOUS_LOADS_TABLE_FORMAT = (
+    'user',
+    'locked',
+    'default',
+    'default',
+    'user',
+    'user',
+    'default',
+    'default'
+)
+
 
 def people_and_lights_trace700_matrix(rooms, si_units=False):
     """Get a matrix for the "People & Lighting" table of the TRACE 700 Component Tree.
@@ -44,7 +73,7 @@ def people_and_lights_trace700_matrix(rooms, si_units=False):
     ]
 
     # loop through the rooms and add each of the attributes
-    load_mtx = []
+    load_mtx, ppl_default = [], []
     for room in rooms:
         # calculate the total number of people
         ppl_obj = room.properties.energy.people
@@ -52,10 +81,12 @@ def people_and_lights_trace700_matrix(rooms, si_units=False):
             ppl_count = room.floor_area * ppl_obj.people_per_area
             sensible_ppl = ppl_obj.activity_max_sensible
             latent_ppl = ppl_obj.activity_max_latent
+            ppl_default.append(False)
         else:
             ppl_count = 0
             sensible_ppl = 73.26775
             latent_ppl = 73.26775
+            ppl_default.append(True)
         # get the lighting power density
         light_obj = room.properties.energy.lighting
         if light_obj is not None:
@@ -75,7 +106,7 @@ def people_and_lights_trace700_matrix(rooms, si_units=False):
             1,
             'workstation/person',
             light_type,
-            '',
+            '!UnInitialized!',
             lpd,
             flux_unit,
             'Cooling Only (Design)'
@@ -94,7 +125,13 @@ def people_and_lights_trace700_matrix(rooms, si_units=False):
 
     # round the numbers so that they display nicely
     for row_i in (6, 7):
-        load_matrix[row_i] = [round(val) for val in load_matrix[row_i]]
+        clean_vals = []
+        for val, is_def in zip(load_matrix[row_i], ppl_default):
+            val = round(val)
+            if is_def:
+                val = str(val)
+            clean_vals.append(val)
+        load_matrix[row_i] = clean_vals
     for row_i in (4, 12):
         load_matrix[row_i] = [round(val, 3) for val in load_matrix[row_i]]
 

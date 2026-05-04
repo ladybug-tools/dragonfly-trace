@@ -15,9 +15,43 @@ from ladybug.datatype.rvalue import RValue
 from honeybee.typing import clean_and_number_string
 from dragonfly.room2d import Room2D
 
-from .airflows import airflows_trace700_matrix
+from .airflows import airflows_trace700_matrix, AIRFLOW_TABLE_FORMAT
 from .loads import people_and_lights_trace700_matrix, \
-    miscellaneous_loads_trace700_matrix
+    miscellaneous_loads_trace700_matrix, PEOPLE_AND_LIGHTS_TABLE_FORMAT, \
+    MISCELLANEOUS_LOADS_TABLE_FORMAT
+
+# formatting for each attribute in the rooms table
+ROOM_TABLE_FORMAT = (
+    'user',
+    'locked',
+    'locked',
+    'default',
+    'default',
+    'default',
+    'user',
+    'user',
+    'user',
+    'user',
+    'user',
+    'default',
+    'user',
+    'user',
+    'varies',
+    'user',
+    'user',
+    'default',
+    'default',
+    'default',
+    'default',
+    'default',
+    'default',
+    'user',
+    'default',
+    'default',
+    'default',
+    'user',
+    'default'
+)
 
 
 def rooms_to_trace700_matrix(rooms, si_units=False):
@@ -91,14 +125,14 @@ def rooms_to_trace700_matrix(rooms, si_units=False):
             cool_set_back = set_pt.cooling_setback
             heat_set_back = set_pt.heating_setback
             humid_pt = set_pt.dehumidifying_setpoint \
-                if set_pt.dehumidifying_setpoint is not None else 50
+                if set_pt.dehumidifying_setpoint is not None else '50'
         else:
             room_type = 'Unconditioned'
             cool_set_pt = 50
             heat_set_pt = 0
             cool_set_back = 50
             heat_set_back = 0
-            humid_pt = 50
+            humid_pt = '50'
 
         # put all attributes into a list
         room_attr = [
@@ -481,15 +515,19 @@ def model_to_trace700_workbook(
     # add the Room table
     ws = workbook.active
     _add_workbook_table(ws, 'Rooms', room_matrix)
+    _apply_table_format(ws, ROOM_TABLE_FORMAT)
     # add the Airflows table
     ws = workbook.create_sheet('Airflows')
     _add_workbook_table(ws, 'Airflows', airflows_matrix)
+    _apply_table_format(ws, AIRFLOW_TABLE_FORMAT)
     # add the People & Lighting table
     ws = workbook.create_sheet('People & Lighting')
     _add_workbook_table(ws, 'People & Lighting', people_and_lights_matrix)
+    _apply_table_format(ws, PEOPLE_AND_LIGHTS_TABLE_FORMAT)
     # add the Miscellaneous Loads table
     ws = workbook.create_sheet('Miscellaneous Loads')
     _add_workbook_table(ws, 'Miscellaneous Loads', misc_loads_matrix)
+    _apply_table_format(ws, MISCELLANEOUS_LOADS_TABLE_FORMAT)
 
     return workbook
 
@@ -548,3 +586,28 @@ def _add_workbook_table(ws, title, matrix):
         cell.font = bold_font
         cell.fill = grey_fill
     title_cell.font = title_font
+
+
+def _apply_table_format(ws, formatting):
+    """Apply formatting to a worksheet to make it look like a TRACE 700 table."""
+    # define formatting styles to be used to make the table like TRACE
+    default_font = openpyxl.styles.Font(color='FF0000')
+    locked_fill = openpyxl.styles.PatternFill(
+        start_color='A9A9A9', end_color='A9A9A9', fill_type='solid'
+    )
+    locked_font = openpyxl.styles.Font(color='808080')
+
+    # loop through the rows and apply the formatting
+    for row, tr_format in zip(ws.iter_rows(min_row=2), formatting):
+        if tr_format == 'locked':
+            for cell in row[1:]:
+                cell.fill = locked_fill
+                cell.font = locked_font
+        elif tr_format == 'default':
+            for cell in row[1:]:
+                cell.font = default_font
+        elif tr_format == 'varies':
+            for cell in row[1:]:
+                if isinstance(cell.value, str):
+                    cell.font = default_font
+                    cell.value = float(cell.value)

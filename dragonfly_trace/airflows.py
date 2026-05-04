@@ -5,6 +5,55 @@ from __future__ import division
 from ladybug.datatype.volumeflowrate import VolumeFlowRate
 from ladybug.datatype.volumeflowrateintensity import VolumeFlowRateIntensity
 
+# formatting for each attribute in the airflows table
+AIRFLOW_TABLE_FORMAT = (
+    'user',
+    'default',
+    'default',
+    'default',
+    'default',
+    'user',
+    'user',
+    'user',
+    'user',
+    'locked',
+    'locked',
+    'locked',
+    'locked',
+    'default',
+    'locked',
+    'locked',
+    'locked',
+    'locked',
+    'locked',
+    'locked',
+    'locked',
+    'locked',
+    'default',
+    'user',
+    'user',
+    'user',
+    'user',
+    'default',
+    'locked',
+    'default',
+    'locked',
+    'default',
+    'locked',
+    'default',
+    'locked',
+    'default',
+    'default',
+    'default',
+    'default',
+    'default',
+    'default',
+    'default',
+    'default',
+    'default',
+    'default'
+)
+
 
 def airflows_trace700_matrix(rooms, si_units=False):
     """Get a matrix for the "Airflows" table of the TRACE 700 Component Tree.
