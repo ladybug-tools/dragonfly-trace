@@ -89,9 +89,8 @@ def people_and_lights_trace700_matrix(rooms, si_units=False):
             ppl_default.append(True)
         # get the lighting power density
         light_obj = room.properties.energy.lighting
-        if light_obj is not None:
-            lpd = light_obj.watts_per_area
-            light_type = r'LED Lighting 100% load to space'
+        light_type = r'LED Lighting 100% load to space'
+        lpd = light_obj.watts_per_area if light_obj is not None else 0
 
         # put all attributes into a list
         load_attr = [
