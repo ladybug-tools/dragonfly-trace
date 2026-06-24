@@ -48,12 +48,15 @@ def translate():
               'cleaned version of all resource display names should be used instead '
               'of identifiers when translating the Model.',
               default=True, show_default=True)
+@click.option('--ventilation-method', '-v', help='Text for the ventilation method to be '
+              'used to calculate outdoor air. Choose from: Sum of Outdoor Air, ASHRAE 62.1',
+              type=str, default='Sum of Outdoor Air', show_default=True)
 @click.option('--output-file', '-f', help='Optional CSV file to output the string '
               'of the translation. By default it printed out to stdout.',
               type=click.File('w'), default='-', show_default=True)
 def model_to_trace700_csv_cli(
     model_file, multiplier, plenum, merge_method, imperial,
-    geometry_ids, resource_ids, output_file
+    geometry_ids, resource_ids, ventilation_method, output_file
 ):
     """Translate a Dragonfly Model to a CSV with tables for TRACE 700 attributes.
 
@@ -73,7 +76,7 @@ def model_to_trace700_csv_cli(
         res_names = not resource_ids
         model_to_trace700_csv(
             model_file, full_geometry, separate_plenum, merge_method,
-            metric, geo_names, res_names, output_file
+            metric, geo_names, res_names, ventilation_method, output_file
         )
     except Exception as e:
         _logger.exception('System translation failed.\n{}'.format(e))
@@ -84,7 +87,8 @@ def model_to_trace700_csv_cli(
 
 def model_to_trace700_csv(
     model_file, full_geometry=False, separate_plenum=False, merge_method='None',
-    metric=False, geometry_names=False, resource_names=False, output_file=None,
+    metric=False, geometry_names=False, resource_names=False,
+    ventilation_method='Sum of Outdoor Air', output_file=None,
     multiplier=True, plenum=True, imperial=True, geometry_ids=True, resource_ids=True
 ):
     """Translate a Dragonfly Model to a CSV with tables for TRACE 700 attributes.
@@ -138,6 +142,12 @@ def model_to_trace700_csv(
             in the OSM and IDF. Cases of duplicate IDs resulting from non-unique
             names will be resolved by adding integers to the ends of the new IDs
             that are derived from the name. (Default: False).
+        ventilation_method: Optional text for the ventilation method to be used in the
+            resulting matrix. Choose from the following.
+
+            * Sum of Outdoor Air
+            * ASHRAE 62.1
+
         output_file: Optional CSV file to output the CSV string of the translation.
             By default this string will be returned from this method.
     """
@@ -146,9 +156,8 @@ def model_to_trace700_csv(
     exclude_plenums = not separate_plenum
     csv_str = model_to_csv(
         model, multiplier, exclude_plenums, merge_method,
-        metric, geometry_names, resource_names
+        metric, geometry_names, resource_names, ventilation_method
     )
-
     return process_content_to_output(csv_str, output_file)
 
 
@@ -181,12 +190,15 @@ def model_to_trace700_csv(
               'cleaned version of all resource display names should be used instead '
               'of identifiers when translating the Model.',
               default=True, show_default=True)
+@click.option('--ventilation-method', '-v', help='Text for the ventilation method to be '
+              'used to calculate outdoor air. Choose from: Sum of Outdoor Air, ASHRAE 62.1',
+              type=str, default='Sum of Outdoor Air', show_default=True)
 @click.option('--output-file', '-f', help='Optional XLSX file to output the content '
               'of the translation. By default it printed out to stdout.',
               type=click.File('wb'), default='-', show_default=True)
 def model_to_trace700_xlsx_cli(
     model_file, multiplier, plenum, merge_method, imperial,
-    geometry_ids, resource_ids, output_file
+    geometry_ids, resource_ids, ventilation_method, output_file
 ):
     """Translate a Dragonfly Model to an Excel file with tables for TRACE 700 attributes.
 
@@ -206,7 +218,7 @@ def model_to_trace700_xlsx_cli(
         res_names = not resource_ids
         model_to_trace700_xlsx(
             model_file, full_geometry, separate_plenum, merge_method,
-            metric, geo_names, res_names, output_file
+            metric, geo_names, res_names, ventilation_method, output_file
         )
     except Exception as e:
         _logger.exception('System translation failed.\n{}'.format(e))
@@ -217,7 +229,8 @@ def model_to_trace700_xlsx_cli(
 
 def model_to_trace700_xlsx(
     model_file, full_geometry=False, separate_plenum=False, merge_method='None',
-    metric=False, geometry_names=False, resource_names=False, output_file=None,
+    metric=False, geometry_names=False, resource_names=False,
+    ventilation_method='Sum of Outdoor Air', output_file=None,
     multiplier=True, plenum=True, imperial=True, geometry_ids=True, resource_ids=True
 ):
     """Translate a Dragonfly Model to an Excel file with tables for TRACE 700 attributes.
@@ -271,6 +284,12 @@ def model_to_trace700_xlsx(
             in the OSM and IDF. Cases of duplicate IDs resulting from non-unique
             names will be resolved by adding integers to the ends of the new IDs
             that are derived from the name. (Default: False).
+        ventilation_method: Optional text for the ventilation method to be used in the
+            resulting matrix. Choose from the following.
+
+            * Sum of Outdoor Air
+            * ASHRAE 62.1
+
         output_file: Optional XLSX file to output the XLSX content of the translation.
             By default this content will be returned from this method as a
             base64 string.
@@ -280,7 +299,7 @@ def model_to_trace700_xlsx(
     exclude_plenums = not separate_plenum
     workbook = model_to_workbook(
         model, multiplier, exclude_plenums, merge_method,
-        metric, geometry_names, resource_names
+        metric, geometry_names, resource_names, ventilation_method
     )
     if isinstance(output_file, str):
         workbook.save(output_file)

@@ -15,7 +15,8 @@ from ladybug.datatype.rvalue import RValue
 from honeybee.typing import clean_and_number_string
 from dragonfly.room2d import Room2D
 
-from .airflows import airflows_trace700_matrix, AIRFLOW_TABLE_FORMAT
+from .airflows import airflows_trace700_matrix, outdoor_air_calculation_matrix, \
+    AIRFLOW_TABLE_FORMAT, AIRFLOW_TABLE_FORMAT_62_1
 from .loads import people_and_lights_trace700_matrix, \
     miscellaneous_loads_trace700_matrix, PEOPLE_AND_LIGHTS_TABLE_FORMAT, \
     MISCELLANEOUS_LOADS_TABLE_FORMAT
@@ -195,7 +196,8 @@ def rooms_to_trace700_matrix(rooms, si_units=False):
 
 def model_to_trace700_matrix(
     model, use_multiplier=True, exclude_plenums=True, merge_method=None,
-    si_units=False, geometry_names=False, resource_names=False
+    si_units=False, geometry_names=False, resource_names=False,
+    ventilation_method='Sum of Outdoor Air'
 ):
     """Get matrices with TRACE 700 simulation attributes of a Model.
 
@@ -250,6 +252,11 @@ def model_to_trace700_matrix(
             in the OSM and IDF. Cases of duplicate IDs resulting from non-unique
             names will be resolved by adding integers to the ends of the new IDs
             that are derived from the name. (Default: False).
+        ventilation_method: Optional text for the ventilation method to be used in the
+            resulting matrix. Choose from the following.
+
+            * Sum of Outdoor Air
+            * ASHRAE 62.1
 
     Returns:
         A tuple with four items.
@@ -265,6 +272,10 @@ def model_to_trace700_matrix(
 
         misc_loads_matrix -- A list of list where each sublist represents a row of
             the Miscellaneous Loads table of the TRACE 700 Component Tree.
+
+        oa_calc_matrix -- A list of list where each sublist represents a row of a
+            table that illustrates how the outdoor airflow rates appearing in
+            the airflows_matrix were calculated.
     """
     # convert the rooms into the format in which it will go off to TRACE
     rooms_for_trace = []  # list to hold the rooms for CSV reporting
@@ -275,6 +286,7 @@ def model_to_trace700_matrix(
     model = model.duplicate()  # duplicate model to avoid mutating it
     if model.units != 'Meters':
         model.convert_to_units('Meters')
+    model.properties.energy.set_areas_by_unit_system()
     tol = model.tolerance
     # reset the IDs to be derived from the display_names if requested
     if geometry_names:
@@ -333,15 +345,33 @@ def model_to_trace700_matrix(
 
     # create the matrices of data from the model rooms
     room_matrix = rooms_to_trace700_matrix(rooms_for_trace, si_units)
-    airflows_matrix = airflows_trace700_matrix(rooms_for_trace, si_units)
+    airflows_matrix = airflows_trace700_matrix(rooms_for_trace, si_units, ventilation_method)
     people_and_lights_matrix = people_and_lights_trace700_matrix(rooms_for_trace, si_units)
     misc_loads_matrix = miscellaneous_loads_trace700_matrix(rooms_for_trace, si_units)
-    return room_matrix, airflows_matrix, people_and_lights_matrix, misc_loads_matrix
+
+    # convert the dragonfly rooms to honeybee so that we have proper volumes for airflow
+    oa_calc_matrix = None
+    if ventilation_method == 'Sum of Outdoor Air':
+        hb_model = model.to_honeybee(
+            'District', use_multiplier=use_multiplier, exclude_plenums=exclude_plenums,
+            merge_method=merge_method, solve_ceiling_adjacencies=False, enforce_adj=False
+        )[0]
+        hb_room_dict = {r.identifier: r for r in hb_model.rooms}
+        hb_rooms_for_trace = [hb_room_dict[r.identifier] for r in rooms_for_trace]
+        oa_calc_matrix = outdoor_air_calculation_matrix(hb_rooms_for_trace, si_units)
+        # update the value in the airflows_matrix with one informed by accurate volume
+        for i, oa_row in enumerate(oa_calc_matrix[2:]):
+            airflows_matrix[5][i + 1] = oa_row[15]
+            airflows_matrix[7][i + 1] = oa_row[16]
+
+    return room_matrix, airflows_matrix, people_and_lights_matrix, misc_loads_matrix, \
+        oa_calc_matrix
 
 
 def model_to_trace700_csv(
     model, use_multiplier=True, exclude_plenums=True, merge_method=None,
-    si_units=False, geometry_names=False, resource_names=False
+    si_units=False, geometry_names=False, resource_names=False,
+    ventilation_method='Sum of Outdoor Air'
 ):
     """Generate a CSV string with TRACE 700 load simulation attributes of a Model.
 
@@ -395,16 +425,21 @@ def model_to_trace700_csv(
             in the OSM and IDF. Cases of duplicate IDs resulting from non-unique
             names will be resolved by adding integers to the ends of the new IDs
             that are derived from the name. (Default: False).
+        ventilation_method: Optional text for the ventilation method to be used in the
+            resulting matrix. Choose from the following.
+
+            * Sum of Outdoor Air
+            * ASHRAE 62.1
 
     Returns:
         Text string of content to be written into a CSV file containing all tables
         needed to specify room loads in TRACE 700.
     """
     # get the matrices to be written to CSV format
-    room_matrix, airflows_matrix, people_and_lights_matrix, misc_loads_matrix = \
+    room_matrix, airflows_matrix, people_and_lights_matrix, misc_loads_matrix, oa_matrix = \
         model_to_trace700_matrix(
             model, use_multiplier, exclude_plenums, merge_method,
-            si_units, geometry_names, resource_names
+            si_units, geometry_names, resource_names, ventilation_method
         )
 
     # put all of the matrices into one master matrix for CSV export
@@ -432,13 +467,21 @@ def model_to_trace700_csv(
     csv_matrix.append('MISCELLANEOUS LOADS{}'.format(spacer_row))
     for row in misc_loads_matrix:
         csv_matrix.append(','.join([str(val) for val in row]))
+    # add the outdoor air calculation matrix if it exists
+    if oa_matrix is not None:
+        csv_matrix.append(spacer_row)
+        csv_matrix.append(spacer_row)
+        csv_matrix.append('OA CALCULATION{}'.format(spacer_row))
+        for row in oa_matrix:
+            csv_matrix.append(','.join([str(val) for val in row]))
 
     return '\n'.join(csv_matrix)
 
 
 def model_to_trace700_workbook(
     model, use_multiplier=True, exclude_plenums=True, merge_method=None,
-    si_units=False, geometry_names=False, resource_names=False
+    si_units=False, geometry_names=False, resource_names=False,
+    ventilation_method='Sum of Outdoor Air'
 ):
     """Generate an Excel Workbook (openpyxl) with TRACE 700 attributes of a Model.
 
@@ -478,36 +521,28 @@ def model_to_trace700_workbook(
             matrix are in SI (True) instead of IP (False). (Default: False).
         geometry_names: Boolean to note whether a cleaned version of all geometry
             display names should be used instead of identifiers when translating
-            the Model to OSM and IDF. Using this flag will affect all Rooms, Faces,
-            Apertures, Doors, and Shades. It will generally result in more read-able
-            names in the OSM and IDF but this means that it will not be easy to map
-            the EnergyPlus results back to the original Honeybee Model. Cases
-            of duplicate IDs resulting from non-unique names will be resolved
-            by adding integers to the ends of the new IDs that are derived from
-            the name. (Default: False).
+            the Model. (Default: False).
         resource_names: Boolean to note whether a cleaned version of all resource
             display names should be used instead of identifiers when translating
-            the Model to OSM and IDF. Using this flag will affect all Materials,
-            Constructions, ConstructionSets, Schedules, Loads, and ProgramTypes.
-            It will generally result in more read-able names for the resources
-            in the OSM and IDF. Cases of duplicate IDs resulting from non-unique
-            names will be resolved by adding integers to the ends of the new IDs
-            that are derived from the name. (Default: False).
+            the Model. (Default: False).
+        ventilation_method: Optional text for the ventilation method to be used in the
+            resulting matrix. Choose from the following.
+
+            * Sum of Outdoor Air
+            * ASHRAE 62.1
 
     Returns:
-        A base64 string of content to be written into an Excel file. The contents
-        contain all tables
-        needed to specify room loads in TRACE 700.
+        An Excel Workbook (openpyxl) with TRACE 700 attributes of the input Model.
     """
     # check that we could successfully import openpyxl
     assert openpyxl is not None, 'Export to Excel is only available in Python 3. ' \
         'Either switch to using Python 3 or use the model_to_trace700_csv instead.'
 
     # get the matrices to be written to CSV format
-    room_matrix, airflows_matrix, people_and_lights_matrix, misc_loads_matrix = \
+    room_matrix, airflows_matrix, people_and_lights_matrix, misc_loads_matrix, oa_matrix = \
         model_to_trace700_matrix(
             model, use_multiplier, exclude_plenums, merge_method,
-            si_units, geometry_names, resource_names
+            si_units, geometry_names, resource_names, ventilation_method
         )
 
     # put all of the matrices into one master Excel workbook
@@ -517,9 +552,12 @@ def model_to_trace700_workbook(
     _add_workbook_table(ws, 'Rooms', room_matrix)
     _apply_table_format(ws, ROOM_TABLE_FORMAT)
     # add the Airflows table
-    ws = workbook.create_sheet('Airflows')
-    _add_workbook_table(ws, 'Airflows', airflows_matrix)
-    _apply_table_format(ws, AIRFLOW_TABLE_FORMAT)
+    ws_air = workbook.create_sheet('Airflows')
+    _add_workbook_table(ws_air, 'Airflows', airflows_matrix)
+    if ventilation_method == 'Sum of Outdoor Air':
+        _apply_table_format(ws_air, AIRFLOW_TABLE_FORMAT)
+    else:  # assume that it's using the TRACE native ASHRAE 62.1
+        _apply_table_format(ws_air, AIRFLOW_TABLE_FORMAT_62_1)
     # add the People & Lighting table
     ws = workbook.create_sheet('People & Lighting')
     _add_workbook_table(ws, 'People & Lighting', people_and_lights_matrix)
@@ -528,6 +566,20 @@ def model_to_trace700_workbook(
     ws = workbook.create_sheet('Miscellaneous Loads')
     _add_workbook_table(ws, 'Miscellaneous Loads', misc_loads_matrix)
     _apply_table_format(ws, MISCELLANEOUS_LOADS_TABLE_FORMAT)
+    # add the outdoor air calculation matrix if it exists
+    if oa_matrix is not None:
+        ws_oa = workbook.create_sheet('OA Calculation')
+        _add_oa_workbook_table(ws_oa, 'OA Calculation', oa_matrix)
+        # reference the calculated value in the airflow table
+        ref_template = "='OA Calculation'!{}{}"
+        for i, air_cell in enumerate(ws_air['7']):
+            if i == 0:
+                continue
+            air_cell.value = ref_template.format('P', i + 3)
+        for i, air_cell in enumerate(ws_air['9']):
+            if i == 0:
+                continue
+            air_cell.value = ref_template.format('Q', i + 3)
 
     return workbook
 
@@ -582,7 +634,7 @@ def _add_workbook_table(ws, title, matrix):
     for cell in ws['A']:
         cell.font = bold_font
         cell.fill = grey_fill
-    for cell in ws['2:2']:
+    for cell in ws['2']:
         cell.font = bold_font
         cell.fill = grey_fill
     title_cell.font = title_font
@@ -611,3 +663,88 @@ def _apply_table_format(ws, formatting):
                 if isinstance(cell.value, str):
                     cell.font = default_font
                     cell.value = float(cell.value)
+
+
+def _add_oa_workbook_table(ws, title, matrix):
+    """Apply formatting to a the worksheet with outdoor air calculations."""
+    # define formatting styles to be used to make the table like TRACE
+    title_font = openpyxl.styles.Font(size=16, bold=True)
+    bold_font = openpyxl.styles.Font(bold=True)
+    side = openpyxl.styles.Side(border_style='thin', color='000000')
+    all_border = openpyxl.styles.Border(top=side, left=side, right=side, bottom=side)
+    grey_fill = openpyxl.styles.PatternFill(
+        start_color='D3D3D3', end_color='D3D3D3', fill_type='solid')
+    text_align = openpyxl.styles.Alignment(
+        horizontal='center', vertical='center', wrap_text=True)
+    row_length = len(matrix[0])
+    column_letter = openpyxl.utils.get_column_letter(row_length)
+
+    # add the title and create a border around the top row
+    ws.title = title
+    title_cell = ws['A1']
+    title_cell.value = title
+    title_cell.font = title_font
+    for col_idx, cell in enumerate(ws['A1:{}1'.format(column_letter)][0]):
+        border = cell.border
+        left = side if col_idx == 0 else border.left
+        right = side if col_idx == row_length - 1 else border.right
+        cell.border = openpyxl.styles.Border(top=side, bottom=side, left=left, right=right)
+        cell.fill = grey_fill
+
+    # add each row of the matrix to the sheet
+    for row in matrix:
+        ws.append(row)
+        new_row_idx = ws.max_row
+        for cell in ws[new_row_idx]:
+            cell.border = all_border
+
+    # auto-fit the column width of the table to the text
+    for i, col in enumerate(ws.columns):
+        max_length = 0
+        column_letter = openpyxl.utils.get_column_letter(col[0].column)
+        if i in (0, 1, 2, 3):
+            for cell in col:
+                try:
+                    # measure length of the cell's string representation
+                    if len(str(cell.value)) > max_length:
+                        max_length = len(str(cell.value))
+                except AttributeError:
+                    pass  # not a cell that sets the max dimension
+        else:
+            split_str = str(col[2].value).split('\n')
+            try:
+                max_length = max([len(txt) for txt in split_str])
+            except ValueError:  # empty cell
+                pass
+        # apply width
+        adjusted_width = (max_length + 2)
+        ws.column_dimensions[column_letter].width = adjusted_width
+
+    # format the second and third columns to be readable
+    for row in ws['2:3']:
+        for cell in row:
+            cell.font = bold_font
+            cell.fill = grey_fill
+            cell.alignment = text_align
+
+    # highlight the room names and zones in gray/bold
+    for i, col in enumerate(ws['A:D']):
+        for j, cell in enumerate(col):
+            if i == 0 and j == 0:
+                continue
+            cell.font = bold_font
+            cell.fill = grey_fill
+
+    # add validation to the field that permits sum or max of air
+    dv = openpyxl.worksheet.datavalidation.DataValidation(type="list", formula1='"Sum,Max"')
+    ws.add_data_validation(dv)
+    dv.add('K4:K{}'.format(len(col)))
+
+    # set the final air flows to be calculated from the other OA criteria
+    template = '=IF(K{0}="Sum", SUM(E{0}*H{0}, F{0}*I{0}, (G{0}*J{0})/3600) / {1}{0}, ' \
+        'MAX(E{0}*H{0}, F{0}*I{0}, (G{0}*J{0})/3600) / {1}{0})'
+    for i, row in enumerate(ws['4:{}'.format(len(col))]):
+        row_i = i + 4
+        q_clg, q_htg = 'P{}'.format(row_i), 'Q{}'.format(row_i)
+        ws[q_clg] = template.format(row_i, 'L')
+        ws[q_htg] = template.format(row_i, 'M')

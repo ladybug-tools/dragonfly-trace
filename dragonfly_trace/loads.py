@@ -4,6 +4,7 @@ from __future__ import division
 
 from ladybug.datatype.power import Power
 from ladybug.datatype.energyflux import EnergyFlux
+from dragonfly.room2d import Room2D
 
 PEOPLE_AND_LIGHTS_TABLE_FORMAT = (
     'user',
@@ -51,7 +52,7 @@ def people_and_lights_trace700_matrix(rooms, si_units=False):
     # set up things for unit conversion
     power_unit = 'kW' if si_units else 'Btu/h'
     flux_unit = 'W/sq m' if si_units else 'W/sq ft'
-    power, flux = Power(), EnergyFlux()
+    power = Power()
 
     # set up the names of the rows
     row_names = [
@@ -75,22 +76,40 @@ def people_and_lights_trace700_matrix(rooms, si_units=False):
     # loop through the rooms and add each of the attributes
     load_mtx, ppl_default = [], []
     for room in rooms:
-        # calculate the total number of people
+        # calculate the people to write into the table
         ppl_obj = room.properties.energy.people
         if ppl_obj is not None:
-            ppl_count = room.floor_area * ppl_obj.people_per_area
+            if isinstance(room, Room2D) and room.properties.energy._person_count is not None:
+                ppl_val, ppl_unit = room.properties.energy.person_count, 'People'
+            else:
+                if si_units:
+                    ppl_val = ppl_obj.people_per_area_si \
+                        if ppl_obj.people_per_area != 0 else 0
+                    ppl_unit = 'sq m/person'
+                else:
+                    ppl_val = ppl_obj.people_per_area_ip \
+                        if ppl_obj.people_per_area != 0 else 0
+                    ppl_unit = 'sq ft/person'
             sensible_ppl = ppl_obj.activity_max_sensible
             latent_ppl = ppl_obj.activity_max_latent
             ppl_default.append(False)
         else:
-            ppl_count = 0
+            ppl_val, ppl_unit = 0, 'People'
             sensible_ppl = 73.26775
             latent_ppl = 73.26775
             ppl_default.append(True)
+
         # get the lighting power density
         light_obj = room.properties.energy.lighting
         light_type = r'LED Lighting 100% load to space'
-        lpd = light_obj.watts_per_area if light_obj is not None else 0
+        light_val = 0
+        if light_obj is not None:
+            if isinstance(room, Room2D) and room.properties.energy._lighting_watts is not None:
+                light_val, light_unit = room.properties.energy.lighting_watts, 'W'
+            else:
+                light_val, light_unit = light_obj.watts_per_area, flux_unit
+                if not si_units:
+                    light_val = light_val / 10.7639
 
         # put all attributes into a list
         load_attr = [
@@ -98,16 +117,16 @@ def people_and_lights_trace700_matrix(rooms, si_units=False):
             'Default',
             'None',
             'Cooling Only (Design)',
-            ppl_count,
-            'People',
+            ppl_val,
+            ppl_unit,
             sensible_ppl,
             latent_ppl,
             1,
             'workstation/person',
             light_type,
             '!UnInitialized!',
-            lpd,
-            flux_unit,
+            light_val,
+            light_unit,
             'Cooling Only (Design)'
         ]
         load_mtx.append(load_attr)
@@ -117,7 +136,6 @@ def people_and_lights_trace700_matrix(rooms, si_units=False):
     if not si_units:
         load_matrix[6] = list(power.to_unit(load_matrix[6], 'Btu/h', 'W'))
         load_matrix[7] = list(power.to_unit(load_matrix[7], 'Btu/h', 'W'))
-        load_matrix[12] = list(flux.to_unit(load_matrix[12], 'W/ft2', 'W/m2'))
     else:
         load_matrix[6] = list(power.to_unit(load_matrix[6], 'kW', 'W'))
         load_matrix[7] = list(power.to_unit(load_matrix[7], 'kW', 'W'))
@@ -132,7 +150,7 @@ def people_and_lights_trace700_matrix(rooms, si_units=False):
             clean_vals.append(val)
         load_matrix[row_i] = clean_vals
     for row_i in (4, 12):
-        load_matrix[row_i] = [round(val, 3) for val in load_matrix[row_i]]
+        load_matrix[row_i] = [round(val, 2) for val in load_matrix[row_i]]
 
     # insert the column for the row names
     for row_name, row in zip(row_names, load_matrix):
@@ -189,6 +207,11 @@ def miscellaneous_loads_trace700_matrix(rooms, si_units=False):
                            for load in room.properties.energy.process_loads)
         if process_load != 0:
             load_value = process_load + (epd * room.floor_area)
+            load_unit = power_unit
+        elif isinstance(room, Room2D) and (
+                room.properties.energy._electric_equipment_watts is not None or
+                room.properties.energy._gas_equipment_watts is not None):
+            load_value = epd * room.floor_area
             load_unit = power_unit
         else:
             load_value = epd
