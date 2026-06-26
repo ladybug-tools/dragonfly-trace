@@ -358,6 +358,8 @@ def outdoor_air_calculation_matrix(rooms, si_units=False):
         'Zone',
         'Room',
         'Program',
+        'Primary\nOccupancy\nCategory',
+        'Secondary\nOccupancy\nCategory',
         'Person Count',
         'Floor Area [{}]'.format(area_unit),
         'Volume [{}]'.format(volume_unit),
@@ -373,6 +375,8 @@ def outdoor_air_calculation_matrix(rooms, si_units=False):
         'Total OA in\nHeating [{}]'.format(flow_unit)
     ]
     row_abbrev = [
+        '',
+        '',
         '',
         '',
         '',
@@ -429,12 +433,25 @@ def outdoor_air_calculation_matrix(rooms, si_units=False):
         eval_func = sum if method == 'Sum' else max
         total = eval_func((person_count * rp, floor_area * ra, (r_ach * volume) / 3600))
 
+        # extract attributes for program and occupancy category
+        program = room.properties.energy.program_type
+        primary_cat, secondary_cat = '', ''
+        if program.ventilation is not None:
+            vent = program.ventilation
+            if vent.user_data:
+                if 'primary_occupancy' in vent.user_data:
+                    primary_cat = vent.user_data['primary_occupancy']
+                if 'secondary_occupancy' in vent.user_data:
+                    secondary_cat = vent.user_data['secondary_occupancy']
+
         # put all attributes into a list
         oa_attr = [
             room.story,
             room.zone,
             room.display_name,
-            room.properties.energy.program_type.display_name,
+            program.display_name,
+            primary_cat,
+            secondary_cat,
             person_count,
             floor_area,
             volume,

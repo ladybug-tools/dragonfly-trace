@@ -361,8 +361,8 @@ def model_to_trace700_matrix(
         oa_calc_matrix = outdoor_air_calculation_matrix(hb_rooms_for_trace, si_units)
         # update the value in the airflows_matrix with one informed by accurate volume
         for i, oa_row in enumerate(oa_calc_matrix[2:]):
-            airflows_matrix[5][i + 1] = oa_row[15]
-            airflows_matrix[7][i + 1] = oa_row[16]
+            airflows_matrix[5][i + 1] = oa_row[17]
+            airflows_matrix[7][i + 1] = oa_row[18]
 
     return room_matrix, airflows_matrix, people_and_lights_matrix, misc_loads_matrix, \
         oa_calc_matrix
@@ -559,13 +559,13 @@ def model_to_trace700_workbook(
     else:  # assume that it's using the TRACE native ASHRAE 62.1
         _apply_table_format(ws_air, AIRFLOW_TABLE_FORMAT_62_1)
     # add the People & Lighting table
-    ws = workbook.create_sheet('People & Lighting')
-    _add_workbook_table(ws, 'People & Lighting', people_and_lights_matrix)
-    _apply_table_format(ws, PEOPLE_AND_LIGHTS_TABLE_FORMAT)
+    ws_ppl = workbook.create_sheet('People & Lighting')
+    _add_workbook_table(ws_ppl, 'People & Lighting', people_and_lights_matrix)
+    _apply_table_format(ws_ppl, PEOPLE_AND_LIGHTS_TABLE_FORMAT)
     # add the Miscellaneous Loads table
-    ws = workbook.create_sheet('Miscellaneous Loads')
-    _add_workbook_table(ws, 'Miscellaneous Loads', misc_loads_matrix)
-    _apply_table_format(ws, MISCELLANEOUS_LOADS_TABLE_FORMAT)
+    ws_equip = workbook.create_sheet('Miscellaneous Loads')
+    _add_workbook_table(ws_equip, 'Miscellaneous Loads', misc_loads_matrix)
+    _apply_table_format(ws_equip, MISCELLANEOUS_LOADS_TABLE_FORMAT)
     # add the outdoor air calculation matrix if it exists
     if oa_matrix is not None:
         ws_oa = workbook.create_sheet('OA Calculation')
@@ -575,11 +575,17 @@ def model_to_trace700_workbook(
         for i, air_cell in enumerate(ws_air['7']):
             if i == 0:
                 continue
-            air_cell.value = ref_template.format('P', i + 3)
+            air_cell.value = ref_template.format('R', i + 3)
         for i, air_cell in enumerate(ws_air['9']):
             if i == 0:
                 continue
-            air_cell.value = ref_template.format('Q', i + 3)
+            air_cell.value = ref_template.format('S', i + 3)
+        # reference the person count in the people and lighting table
+        for i, (ppl_cell, unit_cell) in enumerate(zip(ws_ppl['6'], ws_ppl['7'])):
+            if i == 0:
+                continue
+            if unit_cell.value == 'People':
+                ppl_cell.value = ref_template.format('G', i + 3)
 
     return workbook
 
@@ -702,8 +708,10 @@ def _add_oa_workbook_table(ws, title, matrix):
     for i, col in enumerate(ws.columns):
         max_length = 0
         column_letter = openpyxl.utils.get_column_letter(col[0].column)
-        if i in (0, 1, 2, 3):
-            for cell in col:
+        if i in (0, 1, 2, 3, 4, 5):
+            for j, cell in enumerate(col):
+                if i in (4, 5) and j == 2:
+                    continue
                 try:
                     # measure length of the cell's string representation
                     if len(str(cell.value)) > max_length:
@@ -738,13 +746,13 @@ def _add_oa_workbook_table(ws, title, matrix):
     # add validation to the field that permits sum or max of air
     dv = openpyxl.worksheet.datavalidation.DataValidation(type="list", formula1='"Sum,Max"')
     ws.add_data_validation(dv)
-    dv.add('K4:K{}'.format(len(col)))
+    dv.add('M4:M{}'.format(len(col)))
 
     # set the final air flows to be calculated from the other OA criteria
-    template = '=IF(K{0}="Sum", SUM(E{0}*H{0}, F{0}*I{0}, (G{0}*J{0})/3600) / {1}{0}, ' \
-        'MAX(E{0}*H{0}, F{0}*I{0}, (G{0}*J{0})/3600) / {1}{0})'
+    template = '=IF(M{0}="Sum", SUM(G{0}*J{0}, H{0}*K{0}, (I{0}*L{0})/3600) / {1}{0}, ' \
+        'MAX(G{0}*J{0}, H{0}*K{0}, (I{0}*L{0})/3600) / {1}{0})'
     for i, row in enumerate(ws['4:{}'.format(len(col))]):
         row_i = i + 4
-        q_clg, q_htg = 'P{}'.format(row_i), 'Q{}'.format(row_i)
-        ws[q_clg] = template.format(row_i, 'L')
-        ws[q_htg] = template.format(row_i, 'M')
+        q_clg, q_htg = 'R{}'.format(row_i), 'S{}'.format(row_i)
+        ws[q_clg] = template.format(row_i, 'N')
+        ws[q_htg] = template.format(row_i, 'O')
