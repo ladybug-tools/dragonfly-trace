@@ -82,14 +82,8 @@ def people_and_lights_trace700_matrix(rooms, si_units=False):
             if isinstance(room, Room2D) and room.properties.energy._person_count is not None:
                 ppl_val, ppl_unit = room.properties.energy.person_count, 'People'
             else:
-                if si_units:
-                    ppl_val = ppl_obj.people_per_area_si \
-                        if ppl_obj.people_per_area != 0 else 0
-                    ppl_unit = 'sq m/person'
-                else:
-                    ppl_val = ppl_obj.people_per_area_ip \
-                        if ppl_obj.people_per_area != 0 else 0
-                    ppl_unit = 'sq ft/person'
+                ppl_val = room.floor_area * ppl_obj.people_per_area
+                ppl_unit = 'People'
             sensible_ppl = ppl_obj.activity_max_sensible
             latent_ppl = ppl_obj.activity_max_latent
             ppl_default.append(False)
