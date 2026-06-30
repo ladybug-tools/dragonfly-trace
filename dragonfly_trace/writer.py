@@ -15,11 +15,12 @@ from ladybug.datatype.rvalue import RValue
 from honeybee.typing import clean_and_number_string
 from dragonfly.room2d import Room2D
 
-from .airflows import airflows_trace700_matrix, outdoor_air_calculation_matrix, \
+from .airflows import airflows_trace700_matrix, \
     AIRFLOW_TABLE_FORMAT, AIRFLOW_TABLE_FORMAT_62_1
 from .loads import people_and_lights_trace700_matrix, \
     miscellaneous_loads_trace700_matrix, PEOPLE_AND_LIGHTS_TABLE_FORMAT, \
     MISCELLANEOUS_LOADS_TABLE_FORMAT
+from .calculation import calculation_matrix
 
 # formatting for each attribute in the rooms table
 ROOM_TABLE_FORMAT = (
@@ -358,11 +359,7 @@ def model_to_trace700_matrix(
         )[0]
         hb_room_dict = {r.identifier: r for r in hb_model.rooms}
         hb_rooms_for_trace = [hb_room_dict[r.identifier] for r in rooms_for_trace]
-        oa_calc_matrix = outdoor_air_calculation_matrix(hb_rooms_for_trace, si_units)
-        # update the value in the airflows_matrix with one informed by accurate volume
-        for i, oa_row in enumerate(oa_calc_matrix[2:]):
-            airflows_matrix[5][i + 1] = oa_row[17]
-            airflows_matrix[7][i + 1] = oa_row[18]
+        oa_calc_matrix = calculation_matrix(hb_rooms_for_trace, si_units)
 
     return room_matrix, airflows_matrix, people_and_lights_matrix, misc_loads_matrix, \
         oa_calc_matrix
@@ -436,7 +433,7 @@ def model_to_trace700_csv(
         needed to specify room loads in TRACE 700.
     """
     # get the matrices to be written to CSV format
-    room_matrix, airflows_matrix, people_and_lights_matrix, misc_loads_matrix, oa_matrix = \
+    room_matrix, airflows_matrix, people_and_lights_matrix, misc_loads_matrix, calc_matrix = \
         model_to_trace700_matrix(
             model, use_multiplier, exclude_plenums, merge_method,
             si_units, geometry_names, resource_names, ventilation_method
@@ -468,11 +465,11 @@ def model_to_trace700_csv(
     for row in misc_loads_matrix:
         csv_matrix.append(','.join([str(val) for val in row]))
     # add the outdoor air calculation matrix if it exists
-    if oa_matrix is not None:
+    if calc_matrix is not None:
         csv_matrix.append(spacer_row)
         csv_matrix.append(spacer_row)
-        csv_matrix.append('OA CALCULATION{}'.format(spacer_row))
-        for row in oa_matrix:
+        csv_matrix.append('CALCULATION{}'.format(spacer_row))
+        for row in calc_matrix:
             csv_matrix.append(','.join([str(val) for val in row]))
 
     return '\n'.join(csv_matrix)
@@ -539,7 +536,7 @@ def model_to_trace700_workbook(
         'Either switch to using Python 3 or use the model_to_trace700_csv instead.'
 
     # get the matrices to be written to CSV format
-    room_matrix, airflows_matrix, people_and_lights_matrix, misc_loads_matrix, oa_matrix = \
+    room_matrix, airflows_matrix, people_and_lights_matrix, misc_loads_matrix, calc_matrix = \
         model_to_trace700_matrix(
             model, use_multiplier, exclude_plenums, merge_method,
             si_units, geometry_names, resource_names, ventilation_method
@@ -567,25 +564,25 @@ def model_to_trace700_workbook(
     _add_workbook_table(ws_equip, 'Miscellaneous Loads', misc_loads_matrix)
     _apply_table_format(ws_equip, MISCELLANEOUS_LOADS_TABLE_FORMAT)
     # add the outdoor air calculation matrix if it exists
-    if oa_matrix is not None:
-        ws_oa = workbook.create_sheet('OA Calculation')
-        _add_oa_workbook_table(ws_oa, 'OA Calculation', oa_matrix)
+    if calc_matrix is not None:
+        ws_oa = workbook.create_sheet('Calculation')
+        _add_calc_workbook_table(ws_oa, 'Calculation', calc_matrix)
         # reference the calculated value in the airflow table
-        ref_template = "='OA Calculation'!{}{}"
+        ref_template = "='Calculation'!{}{}"
         for i, air_cell in enumerate(ws_air['7']):
             if i == 0:
                 continue
-            air_cell.value = ref_template.format('R', i + 3)
+            air_cell.value = ref_template.format('S', i + 3)
         for i, air_cell in enumerate(ws_air['9']):
             if i == 0:
                 continue
-            air_cell.value = ref_template.format('S', i + 3)
+            air_cell.value = ref_template.format('T', i + 3)
         # reference the person count in the people and lighting table
         for i, (ppl_cell, unit_cell) in enumerate(zip(ws_ppl['6'], ws_ppl['7'])):
             if i == 0:
                 continue
             if unit_cell.value == 'People':
-                ppl_cell.value = ref_template.format('G', i + 3)
+                ppl_cell.value = ref_template.format('H', i + 3)
 
     return workbook
 
@@ -671,8 +668,8 @@ def _apply_table_format(ws, formatting):
                     cell.value = float(cell.value)
 
 
-def _add_oa_workbook_table(ws, title, matrix):
-    """Apply formatting to a the worksheet with outdoor air calculations."""
+def _add_calc_workbook_table(ws, title, matrix):
+    """Apply formatting to a the worksheet with calculations."""
     # define formatting styles to be used to make the table like TRACE
     title_font = openpyxl.styles.Font(size=16, bold=True)
     bold_font = openpyxl.styles.Font(bold=True)
@@ -687,7 +684,7 @@ def _add_oa_workbook_table(ws, title, matrix):
 
     # add the title and create a border around the top row
     ws.title = title
-    title_cell = ws['A1']
+    title_cell = ws['B1']
     title_cell.value = title
     title_cell.font = title_font
     for col_idx, cell in enumerate(ws['A1:{}1'.format(column_letter)][0]):
@@ -708,9 +705,9 @@ def _add_oa_workbook_table(ws, title, matrix):
     for i, col in enumerate(ws.columns):
         max_length = 0
         column_letter = openpyxl.utils.get_column_letter(col[0].column)
-        if i in (0, 1, 2, 3, 4, 5):
+        if i in (0, 1, 2, 3, 4, 5, 6):
             for j, cell in enumerate(col):
-                if i in (4, 5) and j == 2:
+                if i in (5, 6) and j == 2:
                     continue
                 try:
                     # measure length of the cell's string representation
@@ -736,9 +733,9 @@ def _add_oa_workbook_table(ws, title, matrix):
             cell.alignment = text_align
 
     # highlight the room names and zones in gray/bold
-    for i, col in enumerate(ws['A:D']):
+    for i, col in enumerate(ws['A:G']):
         for j, cell in enumerate(col):
-            if i == 0 and j == 0:
+            if i == 1 and j == 0:
                 continue
             cell.font = bold_font
             cell.fill = grey_fill
@@ -746,13 +743,21 @@ def _add_oa_workbook_table(ws, title, matrix):
     # add validation to the field that permits sum or max of air
     dv = openpyxl.worksheet.datavalidation.DataValidation(type="list", formula1='"Sum,Max"')
     ws.add_data_validation(dv)
-    dv.add('M4:M{}'.format(len(col)))
+    dv.add('N4:N{}'.format(len(col)))
 
     # set the final air flows to be calculated from the other OA criteria
-    template = '=IF(M{0}="Sum", SUM(G{0}*J{0}, H{0}*K{0}, (I{0}*L{0})/3600) / {1}{0}, ' \
-        'MAX(G{0}*J{0}, H{0}*K{0}, (I{0}*L{0})/3600) / {1}{0})'
+    template = '=IF(N{0}="Sum", SUM(H{0}*K{0}, I{0}*L{0}, (J{0}*M{0})/3600) / {1}{0}, ' \
+        'MAX(H{0}*K{0}, I{0}*L{0}, (J{0}*M{0})/3600) / {1}{0})'
     for i, row in enumerate(ws['4:{}'.format(len(col))]):
         row_i = i + 4
-        q_clg, q_htg = 'R{}'.format(row_i), 'S{}'.format(row_i)
-        ws[q_clg] = template.format(row_i, 'N')
-        ws[q_htg] = template.format(row_i, 'O')
+        q_clg, q_htg = 'S{}'.format(row_i), 'T{}'.format(row_i)
+        ws[q_clg] = template.format(row_i, 'O')
+        ws[q_htg] = template.format(row_i, 'P')
+
+    # lock and hide the column of identifiers
+    unlocked = openpyxl.styles.Protection(locked=False)
+    ws.protection.sheet = True
+    for col in ws['B:Z']:
+        for cell in col:
+            cell.protection = unlocked
+    ws.column_dimensions['A'].hidden = True
