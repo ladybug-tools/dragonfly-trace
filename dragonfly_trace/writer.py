@@ -15,6 +15,7 @@ from ladybug.datatype.rvalue import RValue
 from honeybee.typing import clean_and_number_string
 from dragonfly.room2d import Room2D
 
+from .util import sort_rooms_for_trace_700
 from .airflows import airflows_trace700_matrix, \
     AIRFLOW_TABLE_FORMAT, AIRFLOW_TABLE_FORMAT_62_1
 from .loads import people_and_lights_trace700_matrix, \
@@ -27,7 +28,7 @@ ROOM_TABLE_FORMAT = (
     'user',
     'locked',
     'locked',
-    'default',
+    'varies_default',
     'default',
     'default',
     'user',
@@ -119,6 +120,9 @@ def rooms_to_trace700_matrix(rooms, si_units=False):
             else room.average_floor_height
         multiplier = room.parent.multiplier \
             if isinstance(room, Room2D) and room.has_parent else room.multiplier
+        zone = room.display_name if room._zone is None else room.zone
+        program = room.properties.energy.program_type.display_name \
+            if room.properties.energy._program_type is not None else 'Default'
         set_pt = room.properties.energy.setpoint
         if room.properties.energy.setpoint is not None:
             room_type = 'Conditioned'
@@ -140,8 +144,8 @@ def rooms_to_trace700_matrix(rooms, si_units=False):
         room_attr = [
             room.display_name,
             'Default System',
-            room.display_name,
-            'Default',
+            zone,
+            program,
             'Default',
             'Default',
             room.floor_area,
@@ -341,8 +345,8 @@ def model_to_trace700_matrix(
     for building in model.buildings:
         rooms_for_trace.extend(building.room_3ds)
 
-    # sort the rooms alphanumerically based on their identifiers
-    rooms_for_trace.sort(key=lambda x: x.identifier)  # this matches the gbXML export
+    # sort the rooms so that they match their order in TRACE 700
+    rooms_for_trace = sort_rooms_for_trace_700(rooms_for_trace)
 
     # create the matrices of data from the model rooms
     room_matrix = rooms_to_trace700_matrix(rooms_for_trace, si_units)
@@ -666,6 +670,10 @@ def _apply_table_format(ws, formatting):
                 if isinstance(cell.value, str):
                     cell.font = default_font
                     cell.value = float(cell.value)
+        elif tr_format == 'varies_default':
+            for cell in row[1:]:
+                if cell.value == 'Default':
+                    cell.font = default_font
 
 
 def _add_calc_workbook_table(ws, title, matrix):
