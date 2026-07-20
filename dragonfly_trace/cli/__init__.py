@@ -2,6 +2,7 @@
 import click
 from dragonfly.cli import main
 
+from .exp import exp
 from .translate import translate
 
 
@@ -12,6 +13,7 @@ def trace():
 
 
 # add sub-commands to trace
+trace.add_command(exp)
 trace.add_command(translate)
 
 # add trace sub-commands
