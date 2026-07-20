@@ -14,7 +14,16 @@ temp_dt = Temperature()
 
 
 def people_to_trace700_people(people, si_units=False):
-    """Converts a Honeybee People object to a T.LOAD_PEOPLE entry."""
+    """Get a TRACE 700 "T.LOAD_PEOPLE" entry string from a Honeybee People object.
+
+    Args:
+        people: A Honeybee People object.
+        si_units: Boolean to note whether the units of the values in the resulting
+            matrix are in SI (True) instead of IP (False). (Default: False).
+
+    Returns:
+        A text string for a TRACE 700 T.LOAD_PEOPLE library entry.
+    """
     description = people.display_name
     radiant_pct = people.radiant_fraction * 100.0
 
@@ -45,7 +54,16 @@ def people_to_trace700_people(people, si_units=False):
 
 
 def lighting_to_trace700_lighting(lighting, fixture_type='SUSFLUOR'):
-    """Converts a Honeybee Lighting object to a T.LOAD_LIGHTS entry."""
+    """Get a TRACE 700 "T.LOAD_LIGHTS" entry string from a Honeybee Lighting object.
+
+    Args:
+        lighting: A Honeybee Lighting object.
+        fixture_type: Optional text string for the lighting fixture type.
+            (Default: 'SUSFLUOR').
+
+    Returns:
+        A text string for a TRACE 700 T.LOAD_LIGHTS library entry.
+    """
     description = lighting.display_name
 
     plenum_pct = lighting.return_air_fraction * 100.0
@@ -65,7 +83,16 @@ def lighting_to_trace700_lighting(lighting, fixture_type='SUSFLUOR'):
 
 
 def equipment_to_trace700_miscellaneous(equipment, si_units=False):
-    """Converts a Honeybee Equipment object to a T.LOAD_MISEQUIP entry."""
+    """Get a TRACE 700 "T.LOAD_MISEQUIP" entry string from a Honeybee Equipment object.
+
+    Args:
+        equipment: A Honeybee ElectricEquipment or GasEquipment object.
+        si_units: Boolean to note whether the units of the values in the resulting
+            matrix are in SI (True) instead of IP (False). (Default: False).
+
+    Returns:
+        A text string for a TRACE 700 T.LOAD_MISEQUIP library entry.
+    """
     description = equipment.display_name
     sensible_pct = (1.0 - equipment.latent_fraction) * 100.0
     radiant_pct = equipment.radiant_fraction * 100.0
@@ -100,7 +127,16 @@ def equipment_to_trace700_miscellaneous(equipment, si_units=False):
 
 
 def program_to_trace700_internal_load_template(program, si_units=False):
-    """Translates a Honeybee ProgramType into a TRACE 700 Internal Load Template line."""
+    """Get a TRACE 700 "T.InternalLoadTemplate" entry string from a Honeybee ProgramType.
+
+    Args:
+        program: A Honeybee ProgramType object.
+        si_units: Boolean to note whether the units of the values in the resulting
+            matrix are in SI (True) instead of IP (False). (Default: False).
+
+    Returns:
+        A text string for a TRACE 700 T.InternalLoadTemplate entry.
+    """
     template_name = program.display_name
 
     area_unit = 'm2' if si_units else 'ft2'
@@ -174,7 +210,16 @@ def program_to_trace700_internal_load_template(program, si_units=False):
 
 
 def program_to_trace700_airflow_template(program, si_units=False):
-    """Translates a Honeybee ProgramType into a TRACE 700 Airflow Template line."""
+    """Get a TRACE 700 "T.AirflowTemplate" entry string from a Honeybee ProgramType.
+
+    Args:
+        program: A Honeybee ProgramType object.
+        si_units: Boolean to note whether the units of the values in the resulting
+            matrix are in SI (True) instead of IP (False). (Default: False).
+
+    Returns:
+        A text string for a TRACE 700 T.AirflowTemplate entry.
+    """
     blank_val = '9999.990234375'
     template_name = program.display_name
 
@@ -202,7 +247,16 @@ def program_to_trace700_airflow_template(program, si_units=False):
 
 
 def program_to_trace700_thermostat_template(program, si_units=False):
-    """Translates a Honeybee ProgramType (Setpoint) into a TRACE 700 Thermostat Template line."""
+    """Get a TRACE 700 "T.ThermostatTemplate" entry string from a Honeybee ProgramType.
+
+    Args:
+        program: A Honeybee ProgramType object.
+        si_units: Boolean to note whether the units of the values in the resulting
+            matrix are in SI (True) instead of IP (False). (Default: False).
+
+    Returns:
+        A text string for a TRACE 700 T.ThermostatTemplate entry.
+    """
     set_pt = program.setpoint
     template_name = program.display_name
 
@@ -216,10 +270,10 @@ def program_to_trace700_thermostat_template(program, si_units=False):
         htg_drift = temp_dt.to_unit([set_pt.heating_setback], temp_unit_label, 'C')[0]
         rh_val = set_pt.dehumidifying_setpoint if set_pt.dehumidifying_setpoint is not None else 50.0
     else:
-        clg_db = temp_dt.to_unit([75.0], temp_unit_label, 'C')[0]
-        htg_db = temp_dt.to_unit([68.0], temp_unit_label, 'C')[0]
-        clg_drift = temp_dt.to_unit([90.0], temp_unit_label, 'C')[0]
-        htg_drift = temp_dt.to_unit([55.0], temp_unit_label, 'C')[0]
+        clg_db = temp_dt.to_unit([75.0], temp_unit_label, 'F')[0]
+        htg_db = temp_dt.to_unit([68.0], temp_unit_label, 'F')[0]
+        clg_drift = temp_dt.to_unit([90.0], temp_unit_label, 'F')[0]
+        htg_drift = temp_dt.to_unit([55.0], temp_unit_label, 'F')[0]
         rh_val = 50.0
 
     control_fields = '1;0;2;1;'
@@ -233,7 +287,14 @@ def program_to_trace700_thermostat_template(program, si_units=False):
 
 
 def program_to_trace700_room_template(program):
-    """Translates a Honeybee ProgramType into a TRANE TRACE 700 Room Template line."""
+    """Get a TRACE 700 "T.RoomTemplate" entry string from a Honeybee ProgramType.
+
+    Args:
+        program: A Honeybee ProgramType object.
+
+    Returns:
+        A text string for a TRACE 700 T.RoomTemplate entry.
+    """
     template_name = program.display_name
     construction_template = 'Default'
 
@@ -242,7 +303,16 @@ def program_to_trace700_room_template(program):
 
 
 def internal_loads_to_exp(program, si_units=False):
-    """Compiles and returns only the Internal Loads EXP string content."""
+    """Get an EXP string containing internal load library entries and templates for a ProgramType.
+
+    Args:
+        program: A Honeybee ProgramType object.
+        si_units: Boolean to note whether the units of the values in the resulting
+            matrix are in SI (True) instead of IP (False). (Default: False).
+
+    Returns:
+        Text string of an EXP file for TRACE 700 containing internal load definitions.
+    """
     newline = '\n'
     standalone_blocks = ['EDITORSv6.3.1']
 
@@ -272,7 +342,16 @@ def internal_loads_to_exp(program, si_units=False):
 
 
 def airflow_to_exp(program, si_units=False):
-    """Compiles and returns only the Airflow Template EXP string content."""
+    """Get an EXP string containing only the airflow template for a ProgramType.
+
+    Args:
+        program: A Honeybee ProgramType object.
+        si_units: Boolean to note whether the units of the values in the resulting
+            matrix are in SI (True) instead of IP (False). (Default: False).
+
+    Returns:
+        Text string of an EXP file for TRACE 700 containing the airflow template.
+    """
     newline = '\n'
 
     airflow_template = program_to_trace700_airflow_template(program, si_units)
@@ -288,7 +367,16 @@ def airflow_to_exp(program, si_units=False):
 
 
 def thermostat_to_exp(program, si_units=False):
-    """Compiles and returns only the Thermostat Template EXP string content."""
+    """Get an EXP string containing only the thermostat template for a ProgramType.
+
+    Args:
+        program: A Honeybee ProgramType object.
+        si_units: Boolean to note whether the units of the values in the resulting
+            matrix are in SI (True) instead of IP (False). (Default: False).
+
+    Returns:
+        Text string of an EXP file for TRACE 700 containing the thermostat template.
+    """
     newline = '\n'
 
     thermostat_template = program_to_trace700_thermostat_template(program, si_units)
@@ -304,7 +392,17 @@ def thermostat_to_exp(program, si_units=False):
 
 
 def program_to_exp(program, si_units=False):
-    """Compiles a complete TRACE library structure and returns the EXP string content."""
+    """Get a complete EXP string for a Honeybee ProgramType.
+
+    Args:
+        program: A Honeybee ProgramType object for which the TRACE 700 EXP string
+            will be generated.
+        si_units: Boolean to note whether the units of the values in the resulting
+            matrix are in SI (True) instead of IP (False). (Default: False).
+
+    Returns:
+        Text string of a complete EXP file for TRACE 700.
+    """
     newline = '\n'
     standalone_blocks = ['EDITORSv6.3.1']
 
@@ -344,3 +442,102 @@ def program_to_exp(program, si_units=False):
 
     file_data = newline.join(standalone_blocks) + newline
     return file_data
+
+
+def programs_to_exp(programs, si_units=False):
+    """Get a single combined EXP string for a list of Honeybee ProgramTypes.
+
+    Args:
+        programs: A list of Honeybee ProgramType objects.
+        si_units: Boolean to note whether the units of the values in the resulting
+            matrix are in SI (True) instead of IP (False). (Default: False).
+
+    Returns:
+        Text string of a combined EXP file for TRACE 700.
+    """
+    newline = '\n'
+
+    people_templates = []
+    lighting_templates = []
+    equip_templates = []
+    internal_load_templates = []
+    airflow_templates = []
+    thermostat_templates = []
+    room_templates = []
+
+    seen_people = set()
+    seen_lighting = set()
+    seen_equip = set()
+
+    for program in programs:
+        if program.people and program.people.identifier not in seen_people:
+            people_templates.append(people_to_trace700_people(program.people, si_units))
+            seen_people.add(program.people.identifier)
+
+        if program.lighting and program.lighting.identifier not in seen_lighting:
+            lighting_templates.append(lighting_to_trace700_lighting(program.lighting))
+            seen_lighting.add(program.lighting.identifier)
+
+        if program.electric_equipment and program.electric_equipment.identifier not in seen_equip:
+            equip_templates.append(
+                equipment_to_trace700_miscellaneous(
+                    program.electric_equipment, si_units))
+            seen_equip.add(program.electric_equipment.identifier)
+        if program.gas_equipment and program.gas_equipment.identifier not in seen_equip:
+            equip_templates.append(
+                equipment_to_trace700_miscellaneous(
+                    program.gas_equipment, si_units))
+            seen_equip.add(program.gas_equipment.identifier)
+
+        internal_load_templates.append(
+            program_to_trace700_internal_load_template(program, si_units))
+        airflow_templates.append(program_to_trace700_airflow_template(program, si_units))
+        thermostat_templates.append(program_to_trace700_thermostat_template(program, si_units))
+        room_templates.append(program_to_trace700_room_template(program))
+
+    standalone_blocks = ['EDITORSv6.3.1']
+
+    if people_templates:
+        standalone_blocks.append('T.LOAD_PEOPLE')
+        standalone_blocks.extend(people_templates)
+
+    if lighting_templates:
+        standalone_blocks.append('T.LOAD_LIGHTS')
+        standalone_blocks.extend(lighting_templates)
+
+    if equip_templates:
+        standalone_blocks.append('T.LOAD_MISEQUIP')
+        standalone_blocks.extend(equip_templates)
+
+    if internal_load_templates:
+        standalone_blocks.append('T.InternalLoadTemplate')
+        standalone_blocks.extend(internal_load_templates)
+
+    if airflow_templates:
+        standalone_blocks.append('T.AirflowTemplate')
+        standalone_blocks.extend(airflow_templates)
+
+    if thermostat_templates:
+        standalone_blocks.append('T.ThermostatTemplate')
+        standalone_blocks.extend(thermostat_templates)
+
+    if room_templates:
+        standalone_blocks.append('T.RoomTemplate')
+        standalone_blocks.extend(room_templates)
+
+    file_data = newline.join(standalone_blocks) + newline
+    return file_data
+
+
+def model_to_exp(model, si_units=False):
+    """Get a single combined EXP string for all unique ProgramTypes in a Dragonfly Model.
+
+    Args:
+        model: A Dragonfly Model object.
+        si_units: Boolean to note whether the units of the values in the resulting
+            matrix are in SI (True) instead of IP (False). (Default: False).
+
+    Returns:
+        Text string of a combined EXP file for TRACE 700.
+    """
+    return programs_to_exp(model.properties.energy.program_types, si_units=si_units)
