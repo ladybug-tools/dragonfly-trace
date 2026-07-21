@@ -82,13 +82,16 @@ def lighting_to_trace700_lighting(lighting, fixture_type='SUSFLUOR'):
     return exp_line
 
 
-def equipment_to_trace700_miscellaneous(equipment, si_units=False):
+def equipment_to_trace700_miscellaneous(equipment, si_units=False, watts_per_area=None):
     """Get a TRACE 700 "T.LOAD_MISEQUIP" entry string from a Honeybee Equipment object.
 
     Args:
         equipment: A Honeybee ElectricEquipment or GasEquipment object.
         si_units: Boolean to note whether the units of the values in the resulting
             matrix are in SI (True) instead of IP (False). (Default: False).
+        watts_per_area: Optional float for total W/m2 override to represent a combined 
+            electric + gas equipment load density. If None, equipment.watts_per_area 
+            will be used. (Default: None).
 
     Returns:
         A text string for a TRACE 700 T.LOAD_MISEQUIP library entry.
@@ -106,7 +109,8 @@ def equipment_to_trace700_miscellaneous(equipment, si_units=False):
     flux_unit = 'W/m2' if si_units else 'W/ft2'
     misc_unit_code = 9 if si_units else 8  # 8 = W/sq ft, 9 = W/sq m
 
-    energy_value = flux_dt.to_unit([equipment.watts_per_area], flux_unit, 'W/m2')[0]
+    lpd_val = watts_per_area if watts_per_area is not None else equipment.watts_per_area
+    energy_value = flux_dt.to_unit([lpd_val], flux_unit, 'W/m2')[0]
 
     # Miscellaneous;
     # Description;
@@ -182,7 +186,7 @@ def program_to_trace700_internal_load_template(program, si_units=False):
         elec_lpd = elec_eq.watts_per_area if elec_eq is not None else 0.0
         gas_lpd = gas_eq.watts_per_area if gas_eq is not None else 0.0
         combined_lpd = elec_lpd + gas_lpd
-
+        print(program, elec_lpd, gas_lpd)
         if combined_lpd > 0:
             misc_energy = flux_dt.to_unit([combined_lpd], flux_unit, 'W/m2')[0]
             eq_obj = elec_eq if elec_lpd >= gas_lpd else gas_eq
@@ -220,7 +224,7 @@ def program_to_trace700_airflow_template(program, si_units=False):
     Returns:
         A text string for a TRACE 700 T.AirflowTemplate entry.
     """
-    blank_val = '9999.990234375'
+    blank_val = '9999.99'
     template_name = program.display_name
 
     # Fields 4-7 (Ventilation Layout)
@@ -327,17 +331,26 @@ def internal_loads_to_exp(program, si_units=False):
             lighting_to_trace700_lighting(program.lighting)
         ])
 
-    eq_obj = program.electric_equipment or program.gas_equipment
-    miscellaneous_template = equipment_to_trace700_miscellaneous(eq_obj, si_units) if eq_obj else ''
+    elec_eq = program.electric_equipment
+    gas_eq = program.gas_equipment
+    if elec_eq is not None or gas_eq is not None:
+        elec_lpd = elec_eq.watts_per_area if elec_eq is not None else 0.0
+        gas_lpd = gas_eq.watts_per_area if gas_eq is not None else 0.0
+        combined_lpd = elec_lpd + gas_lpd
+        if elec_lpd + gas_lpd > 0:
+            eq_obj = elec_eq if elec_lpd >= gas_lpd else gas_eq
+            standalone_blocks.extend([
+                'T.LOAD_MISEQUIP',
+                equipment_to_trace700_miscellaneous(eq_obj, si_units, watts_per_area=combined_lpd)
+            ])
 
     internal_load_template = program_to_trace700_internal_load_template(program, si_units)
-
     standalone_blocks.extend([
-        'T.LOAD_MISEQUIP', miscellaneous_template,
-        'T.InternalLoadTemplate', internal_load_template
+        'T.InternalLoadTemplate',
+        internal_load_template
     ])
 
-    file_data = newline.join([b for b in standalone_blocks if b != '']) + newline
+    file_data = newline.join(standalone_blocks) + newline
     return file_data
 
 
@@ -418,20 +431,23 @@ def program_to_exp(program, si_units=False):
             lighting_to_trace700_lighting(program.lighting)
         ])
 
-    misc_lines = []
-    if program.electric_equipment:
-        misc_lines.append(equipment_to_trace700_miscellaneous(program.electric_equipment, si_units))
-    if program.gas_equipment:
-        misc_lines.append(equipment_to_trace700_miscellaneous(program.gas_equipment, si_units))
-
-    if misc_lines:
-        standalone_blocks.append('T.LOAD_MISEQUIP')
-        standalone_blocks.extend(misc_lines)
+    elec_eq = program.electric_equipment
+    gas_eq = program.gas_equipment
+    if elec_eq is not None or gas_eq is not None:
+        elec_lpd = elec_eq.watts_per_area if elec_eq is not None else 0.0
+        gas_lpd = gas_eq.watts_per_area if gas_eq is not None else 0.0
+        combined_lpd = elec_lpd + gas_lpd
+        if elec_lpd + gas_lpd > 0:
+            eq_obj = elec_eq if elec_lpd >= gas_lpd else gas_eq
+            standalone_blocks.extend([
+                'T.LOAD_MISEQUIP',
+                equipment_to_trace700_miscellaneous(eq_obj, si_units, watts_per_area=combined_lpd)
+            ])
 
     internal_load_template = program_to_trace700_internal_load_template(program, si_units)
     airflow_template = program_to_trace700_airflow_template(program, si_units)
     thermostat_template = program_to_trace700_thermostat_template(program, si_units)
-    room_template= program_to_trace700_room_template(program)
+    room_template = program_to_trace700_room_template(program)
 
     standalone_blocks.extend([
         'T.InternalLoadTemplate', internal_load_template,
@@ -478,16 +494,22 @@ def programs_to_exp(programs, si_units=False):
             lighting_templates.append(lighting_to_trace700_lighting(program.lighting))
             seen_lighting.add(program.lighting.identifier)
 
-        if program.electric_equipment and program.electric_equipment.identifier not in seen_equip:
-            equip_templates.append(
-                equipment_to_trace700_miscellaneous(
-                    program.electric_equipment, si_units))
-            seen_equip.add(program.electric_equipment.identifier)
-        if program.gas_equipment and program.gas_equipment.identifier not in seen_equip:
-            equip_templates.append(
-                equipment_to_trace700_miscellaneous(
-                    program.gas_equipment, si_units))
-            seen_equip.add(program.gas_equipment.identifier)
+        elec_eq = program.electric_equipment
+        gas_eq = program.gas_equipment
+        if elec_eq is not None or gas_eq is not None:
+            elec_lpd = elec_eq.watts_per_area if elec_eq is not None else 0.0
+            gas_lpd = gas_eq.watts_per_area if gas_eq is not None else 0.0
+            combined_lpd = elec_lpd + gas_lpd
+
+            if combined_lpd > 0:
+                eq_obj = elec_eq if elec_lpd >= gas_lpd else gas_eq
+                if eq_obj.identifier not in seen_equip:
+                    equip_templates.append(
+                        equipment_to_trace700_miscellaneous(
+                            eq_obj, si_units=si_units, watts_per_area=combined_lpd
+                        )
+                    )
+                    seen_equip.add(eq_obj.identifier)
 
         internal_load_templates.append(
             program_to_trace700_internal_load_template(program, si_units))
