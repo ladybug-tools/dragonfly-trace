@@ -1,4 +1,5 @@
 """Methods to generate EXP templates for Trane TRACE."""
+from honeybee.typing import readable_short_name
 from ladybug.datatype.area import Area
 from ladybug.datatype.power import Power
 from ladybug.datatype.energyflux import EnergyFlux
@@ -24,7 +25,7 @@ def people_to_trace700_people(people, si_units=False):
     Returns:
         A text string for a TRACE 700 T.LOAD_PEOPLE library entry.
     """
-    description = people.display_name
+    description = readable_short_name(people.display_name, max_length=40)
     radiant_pct = people.radiant_fraction * 100.0
 
     area_unit = 'm2' if si_units else 'ft2'
@@ -96,7 +97,7 @@ def equipment_to_trace700_miscellaneous(equipment, si_units=False, watts_per_are
     Returns:
         A text string for a TRACE 700 T.LOAD_MISEQUIP library entry.
     """
-    description = equipment.display_name
+    description = readable_short_name(equipment.display_name, max_length=40)
     sensible_pct = (1.0 - equipment.latent_fraction) * 100.0
     radiant_pct = equipment.radiant_fraction * 100.0
     lost_pct = equipment.lost_fraction * 100.0
@@ -155,7 +156,7 @@ def program_to_trace700_internal_load_template(program, si_units=False):
     # Fields 2-9 (People)
     ppl = program.people
     if ppl is not None:
-        ppl_type = ppl.display_name
+        ppl_type = readable_short_name(ppl.display_name, max_length=40)
         ppl_amount = area_dt.to_unit([ppl.area_per_person], area_unit, 'm2')[0]
         sensible_watts = power_dt.to_unit([ppl.activity_max_sensible], power_unit, 'W')[0]
         latent_watts = power_dt.to_unit([ppl.activity_max_latent], power_unit, 'W')[0]
@@ -191,7 +192,7 @@ def program_to_trace700_internal_load_template(program, si_units=False):
             misc_energy = flux_dt.to_unit([combined_lpd], flux_unit, 'W/m2')[0]
             eq_obj = elec_eq if elec_lpd >= gas_lpd else gas_eq
             energy_meter = 1 if elec_lpd >= gas_lpd else 2
-            misc_type = eq_obj.display_name
+            misc_type = readable_short_name(eq_obj.display_name, max_length=40)
         else:
             misc_type = 'None'
             misc_energy = 0
