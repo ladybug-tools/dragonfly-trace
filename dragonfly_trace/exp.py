@@ -79,7 +79,10 @@ def lighting_to_trace700_lighting(lighting, fixture_type='SUSFLUOR'):
     # Ballast factor;
     # Longwave radiant %;
     # Shortwave radiant %;
-    exp_line = f'Lighting;{description};1;{fixture_type};{plenum_pct:.1f};1;{radiant_pct:.1f};{visible_pct:.1f};'
+    exp_line = (
+        f'Lighting;{description};1;{fixture_type};{plenum_pct:.1f};1;'
+        f'{radiant_pct:.1f};{visible_pct:.1f};'
+    )
     return exp_line
 
 
@@ -90,8 +93,8 @@ def equipment_to_trace700_miscellaneous(equipment, si_units=False, watts_per_are
         equipment: A Honeybee ElectricEquipment or GasEquipment object.
         si_units: Boolean to note whether the units of the values in the resulting
             matrix are in SI (True) instead of IP (False). (Default: False).
-        watts_per_area: Optional float for total W/m2 override to represent a combined 
-            electric + gas equipment load density. If None, equipment.watts_per_area 
+        watts_per_area: Optional float for total W/m2 override to represent a combined
+            electric + gas equipment load density. If None, equipment.watts_per_area
             will be used. (Default: None).
 
     Returns:
@@ -550,17 +553,3 @@ def programs_to_exp(programs, si_units=False):
 
     file_data = newline.join(standalone_blocks) + newline
     return file_data
-
-
-def model_to_exp(model, si_units=False):
-    """Get a single combined EXP string for all unique ProgramTypes in a Dragonfly Model.
-
-    Args:
-        model: A Dragonfly Model object.
-        si_units: Boolean to note whether the units of the values in the resulting
-            matrix are in SI (True) instead of IP (False). (Default: False).
-
-    Returns:
-        Text string of a combined EXP file for TRACE 700.
-    """
-    return programs_to_exp(model.properties.energy.program_types, si_units=si_units)

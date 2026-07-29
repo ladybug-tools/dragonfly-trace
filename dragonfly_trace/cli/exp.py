@@ -5,11 +5,10 @@ import json
 import logging
 
 from ladybug.commandutil import process_content_to_output
-from dragonfly.model import Model
 from honeybee_energy.programtype import ProgramType
 
 from dragonfly_trace.exp import program_to_exp, internal_loads_to_exp, \
-    airflow_to_exp, thermostat_to_exp, model_to_exp
+    airflow_to_exp, thermostat_to_exp
 
 
 _logger = logging.getLogger(__name__)
@@ -131,33 +130,6 @@ def program_to_trace700_thermostat_cli(program_file, imperial, output_file):
         process_content_to_output(thermostat_to_exp(program, si_units=metric), output_file)
     except Exception as e:
         _logger.exception('Thermostat template EXP translation failed.\n{}'.format(e))
-        sys.exit(1)
-    else:
-        sys.exit(0)
-
-
-@exp.command('model-to-trace700-exp')
-@click.argument('model-file', type=click.Path(
-    exists=True, file_okay=True, dir_okay=False, resolve_path=True))
-@click.option('--imperial/--metric', '-ip/-si', help='Flag to note whether imperial '
-              'or metric units should be used for values in the output EXP file.',
-              default=True, show_default=True)
-@click.option('--output-file', '-f', help='Optional EXP file to output the string '
-              'of the translation. By default it is printed out to stdout.',
-              type=click.File('w'), default='-', show_default=True)
-def model_to_trace700_exp_cli(model_file, imperial, output_file):
-    """Translate all unique ProgramTypes in a Dragonfly Model file into a single TRACE 700 EXP file.
-
-    \b
-    Args:
-        model_file: Full path to a Dragonfly Model file (DFJSON or DFpkl).
-    """
-    try:
-        metric = not imperial
-        model = Model.from_file(model_file)
-        process_content_to_output(model_to_exp(model, si_units=metric), output_file)
-    except Exception as e:
-        _logger.exception('Model EXP translation failed.\n{}'.format(e))
         sys.exit(1)
     else:
         sys.exit(0)

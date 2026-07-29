@@ -2,7 +2,8 @@
 from honeybee_energy.lib.programtypes import office_program
 from dragonfly.model import Model
 
-from dragonfly_trace.exp import program_to_exp, model_to_exp
+from dragonfly_trace.exp import program_to_exp
+from dragonfly_trace.writer import model_to_exp
 
 
 def test_program_to_exp():

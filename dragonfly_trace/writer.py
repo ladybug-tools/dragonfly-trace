@@ -1,7 +1,8 @@
 # coding=utf-8
 """Methods to write Dragonfly Models to Trane TRACE."""
 from __future__ import division
-
+import io
+import zipfile
 from collections import OrderedDict
 try:
     import openpyxl
@@ -14,6 +15,7 @@ from ladybug.datatype.temperature import Temperature
 from ladybug.datatype.rvalue import RValue
 from honeybee.typing import clean_and_number_string
 from dragonfly.room2d import Room2D
+from dragonfly_energy.gbxml.parameters import GBXMLParameters
 
 from .util import sort_rooms_for_trace_700
 from .airflows import airflows_trace700_matrix, \
@@ -22,6 +24,7 @@ from .loads import people_and_lights_trace700_matrix, \
     miscellaneous_loads_trace700_matrix, PEOPLE_AND_LIGHTS_TABLE_FORMAT, \
     MISCELLANEOUS_LOADS_TABLE_FORMAT
 from .calculation import calculation_matrix
+
 
 # formatting for each attribute in the rooms table
 ROOM_TABLE_FORMAT = (
@@ -125,7 +128,7 @@ def rooms_to_trace700_matrix(rooms, si_units=False):
             if room.properties.energy._program_type is not None else 'Default'
         set_pt = room.properties.energy.setpoint
         if room.properties.energy.setpoint is not None:
-            room_type = 'Conditioned'
+            room_type = 'Conditioned' if room.properties.energy.hvac else 'Unconditioned'
             cool_set_pt = set_pt.cooling_setpoint
             heat_set_pt = set_pt.heating_setpoint
             cool_set_back = set_pt.cooling_setback
@@ -200,9 +203,8 @@ def rooms_to_trace700_matrix(rooms, si_units=False):
 
 
 def model_to_trace700_matrix(
-    model, use_multiplier=True, exclude_plenums=True, merge_method=None,
-    si_units=False, geometry_names=False, resource_names=False,
-    ventilation_method='Sum of Outdoor Air'
+    model, si_units=False, ventilation_method='Sum of Outdoor Air',
+    use_multiplier=True, exclude_plenums=True, merge_method=None, geometry_names=False
 ):
     """Get matrices with TRACE 700 simulation attributes of a Model.
 
@@ -213,6 +215,14 @@ def model_to_trace700_matrix(
 
     Args:
         model: A dragonfly Model for which a TRACE 700 CSV matrix will be returned.
+        si_units: Boolean to note whether the units of the values in the resulting
+            matrix are in SI (True) instead of IP (False). (Default: False).
+        ventilation_method: Optional text for the ventilation method to be used in the
+            resulting matrix. Choose from the following.
+
+            * Sum of Outdoor Air
+            * ASHRAE 62.1
+
         use_multiplier: If True, the multipliers on this Model's Stories will be
             passed along to the CSV. If False, full geometry objects will be written
             for each and every floor in the building that are represented through
@@ -238,8 +248,6 @@ def model_to_trace700_matrix(
             * Stories - Rooms in the same story will be merged
             * PlenumStories - Only plenums in the same story will be merged
 
-        si_units: Boolean to note whether the units of the values in the resulting
-            matrix are in SI (True) instead of IP (False). (Default: False).
         geometry_names: Boolean to note whether a cleaned version of all geometry
             display names should be used instead of identifiers when translating
             the Model to OSM and IDF. Using this flag will affect all Rooms, Faces,
@@ -249,19 +257,6 @@ def model_to_trace700_matrix(
             of duplicate IDs resulting from non-unique names will be resolved
             by adding integers to the ends of the new IDs that are derived from
             the name. (Default: False).
-        resource_names: Boolean to note whether a cleaned version of all resource
-            display names should be used instead of identifiers when translating
-            the Model to OSM and IDF. Using this flag will affect all Materials,
-            Constructions, ConstructionSets, Schedules, Loads, and ProgramTypes.
-            It will generally result in more read-able names for the resources
-            in the OSM and IDF. Cases of duplicate IDs resulting from non-unique
-            names will be resolved by adding integers to the ends of the new IDs
-            that are derived from the name. (Default: False).
-        ventilation_method: Optional text for the ventilation method to be used in the
-            resulting matrix. Choose from the following.
-
-            * Sum of Outdoor Air
-            * ASHRAE 62.1
 
     Returns:
         A tuple with four items.
@@ -296,8 +291,6 @@ def model_to_trace700_matrix(
     # reset the IDs to be derived from the display_names if requested
     if geometry_names:
         model.reset_ids()
-    if resource_names:
-        model.properties.energy.reset_resource_ids()
 
     # account for story multipliers, separated room plenums and room merge method
     merge_map = model._extract_merge_map(merge_method, exclude_plenums, tol)
@@ -370,9 +363,8 @@ def model_to_trace700_matrix(
 
 
 def model_to_trace700_csv(
-    model, use_multiplier=True, exclude_plenums=True, merge_method=None,
-    si_units=False, geometry_names=False, resource_names=False,
-    ventilation_method='Sum of Outdoor Air'
+    model, si_units=False, ventilation_method='Sum of Outdoor Air',
+    use_multiplier=True, exclude_plenums=True, merge_method=None, geometry_names=False
 ):
     """Generate a CSV string with TRACE 700 load simulation attributes of a Model.
 
@@ -382,6 +374,14 @@ def model_to_trace700_csv(
 
     Args:
         model: A dragonfly Model for which a TRACE 700 CSV matrix will be returned.
+        si_units: Boolean to note whether the units of the values in the resulting
+            matrix are in SI (True) instead of IP (False). (Default: False).
+        ventilation_method: Optional text for the ventilation method to be used in the
+            resulting matrix. Choose from the following.
+
+            * Sum of Outdoor Air
+            * ASHRAE 62.1
+
         use_multiplier: If True, the multipliers on this Model's Stories will be
             passed along to the CSV. If False, full geometry objects will be written
             for each and every floor in the building that are represented through
@@ -407,8 +407,6 @@ def model_to_trace700_csv(
             * Stories - Rooms in the same story will be merged
             * PlenumStories - Only plenums in the same story will be merged
 
-        si_units: Boolean to note whether the units of the values in the resulting
-            matrix are in SI (True) instead of IP (False). (Default: False).
         geometry_names: Boolean to note whether a cleaned version of all geometry
             display names should be used instead of identifiers when translating
             the Model to OSM and IDF. Using this flag will affect all Rooms, Faces,
@@ -418,19 +416,6 @@ def model_to_trace700_csv(
             of duplicate IDs resulting from non-unique names will be resolved
             by adding integers to the ends of the new IDs that are derived from
             the name. (Default: False).
-        resource_names: Boolean to note whether a cleaned version of all resource
-            display names should be used instead of identifiers when translating
-            the Model to OSM and IDF. Using this flag will affect all Materials,
-            Constructions, ConstructionSets, Schedules, Loads, and ProgramTypes.
-            It will generally result in more read-able names for the resources
-            in the OSM and IDF. Cases of duplicate IDs resulting from non-unique
-            names will be resolved by adding integers to the ends of the new IDs
-            that are derived from the name. (Default: False).
-        ventilation_method: Optional text for the ventilation method to be used in the
-            resulting matrix. Choose from the following.
-
-            * Sum of Outdoor Air
-            * ASHRAE 62.1
 
     Returns:
         Text string of content to be written into a CSV file containing all tables
@@ -439,8 +424,8 @@ def model_to_trace700_csv(
     # get the matrices to be written to CSV format
     room_matrix, airflows_matrix, people_and_lights_matrix, misc_loads_matrix, calc_matrix = \
         model_to_trace700_matrix(
-            model, use_multiplier, exclude_plenums, merge_method,
-            si_units, geometry_names, resource_names, ventilation_method
+            model, si_units, ventilation_method,
+            use_multiplier, exclude_plenums, merge_method, geometry_names
         )
 
     # put all of the matrices into one master matrix for CSV export
@@ -480,9 +465,8 @@ def model_to_trace700_csv(
 
 
 def model_to_trace700_workbook(
-    model, use_multiplier=True, exclude_plenums=True, merge_method=None,
-    si_units=False, geometry_names=False, resource_names=False,
-    ventilation_method='Sum of Outdoor Air'
+    model, si_units=False, ventilation_method='Sum of Outdoor Air',
+    use_multiplier=True, exclude_plenums=True, merge_method=None, geometry_names=False
 ):
     """Generate an Excel Workbook (openpyxl) with TRACE 700 attributes of a Model.
 
@@ -493,6 +477,14 @@ def model_to_trace700_workbook(
 
     Args:
         model: A dragonfly Model for which a TRACE 700 Excel Workbook will be returned.
+        si_units: Boolean to note whether the units of the values in the resulting
+            matrix are in SI (True) instead of IP (False). (Default: False).
+        ventilation_method: Optional text for the ventilation method to be used in the
+            resulting matrix. Choose from the following.
+
+            * Sum of Outdoor Air
+            * ASHRAE 62.1
+
         use_multiplier: If True, the multipliers on this Model's Stories will be
             passed along to the Workbook. If False, full geometry objects will be written
             for each and every floor in the building that are represented through
@@ -518,19 +510,9 @@ def model_to_trace700_workbook(
             * Stories - Rooms in the same story will be merged
             * PlenumStories - Only plenums in the same story will be merged
 
-        si_units: Boolean to note whether the units of the values in the resulting
-            matrix are in SI (True) instead of IP (False). (Default: False).
         geometry_names: Boolean to note whether a cleaned version of all geometry
             display names should be used instead of identifiers when translating
             the Model. (Default: False).
-        resource_names: Boolean to note whether a cleaned version of all resource
-            display names should be used instead of identifiers when translating
-            the Model. (Default: False).
-        ventilation_method: Optional text for the ventilation method to be used in the
-            resulting matrix. Choose from the following.
-
-            * Sum of Outdoor Air
-            * ASHRAE 62.1
 
     Returns:
         An Excel Workbook (openpyxl) with TRACE 700 attributes of the input Model.
@@ -542,8 +524,8 @@ def model_to_trace700_workbook(
     # get the matrices to be written to CSV format
     room_matrix, airflows_matrix, people_and_lights_matrix, misc_loads_matrix, calc_matrix = \
         model_to_trace700_matrix(
-            model, use_multiplier, exclude_plenums, merge_method,
-            si_units, geometry_names, resource_names, ventilation_method
+            model, si_units, ventilation_method,
+            use_multiplier, exclude_plenums, merge_method, geometry_names
         )
 
     # put all of the matrices into one master Excel workbook
@@ -769,3 +751,155 @@ def _add_calc_workbook_table(ws, title, matrix):
         for cell in col:
             cell.protection = unlocked
     ws.column_dimensions['A'].hidden = True
+
+
+def model_to_trace700_gbxml(
+    model, si_units=False, opening_simplification='MergeAdjWindows',
+    program_name=None, program_version=None
+):
+    """Generate a gbXML of a model, which can be imported to TRACE 700.
+
+    Args:
+        model: A dragonfly Model for which a TRACE 700 gbXML will be returned.
+        si_units: Boolean to note whether the units of the values in the resulting
+            gbXML are in SI (True) instead of IP (False). (Default: False).
+        opening_simplification: Optional text to note the method by which openings
+            are simplified as part of the translation to gbXML. (Default: MergeAdjWindows).
+            Choose from the following options.
+
+            * None - No sub-face simplification will occur
+            * MergeAdjWindows - Adjacent windows are merged; doors are left as is
+            * SingleWindow - All doors removed; windows are merged into one per wall
+
+        program_name: Optional text to set the name of the software that will
+            appear under the programId and ProductName tags of the DocumentHistory
+            section. This can be set things like "Ladybug Tools" or "Pollination"
+            or some other software in which this gbXML export capability is being
+            run. If None, the "OpenStudio" will be used. (Default: None).
+        program_version: Optional text to set the version of the software that
+            will appear under the DocumentHistory section. If None, and the
+            program_name is also unspecified, only the version of OpenStudio will
+            appear. Otherwise, this will default to "0.0.0" given that the version
+            field is required. (Default: None).
+
+    Returns:
+        A gbXML text string that can be written to a file and imported to TRACE 700.
+    """
+    # order the room IDs so that they can be coordinated with the XLSX
+    rooms_for_trace = []  # list to hold the room IDs
+    assert len(model.room_2ds) != 0 or len(model.room_3ds) != 0, \
+        'Model must have rooms to be able to export to TRACE700 gbXML.'
+    for building in model.buildings:
+        for story in building.unique_stories:
+            rooms_for_trace.extend(story.room_2ds)
+    for building in model.buildings:
+        rooms_for_trace.extend(building.room_3ds)
+    # sort the rooms so that they match their order in TRACE 700
+    rooms_for_trace = sort_rooms_for_trace_700(rooms_for_trace)
+    room_ids_for_trace = [r.identifier for r in rooms_for_trace]
+
+    # set up gbXML translation parameters using the input
+    gbxml_par = GBXMLParameters.for_trace_700()
+    if si_units:
+        gbxml_par.ip_units = False
+    gbxml_par.geometry_format.opening_simplification = opening_simplification
+    if str(gbxml_par.geometry_format.opening_simplification) == 'None':
+        gbxml_par.geometry_format.rect_geo_format = 'SimpleAreaForNonRectOnly'
+    gbxml_par.version_format.program_name = program_name
+    gbxml_par.version_format.program_version = program_version
+
+    # translate the model to a gbXML string
+    return model.to_gbxml(gbxml_par, room_ids_for_trace)
+
+
+def model_to_exp(model, si_units=False):
+    """Get a single combined EXP string for all unique ProgramTypes in a Dragonfly Model.
+
+    Args:
+        model: A Dragonfly Model object.
+        si_units: Boolean to note whether the units of the values in the resulting
+            matrix are in SI (True) instead of IP (False). (Default: False).
+
+    Returns:
+        Text string of EXP file contents for TRACE 700.
+    """
+    # import the module here to avoid import failures in Python 2
+    try:
+        from dragonfly_trace.exp import programs_to_exp
+    except Exception:
+        msg = 'Export to EXP is only available in Python 3.'
+        raise ImportError(msg)
+    return programs_to_exp(model.properties.energy.program_types, si_units=si_units)
+
+
+def model_to_trace700_zip_bytes(
+    model, si_units=False, opening_simplification='MergeAdjWindows',
+    ventilation_method='Sum of Outdoor Air',
+    program_name=None, program_version=None
+):
+    """Get the bytes of a .zip file containing files for import to TRACE 700.
+
+    The .zip file will include three files within it - a gbXML that should be
+    imported to TRACE 700 first to set up the geometry, an XLSX with all of
+    the room properties to be pasted into the "Component View" tables of
+    TRACE 700, and an optional EXP file that contains the dragonfly model's
+    ProgramTypes exported to TRACE 700 room templates.
+
+    Args:
+        model: A dragonfly Model for which a TRACE 700 gbXML will be returned.
+        si_units: Boolean to note whether the units of the values in the resulting
+            file are in SI (True) instead of IP (False). (Default: False).
+        opening_simplification: Optional text to note the method by which openings
+            are simplified as part of the translation to gbXML. (Default: MergeAdjWindows).
+            Choose from the following options.
+
+            * None - No sub-face simplification will occur
+            * MergeAdjWindows - Adjacent windows are merged; doors are left as is
+            * SingleWindow - All doors removed; windows are merged into one per wall
+
+        ventilation_method: Optional text for the ventilation method to be used in the
+            resulting matrix. Choose from the following.
+
+            * Sum of Outdoor Air
+            * ASHRAE 62.1
+
+        program_name: Optional text to set the name of the software that will
+            appear under the programId and ProductName tags of the DocumentHistory
+            section. This can be set things like "Ladybug Tools" or "Pollination"
+            or some other software in which this gbXML export capability is being
+            run. If None, the "OpenStudio" will be used. (Default: None).
+        program_version: Optional text to set the version of the software that
+            will appear under the DocumentHistory section. If None, and the
+            program_name is also unspecified, only the version of OpenStudio will
+            appear. Otherwise, this will default to "0.0.0" given that the version
+            field is required. (Default: None).
+
+    Returns:
+        ZIP file bytes that can be written to a file and unzipped to yield everything
+        needed to recreate the dragonfly model in TRACE 700.
+    """
+    # get the contents of the gbxml file
+    gbxml_str = model_to_trace700_gbxml(
+        model, si_units, opening_simplification, program_name, program_version
+    )
+    # get the bytes of the XLSX workbook
+    xlsx_wb = model_to_trace700_workbook(model, si_units, ventilation_method)
+    xlsx_stream = io.BytesIO()
+    xlsx_wb.save(xlsx_stream)
+    xlsx_stream.seek(0)  # reset the stream position to the beginning
+    # get the contents of the EXP file
+    exp_str = model_to_exp(model, si_units)
+
+    # create an in-memory bytes buffer
+    zip_buffer = io.BytesIO()
+    # pass the buffer to a zip file archive
+    model_id = model.display_name
+    with zipfile.ZipFile(zip_buffer, 'w', compression=zipfile.ZIP_DEFLATED) as zip_file:
+        zip_file.writestr('{}.xml'.format(model_id), gbxml_str)
+        zip_file.writestr('{}.xlsx'.format(model_id), xlsx_stream.getvalue())
+        zip_file.writestr('{}.exp'.format(model_id), exp_str)
+    # rewind the buffer pointer to the beginning to read it
+    zip_buffer.seek(0)
+
+    # return the raw bytes of the completed ZIP file
+    return zip_buffer.getvalue()
