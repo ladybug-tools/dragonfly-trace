@@ -10,7 +10,7 @@ from dragonfly.model import Model
 from dragonfly_trace.writer import model_to_trace700_csv as model_to_csv
 from dragonfly_trace.writer import model_to_trace700_workbook as model_to_workbook
 from dragonfly_trace.writer import model_to_trace700_gbxml as model_to_gbxml
-from dragonfly_trace.writer import model_to_exp
+from dragonfly_trace.writer import model_to_exp, model_to_trace700_zip_bytes
 
 
 _logger = logging.getLogger(__name__)
@@ -386,7 +386,7 @@ def model_to_trace700_gbxml(
     # re-serialize the Dragonfly Model and translate it
     model = Model.from_file(model_file)
     gbxml_str = model_to_gbxml(
-        model, metric, opening_simplification, program_name, output_file
+        model, metric, opening_simplification, program_name, program_version
     )
     # write out the gbXML file
     return process_content_to_output(gbxml_str, output_file)
@@ -417,3 +417,121 @@ def model_to_trace700_exp_cli(model_file, imperial, output_file):
         sys.exit(1)
     else:
         sys.exit(0)
+
+
+@translate.command('model-to-trace700-zip')
+@click.argument('model-file', type=click.Path(
+    exists=True, file_okay=True, dir_okay=False, resolve_path=True))
+@click.option('--imperial/--metric', '-ip/-si', help='Flag to note whether imperial '
+              'or metric units should be used for values in the output CSV.',
+              default=True, show_default=True)
+@click.option('--opening-simplification', '-s', help='Text string for the type of '
+              'simplification to perform on windows and doors in the dragonfly model. '
+              'Choose from: None, MergeAdjWindows, SingleWindow.',
+              type=str, default='MergeAdjWindows', show_default=True)
+@click.option('--ventilation-method', '-v', help='Text for the ventilation method to be '
+              'used to calculate outdoor air. Choose from: Sum of Outdoor Air, ASHRAE 62.1',
+              type=str, default='Sum of Outdoor Air', show_default=True)
+@click.option('--program-name', '-p', help='Optional text to set the name of the '
+              'software that will appear under the programId and ProductName tags '
+              'of the DocumentHistory section. This can be set things like "Ladybug '
+              'Tools" or "Pollination" or some other software in which this gbXML '
+              'export capability is being run. If None, "OpenStudio" will be used.',
+              type=str, default=None, show_default=True)
+@click.option('--program-version', '-v', help='Optional text to set the version of '
+              'the software that will appear under the DocumentHistory section. '
+              'If None, and the program_name is also unspecified, only the version '
+              'of OpenStudio will appear. Otherwise, this will default to "0.0.0" '
+              'given that the version field is required.',
+              type=str, default=None, show_default=True)
+@click.option('--output-file', '-f', help='Optional ,zip file to output the content '
+              'of the translation. By default it printed out to stdout.',
+              type=click.File('wb'), default='-', show_default=True)
+def model_to_trace700_zip_cli(
+    model_file, imperial, opening_simplification, ventilation_method,
+    program_name, program_version, output_file
+):
+    """Translate a Dragonfly Model to a gbXML file.
+
+    \b
+    Args:
+        model_file: Path to either a DFJSON or DFpkl file. This can also be a
+            HBJSON or a HBpkl from which a Dragonfly model should be derived.
+    """
+    try:
+        metric = not imperial
+        model_to_trace700_zip(
+            model_file, metric, opening_simplification, ventilation_method,
+            program_name, program_version, output_file
+        )
+    except Exception as e:
+        _logger.exception('Model translation failed.\n{}'.format(e))
+        sys.exit(1)
+    else:
+        sys.exit(0)
+
+
+def model_to_trace700_zip(
+    model_file, metric=False, opening_simplification='MergeAdjWindows',
+    ventilation_method='Sum of Outdoor Air',
+    program_name=None, program_version=None, output_file=None,
+    imperial=True
+):
+    """Translate a Dragonfly Model to a gbXML file suitable for TRACE 700.
+
+    Args:
+        model_file: Path to either a DFJSON or DFpkl file. This can also be a
+            HBJSON or a HBpkl from which a Dragonfly model should be derived.
+        metric: Boolean to note whether the units of the values in the resulting
+            matrix are in SI (True) instead of IP (False). (Default: False).
+        opening_simplification: Optional text to note the method by which openings
+            are simplified as part of the translation to gbXML. (Default: MergeAdjWindows).
+            Choose from the following options.
+
+            * None - No sub-face simplification will occur
+            * MergeAdjWindows - Adjacent windows are merged; doors are left as is
+            * SingleWindow - All doors removed; windows are merged into one per wall
+
+        ventilation_method: Optional text for the ventilation method to be used in the
+            resulting matrix. Choose from the following.
+
+            * Sum of Outdoor Air
+            * ASHRAE 62.1
+
+        program_name: Optional text to set the name of the software that will
+            appear under the programId and ProductName tags of the DocumentHistory
+            section. This can be set things like "Ladybug Tools" or "Pollination"
+            or some other software in which this gbXML export capability is being
+            run. If None, the "OpenStudio" will be used. (Default: None).
+        program_version: Optional text to set the version of the software that
+            will appear under the DocumentHistory section. If None, and the
+            program_name is also unspecified, only the version of OpenStudio will
+            appear. Otherwise, this will default to "0.0.0" given that the version
+            field is required. (Default: None).
+        output_file: Optional gbXML file to output the string of the translation.
+            By default it will be returned from this method.
+    """
+    # re-serialize the Dragonfly Model and translate it
+    model = Model.from_file(model_file)
+    zip_bytes = model_to_trace700_zip_bytes(
+        model, metric, opening_simplification, ventilation_method,
+        program_name, program_version
+    )
+    # write out the ZIP file
+    if isinstance(output_file, str):
+        with open(output_file, 'wb') as out_f:
+            out_f.write(zip_bytes)
+    else:
+        if output_file is not None and output_file.name != '<stdout>' and \
+                output_file.mode == 'wb':
+            output_file.write(zip_bytes)
+        else:  # convert the bytes to a base64 string
+            b = base64.b64encode(zip_bytes)
+            if output_file is None:
+                f_contents = b.decode('utf-8')
+                return f_contents
+            elif output_file.mode == 'w':
+                f_contents = b.decode('utf-8')
+                output_file.write(f_contents)
+            else:
+                output_file.write(b)

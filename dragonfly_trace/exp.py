@@ -190,7 +190,6 @@ def program_to_trace700_internal_load_template(program, si_units=False):
         elec_lpd = elec_eq.watts_per_area if elec_eq is not None else 0.0
         gas_lpd = gas_eq.watts_per_area if gas_eq is not None else 0.0
         combined_lpd = elec_lpd + gas_lpd
-        print(program, elec_lpd, gas_lpd)
         if combined_lpd > 0:
             misc_energy = flux_dt.to_unit([combined_lpd], flux_unit, 'W/m2')[0]
             eq_obj = elec_eq if elec_lpd >= gas_lpd else gas_eq
