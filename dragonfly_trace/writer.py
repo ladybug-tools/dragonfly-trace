@@ -124,7 +124,7 @@ def rooms_to_trace700_matrix(rooms, si_units=False):
         multiplier = room.parent.multiplier \
             if isinstance(room, Room2D) and room.has_parent else room.multiplier
         zone = room.display_name if room._zone is None else room.zone
-        program = room.properties.energy.program_type.display_name \
+        program = '@ {}'.format(room.properties.energy.program_type.display_name) \
             if room.properties.energy._program_type is not None else 'Default'
         set_pt = room.properties.energy.setpoint
         if room.properties.energy.setpoint is not None:
