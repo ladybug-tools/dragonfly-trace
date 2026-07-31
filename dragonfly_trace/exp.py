@@ -235,14 +235,18 @@ def program_to_trace700_airflow_template(program, si_units=False):
     vent_flow_unit = 'L/s' if si_units else 'cfm'
     vent_unit = 6 if si_units else 3  # 6 = L/s/sq m, 3 = cfm/sq ft
 
-    vent_val = flow_dt.to_unit([vent.flow_per_area], vent_flow_unit, 'm3/s')[0]
-    vent_val = vent_val if si_units else vent_val * 10.7639104  # convert to cfm/sq ft if ip units
+    vent_val = 0
+    if vent is not None:
+        vent_val = flow_dt.to_unit([vent.flow_per_area], vent_flow_unit, 'm3/s')[0]
+        vent_val = vent_val if si_units else vent_val * 10.7639104  # convert to cfm/ft2
 
     # Fields 8-13 (Infiltration Layout)
     inf = program.infiltration
     inf_unit = 5 if si_units else 3  # 5 = L/s/sq m, 3 = cfm/sq ft
 
-    inf_val = inf.flow_per_exterior_area_si if si_units else inf.flow_per_exterior_area_ip
+    inf_val = 0
+    if inf is not None:
+        inf_val = inf.flow_per_exterior_area_si if si_units else inf.flow_per_exterior_area_ip
 
     exp_line = (
         f"{template_name};None;Available (100%);{vent_val:.6f};{vent_unit};{vent_val:.6f};{vent_unit};"
