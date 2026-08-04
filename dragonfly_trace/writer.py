@@ -2,15 +2,14 @@
 """Methods to write Dragonfly Models to Trane TRACE."""
 from __future__ import division
 import io
-from xml.parsers.expat import model
 import zipfile
 from collections import OrderedDict
 
-from dragonfly_trace.exp import programs_to_exp, construction_sets_to_exp
 try:
     import openpyxl
+    from dragonfly_trace.exp import programs_to_exp, construction_sets_to_exp
 except Exception:  # we are in Python 2 and Excel export is not possible
-    openpyxl = None
+    openpyxl, programs_to_exp, construction_sets_to_exp = None, None, None
 
 from ladybug.datatype.area import Area
 from ladybug.datatype.distance import Distance
@@ -129,6 +128,7 @@ def rooms_to_trace700_matrix(rooms, si_units=False):
         zone = room.display_name if room._zone is None else room.zone
         program = '@ {}'.format(room.properties.energy.program_type.display_name) \
             if room.properties.energy._program_type is not None else 'Default'
+        c_set = '@ {}'.format(room.properties.energy.construction_set.display_name)
         set_pt = room.properties.energy.setpoint
         if room.properties.energy.setpoint is not None:
             room_type = 'Conditioned' if room.properties.energy.hvac else 'Unconditioned'
@@ -153,7 +153,7 @@ def rooms_to_trace700_matrix(rooms, si_units=False):
             zone,
             program,
             'Default',
-            'Default',
+            c_set,
             room.floor_area,
             1,
             f2f,
@@ -828,11 +828,8 @@ def model_to_exp(model, si_units=False):
         Text string of EXP file contents for TRACE 700.
     """
     # import the module here to avoid import failures in Python 2
-    try:
-        from dragonfly_trace.exp import programs_to_exp
-    except Exception:
-        msg = 'Export to EXP is only available in Python 3.'
-        raise ImportError(msg)
+    assert programs_to_exp is not None and construction_sets_to_exp is not None, \
+        'Export to EXP is only available in Python 3.'
 
     prog_exp = programs_to_exp(model.properties.energy.program_types, si_units=si_units)
     cnst_exp = construction_sets_to_exp(
