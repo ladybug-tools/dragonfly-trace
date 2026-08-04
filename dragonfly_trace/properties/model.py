@@ -335,7 +335,7 @@ class ModelTraceProperties(object):
         detailed = False if raise_exception else detailed
         msgs = []
         for room in self.host.room_2ds:
-            msg = room.properties.trace.check_windows_above_origin(False, detailed)
+            msg = room.properties.trace.check_windows_above_origin(tolerance, False, detailed)
             if detailed:
                 msgs.extend(msg)
             elif msg != '':

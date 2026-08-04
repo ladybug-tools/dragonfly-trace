@@ -109,7 +109,7 @@ class Room2DTraceProperties(object):
         Returns:
             A string with the message or a list with a dictionary if detailed is True.
         """
-        if self.host.floor_elevation < tolerance / 2:
+        if self.host.floor_elevation < -(tolerance / 2):
             if any(wp is not None for wp in self.host.window_parameters):
                 msg = 'Room2D "{}" has windows below the scene origin, which TRACE ' \
                     '3D Plus fails to import because it believes they are ' \

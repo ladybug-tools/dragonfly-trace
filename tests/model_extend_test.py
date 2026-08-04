@@ -26,7 +26,7 @@ def test_validation():
         'R2-plenum', floor_geometry=Face3D(pts2), floor_to_ceiling_height=4,
         is_ground_contact=True, is_top_exposed=True)
     room2d_plenum.ceiling_plenum_depth = 1.0
-    
+
     story = Story('S1', [room2d_full, room2d_plenum])
     story.solve_room_2d_adjacency(0.01)
     story.set_outdoor_window_parameters(SimpleWindowRatio(0.4))
