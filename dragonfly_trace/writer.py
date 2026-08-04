@@ -2,8 +2,11 @@
 """Methods to write Dragonfly Models to Trane TRACE."""
 from __future__ import division
 import io
+from xml.parsers.expat import model
 import zipfile
 from collections import OrderedDict
+
+from dragonfly_trace.exp import programs_to_exp, construction_sets_to_exp
 try:
     import openpyxl
 except Exception:  # we are in Python 2 and Excel export is not possible
@@ -813,7 +816,8 @@ def model_to_trace700_gbxml(
 
 
 def model_to_exp(model, si_units=False):
-    """Get a single combined EXP string for all unique ProgramTypes in a Dragonfly Model.
+    """Get a single combined EXP string for all unique ProgramTypes and
+    ConstructionSets in a Dragonfly Model.
 
     Args:
         model: A Dragonfly Model object.
@@ -829,7 +833,18 @@ def model_to_exp(model, si_units=False):
     except Exception:
         msg = 'Export to EXP is only available in Python 3.'
         raise ImportError(msg)
-    return programs_to_exp(model.properties.energy.program_types, si_units=si_units)
+
+    prog_exp = programs_to_exp(model.properties.energy.program_types, si_units=si_units)
+    cnst_exp = construction_sets_to_exp(
+        model.properties.energy.construction_sets, si_units=si_units)
+
+    header = 'EDITORSv6.3.1'
+    prog_lines = [line for line in prog_exp.strip().splitlines() if line != header]
+    cnst_lines = [line for line in cnst_exp.strip().splitlines() if line != header]
+
+    combined_blocks = [header] + cnst_lines + prog_lines
+    exp_str = '\n'.join(combined_blocks)
+    return exp_str
 
 
 def model_to_trace700_zip_bytes(

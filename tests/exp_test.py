@@ -2,7 +2,7 @@
 from honeybee_energy.lib.programtypes import office_program
 from dragonfly.model import Model
 
-from dragonfly_trace.exp import program_to_exp
+from dragonfly_trace.exp import program_to_exp, construction_sets_to_exp
 from dragonfly_trace.writer import model_to_exp
 
 
@@ -41,3 +41,17 @@ def test_model_to_exp():
     assert '2019::SmallOffice::Elec/MechRoom;75.0;1;70.0;1;50;85.0;None;60.0;None;1;0;2;1;' in exp
     assert 'T.RoomTemplate' in exp
     assert '2019::SmallOffice::Elec/MechRoom;2019::SmallOffice::Elec/MechRoom;2019::SmallOffice::Elec/MechRoom;2019::SmallOffice::Elec/MechRoom;Default;' in exp
+
+
+def test_construction_sets_to_exp():
+    """Test the construction_sets_to_exp function."""
+    
+    model = Model.from_dfjson('./tests/assets/small_sample_exp_test.dfjson')
+    exp = construction_sets_to_exp(model.properties.energy.construction_sets)
+    assert 'EDITORSv6.3.1' in exp
+    assert 'T.CNST_EXFLOOR' in exp
+    assert 'T.CNST_FLOOR' in exp
+    assert 'T.CNST_PART' in exp
+    assert 'T.CNST_ROOF' in exp
+    assert 'T.CNST_WALL' in exp
+    assert 'T.GLAS_GLASS' in exp
