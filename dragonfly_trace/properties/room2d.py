@@ -2,6 +2,7 @@
 """Room2D TRACE Properties."""
 from __future__ import division
 
+from ladybug_geometry.geometry3d import Face3D
 from dragonfly.skylightparameter import DetailedSkylights
 
 
@@ -51,6 +52,8 @@ class Room2DTraceProperties(object):
                 msg, self.host, detailed, '040101', extension='TRACE3D',
                 error_type='Room Contains Holes')
             if detailed:
+                help_geo = [Face3D(hg) for hg in self.host.floor_geometry.holes]
+                full_msg['helper_geometry'] = [f.to_dict() for f in help_geo]
                 return [full_msg]
             if raise_exception:
                 raise ValueError(full_msg)

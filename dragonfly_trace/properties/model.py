@@ -200,7 +200,7 @@ class ModelTraceProperties(object):
             for story in bldg.unique_stories:
                 floor_geos = [room.floor_geometry for room in story.room_2ds]
                 joined_geos = self._grouped_floor_boundary(floor_geos, tolerance)
-                c_count = 0
+                c_count, help_geo = 0, []
                 for geo in joined_geos:
                     if geo.has_holes:
                         for hole in geo.holes:
@@ -211,6 +211,7 @@ class ModelTraceProperties(object):
                                 tol_area = max_len * court_width
                                 if h_geo.area > tol_area:
                                     c_count += 1
+                                    help_geo.append(h_geo)
                             except (AssertionError, ValueError):
                                 pass  # gap is too small to be a true courtyard
                 if c_count != 0:
@@ -227,7 +228,8 @@ class ModelTraceProperties(object):
                             'element_type': 'Room2D',
                             'element_id': [r.identifier for r in story.room_2ds],
                             'element_name': [r.display_name for r in story.room_2ds],
-                            'message': msg
+                            'message': msg,
+                            'helper_geometry': [f.to_dict() for f in help_geo]
                         }
                     story_msgs.append(msg)
         if detailed:
