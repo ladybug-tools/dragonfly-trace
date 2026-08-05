@@ -720,14 +720,14 @@ def window_construction_to_trace700_glass(construction, si_units=False, is_door=
     u_value = uvalue_dt.to_unit([construction.u_value], u_value_unit, 'W/m2-K')[0]
     u_value_code = 0 if si_units else 1
 
-    shgc = construction.shgc
+    shgc = getattr(construction, 'shgc', 0.0)
     vt = getattr(construction, 'visible_transmittance', 0.5)
     panes = getattr(construction, 'glazing_count', 1)
 
     inside_vis_refl = construction.inside_solar_reflectance
     inside_sol_refl = construction.inside_solar_reflectance
 
-    solar_transmissivity = construction.solar_transmittance
+    solar_transmissivity = getattr(construction, 'solar_transmittance', 0.0)
 
     outside_emissivity = construction.outside_emissivity
     inside_emissivity = construction.inside_emissivity
@@ -920,14 +920,14 @@ def construction_sets_to_exp(construction_sets, si_units=False):
             g_line = _process_glass(ap_cnst, is_door=False)
             if g_line: glass_templates.append(g_line)
 
-        d_ext = _process_opaque(c_set.door_set.exterior_construction, 'Wall')
-        if d_ext: wall_templates.append(d_ext)
+        d_ext = _process_glass(c_set.door_set.exterior_construction, is_door=True)
+        if d_ext: glass_templates.append(d_ext)
 
-        d_ovh = _process_opaque(c_set.door_set.overhead_construction, 'Wall')
-        if d_ovh: wall_templates.append(d_ovh)
+        d_ovh = _process_glass(c_set.door_set.overhead_construction, is_door=True)
+        if d_ovh: glass_templates.append(d_ovh)
 
-        d_int = _process_opaque(c_set.door_set.interior_construction, 'Partition')
-        if d_int: partition_templates.append(d_int)
+        d_int = _process_glass(c_set.door_set.interior_construction, is_door=True)
+        if d_int: glass_templates.append(d_int)
 
         d_ext_gls = _process_glass(c_set.door_set.exterior_glass_construction, is_door=True)
         if d_ext_gls: glass_templates.append(d_ext_gls)
