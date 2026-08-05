@@ -18,11 +18,10 @@ class ModelTraceProperties(object):
     """
     # dictionary mapping validation error codes to a corresponding check function
     ERROR_MAP = {
-        '040101': 'check_no_sloped_roofs',
-        '040102': 'check_no_room_2d_floor_plate_holes',
-        '040103': 'check_story_floor_plates',
-        '040104': 'check_no_skylights',
-        '040105': 'check_windows_above_origin'
+        '040101': 'check_no_room_2d_floor_plate_holes',
+        '040102': 'check_story_floor_plates',
+        '040103': 'check_no_skylights',
+        '040104': 'check_windows_above_origin'
     }
 
     def __init__(self, host):
@@ -73,7 +72,6 @@ class ModelTraceProperties(object):
         msgs.append(self.host.check_all_room3d(tol, ang_tol, False, detailed))
 
         # perform checks that are specific to TRACE 3D Plus
-        msgs.append(self.check_no_sloped_roofs(False, detailed))
         msgs.append(self.check_no_room_2d_floor_plate_holes(False, detailed))
         msgs.append(self.check_story_floor_plates(tol, False, detailed))
         msgs.append(self.check_no_skylights(False, detailed))
@@ -136,7 +134,6 @@ class ModelTraceProperties(object):
         msgs = []
         tol = self.host.tolerance
         # perform checks for specific TRACE 3D Plus simulation rules
-        msgs.append(self.check_no_sloped_roofs(False, detailed))
         msgs.append(self.check_no_room_2d_floor_plate_holes(False, detailed))
         msgs.append(self.check_story_floor_plates(tol, False, detailed))
         msgs.append(self.check_no_skylights(False, detailed))
@@ -147,48 +144,6 @@ class ModelTraceProperties(object):
             return [m for msg in full_msgs for m in msg]
         full_msg = '\n'.join(full_msgs)
         if raise_exception and len(full_msgs) != 0:
-            raise ValueError(full_msg)
-        return full_msg
-
-    def check_no_sloped_roofs(self, raise_exception=True, detailed=False):
-        """Check whether any stories have sloped roofs.
-
-        The TRACE 3D Plus interface has no support for sloped roofs.
-
-        Args:
-            raise_exception: If True, a ValueError will be raised if a story
-                has a sloped roof. (Default: True).
-            detailed: Boolean for whether the returned object is a detailed list of
-                dicts with error info or a string with a message. (Default: False).
-
-        Returns:
-            A string with the message or a list with a dictionary if detailed is True.
-        """
-        detailed = False if raise_exception else detailed
-        msgs = []
-        for bldg in self.host.buildings:
-            for story in bldg.unique_stories:
-                if story.roof is not None:
-                    msg = 'Story "{}" contains {} sloped roof geometries, which TRACE ' \
-                        '3D Plus cannot represent.'.format(
-                            story.display_name, len(story.roof)
-                        )
-                    if detailed:
-                        msg = {
-                            'type': 'ValidationError',
-                            'code': '040101',
-                            'error_type': 'Story Has Sloped Roofs',
-                            'extension_type': 'TRACE3D',
-                            'element_type': 'Room2D',
-                            'element_id': [r.identifier for r in story.room_2ds],
-                            'element_name': [r.display_name for r in story.room_2ds],
-                            'message': msg
-                        }
-                    msgs.append(msg)
-        if detailed:
-            return msgs
-        full_msg = '\n'.join(msgs)
-        if raise_exception and len(msgs) != 0:
             raise ValueError(full_msg)
         return full_msg
 
@@ -266,7 +221,7 @@ class ModelTraceProperties(object):
                     if detailed:
                         msg = {
                             'type': 'ValidationError',
-                            'code': '040103',
+                            'code': '040102',
                             'error_type': 'Story Floor Plate Contains Courtyards',
                             'extension_type': 'TRACE3D',
                             'element_type': 'Room2D',

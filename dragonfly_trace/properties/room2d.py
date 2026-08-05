@@ -48,7 +48,7 @@ class Room2DTraceProperties(object):
             if raise_exception:
                 raise ValueError(msg)
             full_msg = self.host._validation_message_child(
-                msg, self.host, detailed, '040102', extension='TRACE3D',
+                msg, self.host, detailed, '040101', extension='TRACE3D',
                 error_type='Room Contains Holes')
             if detailed:
                 return [full_msg]
@@ -80,7 +80,7 @@ class Room2DTraceProperties(object):
             if raise_exception:
                 raise ValueError(msg)
             full_msg = self.host._validation_message_child(
-                msg, self.host, detailed, '040104', extension='TRACE3D',
+                msg, self.host, detailed, '040103', extension='TRACE3D',
                 error_type='Room Contains Skylights')
             if detailed:
                 return [full_msg]
@@ -117,7 +117,7 @@ class Room2DTraceProperties(object):
                 if raise_exception:
                     raise ValueError(msg)
                 full_msg = self.host._validation_message_child(
-                    msg, self.host, detailed, '040105', extension='TRACE3D',
+                    msg, self.host, detailed, '040104', extension='TRACE3D',
                     error_type='Windows Below Scene Origin')
                 if detailed:
                     return [full_msg]

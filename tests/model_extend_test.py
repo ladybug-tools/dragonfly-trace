@@ -40,7 +40,7 @@ def test_validation():
     story.roof = roof
 
     report = model.properties.trace.check_for_extension(False, True)
-    assert len(report) == 1
+    assert len(report) == 0
 
     pts5 = (Point3D(5, 5, 0), Point3D(15, 5, 0),
             Point3D(15, 15, 0), Point3D(5, 15, 0))
@@ -50,6 +50,15 @@ def test_validation():
     story.add_room_2d(room2d_extra)
 
     report = model.properties.trace.check_for_extension(False, True)
-    assert len(report) == 3
+    assert len(report) == 2
     assert report[0]['error_type'] == 'Overlapping Room Geometries'
     assert report[1]['error_type'] == 'Overlapping Room Geometries'
+
+
+def test_validation_small_revit_sample():
+    """Test the validation of the model with the small revit sample."""
+    sample_path = './tests/assets/small_revit_sample.dfjson'
+    model = Model.from_file(sample_path)
+
+    report = model.properties.trace.check_for_extension(False, True)
+    assert len(report) == 3

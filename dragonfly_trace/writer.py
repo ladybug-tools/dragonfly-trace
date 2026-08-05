@@ -35,7 +35,7 @@ ROOM_TABLE_FORMAT = (
     'locked',
     'varies_default',
     'default',
-    'default',
+    'varies_default',
     'user',
     'user',
     'user',
