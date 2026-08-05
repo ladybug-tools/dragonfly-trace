@@ -715,7 +715,7 @@ def window_construction_to_trace700_glass(construction, si_units=False, is_door=
     if is_door and not description.lower().endswith('door'):
         description = f'{description} Door'
     description = readable_short_name(description, max_length=40)
-    
+
     u_value_unit = 'W/m2-K' if si_units else 'Btu/h-ft2-F'
     u_value = uvalue_dt.to_unit([construction.u_value], u_value_unit, 'W/m2-K')[0]
     u_value_code = 0 if si_units else 1
@@ -738,11 +738,13 @@ def window_construction_to_trace700_glass(construction, si_units=False, is_door=
     # TRACE 700 custom glass data (213 fields)
     # This is copied from an exported default glass material in TRACE 700
     glass_tail = (
-        "0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;"
-        "0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;"
-        "0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;"
-        f"0;0;0;0;0;0;0;0;0;0;0;0;0;0;{glass_type_code};0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;"
-        "57.1500015258789063;25.3999996185302734;25.3999996185302734;4.59999990463256836;1.10099995136260986;"
+        "0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;"
+        "0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;"
+        "0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;"
+        "0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;"
+        f"0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;{glass_type_code};0;0;"
+        "0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;57.1500015258789063;"
+        "25.3999996185302734;25.3999996185302734;4.59999990463256836;1.10099995136260986;"
         ".89999997615814209;.89999997615814209;.89999997615814209;0;0;0;0;0;0;0;0;0;0;0;0;"
     )
 
@@ -885,31 +887,40 @@ def construction_sets_to_exp(construction_sets, si_units=False):
 
     for c_set in construction_sets:
         w_ext = _process_opaque(c_set.wall_set.exterior_construction, 'Wall')
-        if w_ext: wall_templates.append(w_ext)
+        if w_ext:
+            wall_templates.append(w_ext)
 
         w_grd = _process_opaque(c_set.wall_set.ground_construction, 'Wall')
-        if w_grd: wall_templates.append(w_grd)
+        if w_grd:
+            wall_templates.append(w_grd)
 
         w_int = _process_opaque(c_set.wall_set.interior_construction, 'Partition')
-        if w_int: partition_templates.append(w_int)
+        if w_int:
+            partition_templates.append(w_int)
 
         r_ext = _process_opaque(c_set.roof_ceiling_set.exterior_construction, 'Roof')
-        if r_ext: roof_templates.append(r_ext)
+        if r_ext:
+            roof_templates.append(r_ext)
 
         r_grd = _process_opaque(c_set.roof_ceiling_set.ground_construction, 'Roof')
-        if r_grd: roof_templates.append(r_grd)
+        if r_grd:
+            roof_templates.append(r_grd)
 
         r_int = _process_opaque(c_set.roof_ceiling_set.interior_construction, 'Floor')
-        if r_int: floor_templates.append(r_int)
+        if r_int:
+            floor_templates.append(r_int)
 
         f_ext = _process_opaque(c_set.floor_set.exterior_construction, 'Exposed Floor')
-        if f_ext: exfloor_templates.append(f_ext)
+        if f_ext:
+            exfloor_templates.append(f_ext)
 
         f_grd = _process_opaque(c_set.floor_set.ground_construction, 'Floor')
-        if f_grd: floor_templates.append(f_grd)
+        if f_grd:
+            floor_templates.append(f_grd)
 
         f_int = _process_opaque(c_set.floor_set.interior_construction, 'Floor')
-        if f_int: floor_templates.append(f_int)
+        if f_int:
+            floor_templates.append(f_int)
 
         for ap_cnst in (
             c_set.aperture_set.window_construction,
@@ -918,22 +929,28 @@ def construction_sets_to_exp(construction_sets, si_units=False):
             c_set.aperture_set.operable_construction,
         ):
             g_line = _process_glass(ap_cnst, is_door=False)
-            if g_line: glass_templates.append(g_line)
+            if g_line:
+                glass_templates.append(g_line)
 
         d_ext = _process_glass(c_set.door_set.exterior_construction, is_door=True)
-        if d_ext: glass_templates.append(d_ext)
+        if d_ext:
+            glass_templates.append(d_ext)
 
         d_ovh = _process_glass(c_set.door_set.overhead_construction, is_door=True)
-        if d_ovh: glass_templates.append(d_ovh)
+        if d_ovh:
+            glass_templates.append(d_ovh)
 
         d_int = _process_glass(c_set.door_set.interior_construction, is_door=True)
-        if d_int: glass_templates.append(d_int)
+        if d_int:
+            glass_templates.append(d_int)
 
         d_ext_gls = _process_glass(c_set.door_set.exterior_glass_construction, is_door=True)
-        if d_ext_gls: glass_templates.append(d_ext_gls)
+        if d_ext_gls:
+            glass_templates.append(d_ext_gls)
 
         d_int_gls = _process_glass(c_set.door_set.interior_glass_construction, is_door=True)
-        if d_int_gls: glass_templates.append(d_int_gls)
+        if d_int_gls:
+            glass_templates.append(d_int_gls)
 
         construction_templates.append(construction_set_to_trace700_template(c_set, si_units=si_units))
 
