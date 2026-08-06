@@ -229,13 +229,20 @@ def program_to_trace700_internal_load_template(program, si_units=False):
     return exp_line
 
 
-def program_to_trace700_airflow_template(program, si_units=False):
+def program_to_trace700_airflow_template(
+    program, si_units=False, ventilation_method='Sum of Outdoor Air'
+):
     """Get a TRACE 700 "T.AirflowTemplate" entry string from a Honeybee ProgramType.
 
     Args:
         program: A Honeybee ProgramType object.
         si_units: Boolean to note whether the units of the values in the resulting
             matrix are in SI (True) instead of IP (False). (Default: False).
+        ventilation_method: Optional text for the ventilation method to be used in the
+            airflow template. Choose from the following.
+
+            * Sum of Outdoor Air
+            * ASHRAE 62.1
 
     Returns:
         A text string for a TRACE 700 T.AirflowTemplate entry.
@@ -250,7 +257,7 @@ def program_to_trace700_airflow_template(program, si_units=False):
     ppl_unit = 7 if si_units else 2  # 7 = L/s/person m, 2 = cfm/person
 
     vent_val, ppl, ez_cool, ez_heat = 0, 0, 100, 100
-    if vent is not None:
+    if vent is not None and ventilation_method == 'ASHRAE 62.1':
         vent_val = flow_dt.to_unit([vent.flow_per_area], vent_flow_unit, 'm3/s')[0]
         vent_val = vent_val if si_units else vent_val * 10.7639104  # convert to cfm/ft2
         ppl = flow_dt.to_unit([vent.flow_per_person], vent_flow_unit, 'm3/s')[0]
@@ -267,19 +274,19 @@ def program_to_trace700_airflow_template(program, si_units=False):
     if inf is not None:
         inf_val = inf.flow_per_exterior_area_si if si_units else inf.flow_per_exterior_area_ip
 
-    if vent_val == 0 and ppl == 0:
-        exp_line = (
-            f"{template_name};None;Available (100%);{vent_val:.6f};{vent_unit};{vent_val:.6f};{vent_unit};"
-            f"None;Available (100%);{inf_val:.6f};{inf_unit};{inf_val:.6f};{inf_unit};"
-            f"{blank_val};0;Available (100%);{blank_val};8;{blank_val};9;{blank_val};10;{blank_val};10;0;2;"
-            f"Available (100%);0;0;{blank_val};0;{blank_val};1;{blank_val};{blank_val};0;0;{blank_val};0;"
-        )
-    else:  # use ASHRAE 62.1 as the default
+    if ventilation_method == 'ASHRAE 62.1':
         exp_line = (
             f"{template_name};Default Std62;Available (100%);{ppl:.6f};{ppl_unit};{vent_val:.6f};{vent_unit};"
             f"None;Available (100%);{inf_val:.6f};{inf_unit};{inf_val:.6f};{inf_unit};"
             f"{blank_val};0;Available (100%);{blank_val};8;{blank_val};9;{blank_val};10;{blank_val};10;0;2;"
             f"Available (100%);1;0;{ez_cool};0;{ez_heat};1;{blank_val};{blank_val};0;0;{blank_val};0;"
+        )
+    else:
+        exp_line = (
+            f"{template_name};None;Available (100%);{vent_val:.6f};{vent_unit};{vent_val:.6f};{vent_unit};"
+            f"None;Available (100%);{inf_val:.6f};{inf_unit};{inf_val:.6f};{inf_unit};"
+            f"{blank_val};0;Available (100%);{blank_val};8;{blank_val};9;{blank_val};10;{blank_val};10;0;2;"
+            f"Available (100%);0;0;{blank_val};0;{blank_val};1;{blank_val};{blank_val};0;0;{blank_val};0;"
         )
     return exp_line
 
@@ -388,20 +395,27 @@ def internal_loads_to_exp(program, si_units=False):
     return file_data
 
 
-def airflow_to_exp(program, si_units=False):
+def airflow_to_exp(program, si_units=False, ventilation_method='Sum of Outdoor Air'):
     """Get an EXP string containing only the airflow template for a ProgramType.
 
     Args:
         program: A Honeybee ProgramType object.
         si_units: Boolean to note whether the units of the values in the resulting
             matrix are in SI (True) instead of IP (False). (Default: False).
+        ventilation_method: Optional text for the ventilation method to be used in the
+            airflow template. Choose from the following.
+
+            * Sum of Outdoor Air
+            * ASHRAE 62.1
 
     Returns:
         Text string of an EXP file for TRACE 700 containing the airflow template.
     """
     newline = '\n'
 
-    airflow_template = program_to_trace700_airflow_template(program, si_units)
+    airflow_template = program_to_trace700_airflow_template(
+        program, si_units, ventilation_method
+    )
 
     standalone_blocks = [
         'EDITORSv6.3.1',
@@ -438,7 +452,7 @@ def thermostat_to_exp(program, si_units=False):
     return file_data
 
 
-def program_to_exp(program, si_units=False):
+def program_to_exp(program, si_units=False, ventilation_method='Sum of Outdoor Air'):
     """Get a complete EXP string for a Honeybee ProgramType.
 
     Args:
@@ -446,6 +460,11 @@ def program_to_exp(program, si_units=False):
             will be generated.
         si_units: Boolean to note whether the units of the values in the resulting
             matrix are in SI (True) instead of IP (False). (Default: False).
+        ventilation_method: Optional text for the ventilation method to be used in the
+            airflow template. Choose from the following.
+
+            * Sum of Outdoor Air
+            * ASHRAE 62.1
 
     Returns:
         Text string of a complete EXP file for TRACE 700.
@@ -479,7 +498,7 @@ def program_to_exp(program, si_units=False):
             ])
 
     internal_load_template = program_to_trace700_internal_load_template(program, si_units)
-    airflow_template = program_to_trace700_airflow_template(program, si_units)
+    airflow_template = program_to_trace700_airflow_template(program, si_units, ventilation_method)
     thermostat_template = program_to_trace700_thermostat_template(program, si_units)
     room_template = program_to_trace700_room_template(program)
 
@@ -494,13 +513,18 @@ def program_to_exp(program, si_units=False):
     return file_data
 
 
-def programs_to_exp(programs, si_units=False):
+def programs_to_exp(programs, si_units=False, ventilation_method='Sum of Outdoor Air'):
     """Get a single combined EXP string for a list of Honeybee ProgramTypes.
 
     Args:
         programs: A list of Honeybee ProgramType objects.
         si_units: Boolean to note whether the units of the values in the resulting
             matrix are in SI (True) instead of IP (False). (Default: False).
+        ventilation_method: Optional text for the ventilation method to be used in the
+            airflow template. Choose from the following.
+
+            * Sum of Outdoor Air
+            * ASHRAE 62.1
 
     Returns:
         Text string of a combined EXP file for TRACE 700.
@@ -546,8 +570,11 @@ def programs_to_exp(programs, si_units=False):
                     seen_equip.add(eq_obj.identifier)
 
         internal_load_templates.append(
-            program_to_trace700_internal_load_template(program, si_units))
-        airflow_templates.append(program_to_trace700_airflow_template(program, si_units))
+            program_to_trace700_internal_load_template(program, si_units)
+        )
+        airflow_templates.append(
+            program_to_trace700_airflow_template(program, si_units, ventilation_method)
+        )
         thermostat_templates.append(program_to_trace700_thermostat_template(program, si_units))
         room_templates.append(program_to_trace700_room_template(program))
 

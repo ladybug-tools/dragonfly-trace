@@ -398,10 +398,13 @@ def model_to_trace700_gbxml(
 @click.option('--imperial/--metric', '-ip/-si', help='Flag to note whether imperial '
               'or metric units should be used for values in the output EXP file.',
               default=True, show_default=True)
+@click.option('--ventilation-method', '-v', help='Text for the ventilation method to be '
+              'used to calculate outdoor air. Choose from: Sum of Outdoor Air, ASHRAE 62.1',
+              type=str, default='Sum of Outdoor Air', show_default=True)
 @click.option('--output-file', '-f', help='Optional EXP file to output the string '
               'of the translation. By default it is printed out to stdout.',
               type=click.File('w'), default='-', show_default=True)
-def model_to_trace700_exp_cli(model_file, imperial, output_file):
+def model_to_trace700_exp_cli(model_file, imperial, ventilation_method, output_file):
     """Translate all unique ProgramTypes in a Dragonfly Model file into a single TRACE 700 EXP file.
 
     \b
@@ -411,7 +414,10 @@ def model_to_trace700_exp_cli(model_file, imperial, output_file):
     try:
         metric = not imperial
         model = Model.from_file(model_file)
-        process_content_to_output(model_to_exp(model, si_units=metric), output_file)
+        exp_contents = model_to_exp(
+            model, si_units=metric, ventilation_method=ventilation_method
+        )
+        process_content_to_output(exp_contents, output_file)
     except Exception as e:
         _logger.exception('Model EXP translation failed.\n{}'.format(e))
         sys.exit(1)

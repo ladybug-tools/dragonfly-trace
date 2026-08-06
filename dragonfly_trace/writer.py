@@ -815,7 +815,7 @@ def model_to_trace700_gbxml(
     return model.to_gbxml(gbxml_par, room_ids_for_trace)
 
 
-def model_to_exp(model, si_units=False):
+def model_to_exp(model, si_units=False, ventilation_method='Sum of Outdoor Air'):
     """Get a single combined EXP string for all unique ProgramTypes and
     ConstructionSets in a Dragonfly Model.
 
@@ -823,6 +823,11 @@ def model_to_exp(model, si_units=False):
         model: A Dragonfly Model object.
         si_units: Boolean to note whether the units of the values in the resulting
             matrix are in SI (True) instead of IP (False). (Default: False).
+        ventilation_method: Optional text for the ventilation method to be used in the
+            resulting matrix. Choose from the following.
+
+            * Sum of Outdoor Air
+            * ASHRAE 62.1
 
     Returns:
         Text string of EXP file contents for TRACE 700.
@@ -831,9 +836,13 @@ def model_to_exp(model, si_units=False):
     assert programs_to_exp is not None and construction_sets_to_exp is not None, \
         'Export to EXP is only available in Python 3.'
 
-    prog_exp = programs_to_exp(model.properties.energy.program_types, si_units=si_units)
+    prog_exp = programs_to_exp(
+        model.properties.energy.program_types, si_units=si_units,
+        ventilation_method=ventilation_method
+    )
     cnst_exp = construction_sets_to_exp(
-        model.properties.energy.construction_sets, si_units=si_units)
+        model.properties.energy.construction_sets, si_units=si_units
+    )
 
     header = 'EDITORSv6.3.1'
     prog_lines = [line for line in prog_exp.strip().splitlines() if line != header]
@@ -900,7 +909,7 @@ def model_to_trace700_zip_bytes(
     xlsx_wb.save(xlsx_stream)
     xlsx_stream.seek(0)  # reset the stream position to the beginning
     # get the contents of the EXP file
-    exp_str = model_to_exp(model, si_units)
+    exp_str = model_to_exp(model, si_units, ventilation_method)
 
     # create an in-memory bytes buffer
     zip_buffer = io.BytesIO()
