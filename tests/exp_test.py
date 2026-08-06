@@ -45,7 +45,7 @@ def test_model_to_exp():
 
 def test_construction_sets_to_exp():
     """Test the construction_sets_to_exp function."""
-    
+
     model = Model.from_dfjson('./tests/assets/small_sample_exp_test.dfjson')
     exp = construction_sets_to_exp(model.properties.energy.construction_sets)
     assert 'EDITORSv6.3.1' in exp

@@ -810,11 +810,11 @@ def construction_set_to_trace700_template(construction_set, si_units=False):
     partition_cnst = construction_set.wall_set.interior_construction
     partition_name, partition_u = _get_opaque_info(partition_cnst)
 
-    # resolve door construction priority (glass door if set, otherwise opaque door)
-    if getattr(construction_set.door_set, '_exterior_glass_construction', None) is not None:
-        door_cnst = construction_set.door_set.exterior_glass_construction
-    elif getattr(construction_set.door_set, '_exterior_construction', None) is not None:
+    # resolve door construction priority
+    if getattr(construction_set.door_set, '_exterior_construction', None) is not None:
         door_cnst = construction_set.door_set.exterior_construction
+    elif getattr(construction_set.door_set, '_exterior_glass_construction', None) is not None:
+        door_cnst = construction_set.door_set.exterior_glass_construction
     else:
         door_cnst = (
             construction_set.door_set.exterior_construction or
@@ -932,10 +932,6 @@ def construction_sets_to_exp(construction_sets, si_units=False):
             if g_line:
                 glass_templates.append(g_line)
 
-        d_ext = _process_glass(c_set.door_set.exterior_construction, is_door=True)
-        if d_ext:
-            glass_templates.append(d_ext)
-
         d_ovh = _process_glass(c_set.door_set.overhead_construction, is_door=True)
         if d_ovh:
             glass_templates.append(d_ovh)
@@ -944,13 +940,17 @@ def construction_sets_to_exp(construction_sets, si_units=False):
         if d_int:
             glass_templates.append(d_int)
 
+        d_int_gls = _process_glass(c_set.door_set.interior_glass_construction, is_door=True)
+        if d_int_gls:
+            glass_templates.append(d_int_gls)
+
         d_ext_gls = _process_glass(c_set.door_set.exterior_glass_construction, is_door=True)
         if d_ext_gls:
             glass_templates.append(d_ext_gls)
 
-        d_int_gls = _process_glass(c_set.door_set.interior_glass_construction, is_door=True)
-        if d_int_gls:
-            glass_templates.append(d_int_gls)
+        d_ext = _process_glass(c_set.door_set.exterior_construction, is_door=True)
+        if d_ext:
+            glass_templates.append(d_ext)
 
         construction_templates.append(construction_set_to_trace700_template(c_set, si_units=si_units))
 
