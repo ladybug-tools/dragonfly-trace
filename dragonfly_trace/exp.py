@@ -247,11 +247,17 @@ def program_to_trace700_airflow_template(program, si_units=False):
     vent = program.ventilation
     vent_flow_unit = 'L/s' if si_units else 'cfm'
     vent_unit = 6 if si_units else 3  # 6 = L/s/sq m, 3 = cfm/sq ft
+    ppl_unit = 7 if si_units else 2  # 7 = L/s/person m, 2 = cfm/person
 
-    vent_val = 0
+    vent_val, ppl, ez_cool, ez_heat = 0, 0, 100, 100
     if vent is not None:
         vent_val = flow_dt.to_unit([vent.flow_per_area], vent_flow_unit, 'm3/s')[0]
         vent_val = vent_val if si_units else vent_val * 10.7639104  # convert to cfm/ft2
+        ppl = flow_dt.to_unit([vent.flow_per_person], vent_flow_unit, 'm3/s')[0]
+        ez_cool = int(vent.effectiveness_cooling * 100)
+        ez_cool = 100 if ez_cool > 100 else ez_cool
+        ez_heat = int(vent.effectiveness_heating * 100)
+        ez_heat = 100 if ez_heat > 100 else ez_heat
 
     # Fields 8-13 (Infiltration Layout)
     inf = program.infiltration
@@ -261,12 +267,20 @@ def program_to_trace700_airflow_template(program, si_units=False):
     if inf is not None:
         inf_val = inf.flow_per_exterior_area_si if si_units else inf.flow_per_exterior_area_ip
 
-    exp_line = (
-        f"{template_name};None;Available (100%);{vent_val:.6f};{vent_unit};{vent_val:.6f};{vent_unit};"
-        f"None;Available (100%);{inf_val:.6f};{inf_unit};{inf_val:.6f};{inf_unit};"
-        f"{blank_val};0;Available (100%);{blank_val};8;{blank_val};9;{blank_val};10;{blank_val};10;0;2;"
-        f"Available (100%);0;0;{blank_val};0;{blank_val};1;{blank_val};{blank_val};0;0;{blank_val};0;"
-    )
+    if vent_val == 0 and ppl == 0:
+        exp_line = (
+            f"{template_name};None;Available (100%);{vent_val:.6f};{vent_unit};{vent_val:.6f};{vent_unit};"
+            f"None;Available (100%);{inf_val:.6f};{inf_unit};{inf_val:.6f};{inf_unit};"
+            f"{blank_val};0;Available (100%);{blank_val};8;{blank_val};9;{blank_val};10;{blank_val};10;0;2;"
+            f"Available (100%);0;0;{blank_val};0;{blank_val};1;{blank_val};{blank_val};0;0;{blank_val};0;"
+        )
+    else:  # use ASHRAE 62.1 as the default
+        exp_line = (
+            f"{template_name};Default Std62;Available (100%);{ppl:.6f};{ppl_unit};{vent_val:.6f};{vent_unit};"
+            f"None;Available (100%);{inf_val:.6f};{inf_unit};{inf_val:.6f};{inf_unit};"
+            f"{blank_val};0;Available (100%);{blank_val};8;{blank_val};9;{blank_val};10;{blank_val};10;0;2;"
+            f"Available (100%);1;0;{ez_cool};0;{ez_heat};1;{blank_val};{blank_val};0;0;{blank_val};0;"
+        )
     return exp_line
 
 
@@ -717,7 +731,7 @@ def window_construction_to_trace700_glass(construction, si_units=False, is_door=
     description = readable_short_name(description, max_length=40)
 
     u_value_unit = 'W/m2-K' if si_units else 'Btu/h-ft2-F'
-    u_value = uvalue_dt.to_unit([construction.u_value], u_value_unit, 'W/m2-K')[0]
+    u_value = uvalue_dt.to_unit([construction.u_factor], u_value_unit, 'W/m2-K')[0]
     u_value_code = 0 if si_units else 1
 
     shgc = getattr(construction, 'shgc', 0.0)
