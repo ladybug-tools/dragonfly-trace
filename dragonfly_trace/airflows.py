@@ -206,7 +206,7 @@ def airflows_trace700_matrix(rooms, si_units=False, ventilation_method='Sum of O
         inf_flow, inf_unit = 0, ach_unit
         inf_obj = room.properties.energy.infiltration
         if inf_obj is not None:
-            if room.properties.energy._person_count is not None:
+            if room.properties.energy._infiltration_ach is not None:
                 inf_flow = room.properties.energy.infiltration_ach
             else:
                 inf_flow = inf_obj.flow_per_exterior_area_si if si_units else \
