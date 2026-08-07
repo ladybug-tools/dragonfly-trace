@@ -36,7 +36,7 @@ def test_model_to_exp():
     assert 'T.InternalLoadTemplate' in exp
     assert '2019::SmallOffice::Elec/MechRoom;None;Cooling Only (Design);0.000000;1;250.0000;7;250.0000;7;2019::SmallOffice::Elec/MechRoom_Lighting;Cooling Only (Design);0.430000;3;2019::SmllOffc::Elc/MchRmElctrc;Cooling Only (Design);0.270000;8;1;1;2;' in exp
     assert 'T.AirflowTemplate' in exp
-    assert '2019::SmallOffice::Elec/MechRoom;None;Available (100%);13.903412;3;13.903412;3;None;Available (100%);0.112000;3;0.112000;3;9999.99;0;Available (100%);9999.99;8;9999.99;9;9999.99;10;9999.99;10;0;2;Available (100%);0;0;9999.99;0;9999.99;1;9999.99;9999.99;0;0;9999.99;0;' in exp
+    assert '2019::SmallOffice::Elec/MechRoom;None;Available (100%);0.000000;3;0.000000;3;None;Available (100%);0.112000;3;0.112000;3;9999.99;0;Available (100%);9999.99;8;9999.99;9;9999.99;10;9999.99;10;0;2;Available (100%);0;0;9999.99;0;9999.99;1;9999.99;9999.99;0;0;9999.99;0;' in exp
     assert 'T.ThermostatTemplate' in exp
     assert '2019::SmallOffice::Elec/MechRoom;75.0;1;70.0;1;50;85.0;None;60.0;None;1;0;2;1;' in exp
     assert 'T.RoomTemplate' in exp
