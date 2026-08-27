@@ -65,7 +65,7 @@ class ModelTraceProperties(object):
         msgs.append(self.host.check_plenum_depths(tol, False, detailed))
         msgs.append(self.host.check_window_parameters_valid(tol, False, detailed))
         msgs.append(self.host.check_no_room2d_overlaps(tol, False, detailed))
-        msgs.append(self.host.check_collisions_between_stories(tol, False, detailed))
+        msgs.append(self.host.check_collisions_between_stories(tol, False, detailed, None))
         msgs.append(self.host.check_roofs_above_rooms(tol, False, detailed))
         msgs.append(self.host.check_room2d_floor_heights_valid(False, detailed))
         msgs.append(self.host.check_missing_adjacencies(False, detailed))
