@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>translate &#8212; dragonfly-trace  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=0bf093e7" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=0b9525ea" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="exp" href="exp.html" />
+    <link rel="prev" title="CLI Docs" href="index.html" />
+<link rel="icon" type="image/x-icon" href="https://github.com/ladybug-tools/artwork/raw/refs/heads/master/icons_bugs/ico/dragonfly.ico">
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          dragonfly-trace</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CLI Docs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#installation">Installation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#commands">Commands</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dragonfly-trace-translate">dragonfly-trace translate</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#dragonfly-trace-translate-model-to-trace700-csv">model-to-trace700-csv</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#dragonfly-trace-translate-model-to-trace700-exp">model-to-trace700-exp</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#dragonfly-trace-translate-model-to-trace700-gbxml">model-to-trace700-gbxml</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#dragonfly-trace-translate-model-to-trace700-xlsx">model-to-trace700-xlsx</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#dragonfly-trace-translate-model-to-trace700-zip">model-to-trace700-zip</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="exp.html">exp</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="exp.html#dragonfly-trace-exp">dragonfly-trace exp</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="exp.html#dragonfly-trace-exp-program-to-trace700-airflow">program-to-trace700-airflow</a></li>
+<li class="toctree-l5"><a class="reference internal" href="exp.html#dragonfly-trace-exp-program-to-trace700-exp">program-to-trace700-exp</a></li>
+<li class="toctree-l5"><a class="reference internal" href="exp.html#dragonfly-trace-exp-program-to-trace700-internal-loads">program-to-trace700-internal-loads</a></li>
+<li class="toctree-l5"><a class="reference internal" href="exp.html#dragonfly-trace-exp-program-to-trace700-thermostat">program-to-trace700-thermostat</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dragonfly_trace.html">dragonfly_trace package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dragonfly_trace.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dragonfly_trace.cli.html">dragonfly_trace.cli package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.cli.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../dragonfly_trace.cli.exp.html">dragonfly_trace.cli.exp module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../dragonfly_trace.cli.translate.html">dragonfly_trace.cli.translate module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_csv"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_csv()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_gbxml"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_gbxml()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_xlsx"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_xlsx()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_zip"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_zip()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.cli.html#module-dragonfly_trace.cli">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dragonfly_trace.properties.html">dragonfly_trace.properties package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.properties.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../dragonfly_trace.properties.model.html">dragonfly_trace.properties.model module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties"><code class="docutils literal notranslate"><span class="pre">ModelTraceProperties</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.ToString"><code class="docutils literal notranslate"><span class="pre">ToString()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_all"><code class="docutils literal notranslate"><span class="pre">check_all()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_for_extension"><code class="docutils literal notranslate"><span class="pre">check_for_extension()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_generic"><code class="docutils literal notranslate"><span class="pre">check_generic()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_no_room_2d_floor_plate_holes"><code class="docutils literal notranslate"><span class="pre">check_no_room_2d_floor_plate_holes()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_no_skylights"><code class="docutils literal notranslate"><span class="pre">check_no_skylights()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_story_floor_plates"><code class="docutils literal notranslate"><span class="pre">check_story_floor_plates()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_windows_above_origin"><code class="docutils literal notranslate"><span class="pre">check_windows_above_origin()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.ERROR_MAP"><code class="docutils literal notranslate"><span class="pre">ERROR_MAP</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.host"><code class="docutils literal notranslate"><span class="pre">host</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../dragonfly_trace.properties.room2d.html">dragonfly_trace.properties.room2d module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties"><code class="docutils literal notranslate"><span class="pre">Room2DTraceProperties</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.ToString"><code class="docutils literal notranslate"><span class="pre">ToString()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.check_no_floor_plate_holes"><code class="docutils literal notranslate"><span class="pre">check_no_floor_plate_holes()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.check_no_skylights"><code class="docutils literal notranslate"><span class="pre">check_no_skylights()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.check_windows_above_origin"><code class="docutils literal notranslate"><span class="pre">check_windows_above_origin()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.host"><code class="docutils literal notranslate"><span class="pre">host</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.properties.html#module-dragonfly_trace.properties">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../dragonfly_trace.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dragonfly_trace.airflows.html">dragonfly_trace.airflows module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.airflows.html#dragonfly_trace.airflows.airflows_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">airflows_trace700_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dragonfly_trace.calculation.html">dragonfly_trace.calculation module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.calculation.html#dragonfly_trace.calculation.calculation_matrix"><code class="docutils literal notranslate"><span class="pre">calculation_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dragonfly_trace.exp.html">dragonfly_trace.exp module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.exp.html#dragonfly_trace.exp.airflow_to_exp"><code class="docutils literal notranslate"><span class="pre">airflow_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.exp.html#dragonfly_trace.exp.construction_set_to_trace700_template"><code class="docutils literal notranslate"><span class="pre">construction_set_to_trace700_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.exp.html#dragonfly_trace.exp.construction_sets_to_exp"><code class="docutils literal notranslate"><span class="pre">construction_sets_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.exp.html#dragonfly_trace.exp.energy_material_to_trace700_material"><code class="docutils literal notranslate"><span class="pre">energy_material_to_trace700_material()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.exp.html#dragonfly_trace.exp.equipment_to_trace700_miscellaneous"><code class="docutils literal notranslate"><span class="pre">equipment_to_trace700_miscellaneous()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.exp.html#dragonfly_trace.exp.internal_loads_to_exp"><code class="docutils literal notranslate"><span class="pre">internal_loads_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.exp.html#dragonfly_trace.exp.lighting_to_trace700_lighting"><code class="docutils literal notranslate"><span class="pre">lighting_to_trace700_lighting()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.exp.html#dragonfly_trace.exp.opaque_construction_to_trace700_construction"><code class="docutils literal notranslate"><span class="pre">opaque_construction_to_trace700_construction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.exp.html#dragonfly_trace.exp.people_to_trace700_people"><code class="docutils literal notranslate"><span class="pre">people_to_trace700_people()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_exp"><code class="docutils literal notranslate"><span class="pre">program_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_airflow_template"><code class="docutils literal notranslate"><span class="pre">program_to_trace700_airflow_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_internal_load_template"><code class="docutils literal notranslate"><span class="pre">program_to_trace700_internal_load_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_room_template"><code class="docutils literal notranslate"><span class="pre">program_to_trace700_room_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_thermostat_template"><code class="docutils literal notranslate"><span class="pre">program_to_trace700_thermostat_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.exp.html#dragonfly_trace.exp.programs_to_exp"><code class="docutils literal notranslate"><span class="pre">programs_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.exp.html#dragonfly_trace.exp.thermostat_to_exp"><code class="docutils literal notranslate"><span class="pre">thermostat_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.exp.html#dragonfly_trace.exp.window_construction_to_trace700_glass"><code class="docutils literal notranslate"><span class="pre">window_construction_to_trace700_glass()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dragonfly_trace.loads.html">dragonfly_trace.loads module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.loads.html#dragonfly_trace.loads.miscellaneous_loads_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">miscellaneous_loads_trace700_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.loads.html#dragonfly_trace.loads.people_and_lights_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">people_and_lights_trace700_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dragonfly_trace.util.html">dragonfly_trace.util module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.util.html#dragonfly_trace.util.sort_rooms_for_trace_700"><code class="docutils literal notranslate"><span class="pre">sort_rooms_for_trace_700()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dragonfly_trace.writer.html">dragonfly_trace.writer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_exp"><code class="docutils literal notranslate"><span class="pre">model_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_csv"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_csv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_gbxml"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_gbxml()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_workbook"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_workbook()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_zip_bytes"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_zip_bytes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dragonfly_trace.writer.html#dragonfly_trace.writer.rooms_to_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">rooms_to_trace700_matrix()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../dragonfly_trace.html#module-dragonfly_trace">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CLI Docs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#installation">Installation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#commands">Commands</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dragonfly-trace-translate">dragonfly-trace translate</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#dragonfly-trace-translate-model-to-trace700-csv">model-to-trace700-csv</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#dragonfly-trace-translate-model-to-trace700-exp">model-to-trace700-exp</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#dragonfly-trace-translate-model-to-trace700-gbxml">model-to-trace700-gbxml</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#dragonfly-trace-translate-model-to-trace700-xlsx">model-to-trace700-xlsx</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#dragonfly-trace-translate-model-to-trace700-zip">model-to-trace700-zip</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="exp.html">exp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dragonfly_trace.html">dragonfly_trace package</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="index.html" title="Previous Chapter: CLI Docs"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; CLI Docs</span>
+    </a>
+  </li>
+  <li>
+    <a href="exp.html" title="Next Chapter: exp"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">exp &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/cli/translate.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CLI Docs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#installation">Installation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#commands">Commands</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dragonfly-trace-translate">dragonfly-trace translate</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#dragonfly-trace-translate-model-to-trace700-csv">model-to-trace700-csv</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#dragonfly-trace-translate-model-to-trace700-exp">model-to-trace700-exp</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#dragonfly-trace-translate-model-to-trace700-gbxml">model-to-trace700-gbxml</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#dragonfly-trace-translate-model-to-trace700-xlsx">model-to-trace700-xlsx</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#dragonfly-trace-translate-model-to-trace700-zip">model-to-trace700-zip</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="exp.html">exp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dragonfly_trace.html">dragonfly_trace package</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <section id="translate">
+<h1>translate<a class="headerlink" href="#translate" title="Link to this heading">¶</a></h1>
+<section id="dragonfly-trace-translate">
+<h2>dragonfly-trace translate<a class="headerlink" href="#dragonfly-trace-translate" title="Link to this heading">¶</a></h2>
+<p>Commands for translating URBANopt systems to OSM/IDF.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dragonfly-trace<span class="w"> </span>translate<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<section id="dragonfly-trace-translate-model-to-trace700-csv">
+<h3>model-to-trace700-csv<a class="headerlink" href="#dragonfly-trace-translate-model-to-trace700-csv" title="Link to this heading">¶</a></h3>
+<p>Translate a Dragonfly Model to a CSV with tables for TRACE 700 attributes.</p>
+<p>The resulting CSV tables can be copied into the tables that appear in the
+Component Tree view of TRACE 700. The order and organization of rooms in
+the resulting matrix should match that of the gbXML produced from the same model.</p>
+<div class="line-block">
+<div class="line">Args:</div>
+<div class="line-block">
+<div class="line">model_file: Full path to a Dragonfly Model file (DFJSON or DFpkl).</div>
+</div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dragonfly-trace<span class="w"> </span>translate<span class="w"> </span>model-to-trace700-csv<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>MODEL_FILE
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-ip">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-imperial"></span><span id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-si"></span><span id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-metric"></span><span class="sig-name descname"><span class="pre">-ip</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--imperial</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">-si</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--metric</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-csv-ip" title="Link to this definition">¶</a></dt>
+<dd><p>Flag to note whether imperial or metric units should be used for values in the output CSV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-v">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-ventilation-method"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--ventilation-method</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;ventilation_method&gt;</span></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-csv-v" title="Link to this definition">¶</a></dt>
+<dd><p>Text for the ventilation method to be used to calculate outdoor air. Choose from: Sum of Outdoor Air, ASHRAE 62.1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">'Sum</span> <span class="pre">of</span> <span class="pre">Outdoor</span> <span class="pre">Air'</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-multiplier">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-fg"></span><span id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-full-geometry"></span><span class="sig-name descname"><span class="pre">--multiplier</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">-fg</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--full-geometry</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-csv-multiplier" title="Link to this definition">¶</a></dt>
+<dd><p>Flag to note if the multipliers on each Building story will be passed along to the generated Honeybee Room objects or if full geometry objects should be written for each story in the building.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-p">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-plenum"></span><span id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-sp"></span><span id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-separate-plenum"></span><span class="sig-name descname"><span class="pre">-p</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--plenum</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">-sp</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--separate-plenum</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-csv-p" title="Link to this definition">¶</a></dt>
+<dd><p>Flag to indicate whether ceiling/floor plenum depths assigned to Room2Ds should simply be reported as plenum depths in the CSV or they should be used to generate distinct separated plenum rooms in the translation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-m">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-merge-method"></span><span class="sig-name descname"><span class="pre">-m</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--merge-method</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;merge_method&gt;</span></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-csv-m" title="Link to this definition">¶</a></dt>
+<dd><p>Text to describe how the Room2Ds should be merged into individual Rooms during the translation. Specifying a value here can be an effective way to reduce the number of Room volumes in the resulting Model and, ultimately, yield a faster simulation time with less results to manage. Choose from: None, Zones, PlenumZones, Stories, PlenumStories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">'None'</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-geometry-ids">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-gn"></span><span id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-geometry-names"></span><span class="sig-name descname"><span class="pre">--geometry-ids</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">-gn</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--geometry-names</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-csv-geometry-ids" title="Link to this definition">¶</a></dt>
+<dd><p>Flag to note whether a cleaned version of all geometry display names should be used instead of identifiers when translating the Model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-f">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-output-file"></span><span class="sig-name descname"><span class="pre">-f</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output-file</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output_file&gt;</span></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-csv-f" title="Link to this definition">¶</a></dt>
+<dd><p>Optional CSV file to output the string of the translation. By default it printed out to stdout.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">'-'</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-csv-arg-MODEL_FILE">
+<span class="sig-name descname"><span class="pre">MODEL_FILE</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-csv-arg-MODEL_FILE" title="Link to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</section>
+<section id="dragonfly-trace-translate-model-to-trace700-exp">
+<h3>model-to-trace700-exp<a class="headerlink" href="#dragonfly-trace-translate-model-to-trace700-exp" title="Link to this heading">¶</a></h3>
+<p>Translate all unique ProgramTypes in a Dragonfly Model file into a single TRACE 700 EXP file.</p>
+<div class="line-block">
+<div class="line">Args:</div>
+<div class="line-block">
+<div class="line">model_file: Full path to a Dragonfly Model file (DFJSON or DFpkl).</div>
+</div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dragonfly-trace<span class="w"> </span>translate<span class="w"> </span>model-to-trace700-exp<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>MODEL_FILE
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-exp-ip">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-exp-imperial"></span><span id="cmdoption-dragonfly-trace-translate-model-to-trace700-exp-si"></span><span id="cmdoption-dragonfly-trace-translate-model-to-trace700-exp-metric"></span><span class="sig-name descname"><span class="pre">-ip</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--imperial</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">-si</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--metric</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-exp-ip" title="Link to this definition">¶</a></dt>
+<dd><p>Flag to note whether imperial or metric units should be used for values in the output EXP file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-exp-v">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-exp-ventilation-method"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--ventilation-method</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;ventilation_method&gt;</span></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-exp-v" title="Link to this definition">¶</a></dt>
+<dd><p>Text for the ventilation method to be used to calculate outdoor air. Choose from: Sum of Outdoor Air, ASHRAE 62.1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">'Sum</span> <span class="pre">of</span> <span class="pre">Outdoor</span> <span class="pre">Air'</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-exp-f">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-exp-output-file"></span><span class="sig-name descname"><span class="pre">-f</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output-file</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output_file&gt;</span></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-exp-f" title="Link to this definition">¶</a></dt>
+<dd><p>Optional EXP file to output the string of the translation. By default it is printed out to stdout.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">'-'</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-exp-arg-MODEL_FILE">
+<span class="sig-name descname"><span class="pre">MODEL_FILE</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-exp-arg-MODEL_FILE" title="Link to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</section>
+<section id="dragonfly-trace-translate-model-to-trace700-gbxml">
+<h3>model-to-trace700-gbxml<a class="headerlink" href="#dragonfly-trace-translate-model-to-trace700-gbxml" title="Link to this heading">¶</a></h3>
+<p>Translate a Dragonfly Model to a gbXML file.</p>
+<div class="line-block">
+<div class="line">Args:</div>
+<div class="line-block">
+<div class="line">model_file: Path to either a DFJSON or DFpkl file. This can also be a</div>
+<div class="line-block">
+<div class="line">HBJSON or a HBpkl from which a Dragonfly model should be derived.</div>
+</div>
+</div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dragonfly-trace<span class="w"> </span>translate<span class="w"> </span>model-to-trace700-gbxml<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>MODEL_FILE
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-ip">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-imperial"></span><span id="cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-si"></span><span id="cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-metric"></span><span class="sig-name descname"><span class="pre">-ip</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--imperial</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">-si</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--metric</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-ip" title="Link to this definition">¶</a></dt>
+<dd><p>Flag to note whether imperial or metric units should be used for values in the output CSV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-s">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-opening-simplification"></span><span class="sig-name descname"><span class="pre">-s</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--opening-simplification</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;opening_simplification&gt;</span></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-s" title="Link to this definition">¶</a></dt>
+<dd><p>Text string for the type of simplification to perform on windows and doors in the dragonfly model. Choose from: None, MergeAdjWindows, SingleWindow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">'MergeAdjWindows'</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-p">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-program-name"></span><span class="sig-name descname"><span class="pre">-p</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--program-name</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;program_name&gt;</span></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-p" title="Link to this definition">¶</a></dt>
+<dd><p>Optional text to set the name of the software that will appear under the programId and ProductName tags of the DocumentHistory section. This can be set things like “Ladybug Tools” or “Pollination” or some other software in which this gbXML export capability is being run. If None, “OpenStudio” will be used.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-v">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-program-version"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--program-version</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;program_version&gt;</span></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-v" title="Link to this definition">¶</a></dt>
+<dd><p>Optional text to set the version of the software that will appear under the DocumentHistory section. If None, and the program_name is also unspecified, only the version of OpenStudio will appear. Otherwise, this will default to “0.0.0” given that the version field is required.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-f">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-output-file"></span><span class="sig-name descname"><span class="pre">-f</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output-file</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output_file&gt;</span></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-f" title="Link to this definition">¶</a></dt>
+<dd><p>Optional gbXML file to output the string of the translation. By default it printed out to stdout</p>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-arg-MODEL_FILE">
+<span class="sig-name descname"><span class="pre">MODEL_FILE</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-gbxml-arg-MODEL_FILE" title="Link to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</section>
+<section id="dragonfly-trace-translate-model-to-trace700-xlsx">
+<h3>model-to-trace700-xlsx<a class="headerlink" href="#dragonfly-trace-translate-model-to-trace700-xlsx" title="Link to this heading">¶</a></h3>
+<p>Translate a Dragonfly Model to an Excel file with tables for TRACE 700 attributes.</p>
+<p>The resulting Excel tables can be copied into the tables that appear in the
+Component Tree view of TRACE 700. The order and organization of rooms in
+the resulting matrix should match that of the gbXML produced from the same model.</p>
+<div class="line-block">
+<div class="line">Args:</div>
+<div class="line-block">
+<div class="line">model_file: Full path to a Dragonfly Model file (DFJSON or DFpkl).</div>
+</div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dragonfly-trace<span class="w"> </span>translate<span class="w"> </span>model-to-trace700-xlsx<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>MODEL_FILE
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-ip">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-imperial"></span><span id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-si"></span><span id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-metric"></span><span class="sig-name descname"><span class="pre">-ip</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--imperial</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">-si</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--metric</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-ip" title="Link to this definition">¶</a></dt>
+<dd><p>Flag to note whether imperial or metric units should be used for values in the output XLSX.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-v">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-ventilation-method"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--ventilation-method</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;ventilation_method&gt;</span></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-v" title="Link to this definition">¶</a></dt>
+<dd><p>Text for the ventilation method to be used to calculate outdoor air. Choose from: Sum of Outdoor Air, ASHRAE 62.1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">'Sum</span> <span class="pre">of</span> <span class="pre">Outdoor</span> <span class="pre">Air'</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-multiplier">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-fg"></span><span id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-full-geometry"></span><span class="sig-name descname"><span class="pre">--multiplier</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">-fg</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--full-geometry</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-multiplier" title="Link to this definition">¶</a></dt>
+<dd><p>Flag to note if the multipliers on each Building story will be passed along to the generated Honeybee Room objects or if full geometry objects should be written for each story in the building.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-p">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-plenum"></span><span id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-sp"></span><span id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-separate-plenum"></span><span class="sig-name descname"><span class="pre">-p</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--plenum</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">-sp</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--separate-plenum</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-p" title="Link to this definition">¶</a></dt>
+<dd><p>Flag to indicate whether ceiling/floor plenum depths assigned to Room2Ds should simply be reported as plenum depths in the tables or they should be used to generate distinct separated plenum rooms in the translation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-m">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-merge-method"></span><span class="sig-name descname"><span class="pre">-m</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--merge-method</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;merge_method&gt;</span></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-m" title="Link to this definition">¶</a></dt>
+<dd><p>Text to describe how the Room2Ds should be merged into individual Rooms during the translation. Specifying a value here can be an effective way to reduce the number of Room volumes in the resulting Model and, ultimately, yield a faster simulation time with less results to manage. Choose from: None, Zones, PlenumZones, Stories, PlenumStories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">'None'</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-geometry-ids">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-gn"></span><span id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-geometry-names"></span><span class="sig-name descname"><span class="pre">--geometry-ids</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">-gn</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--geometry-names</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-geometry-ids" title="Link to this definition">¶</a></dt>
+<dd><p>Flag to note whether a cleaned version of all geometry display names should be used instead of identifiers when translating the Model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-f">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-output-file"></span><span class="sig-name descname"><span class="pre">-f</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output-file</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output_file&gt;</span></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-f" title="Link to this definition">¶</a></dt>
+<dd><p>Optional XLSX file to output the content of the translation. By default it printed out to stdout.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">'-'</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-arg-MODEL_FILE">
+<span class="sig-name descname"><span class="pre">MODEL_FILE</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-xlsx-arg-MODEL_FILE" title="Link to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</section>
+<section id="dragonfly-trace-translate-model-to-trace700-zip">
+<h3>model-to-trace700-zip<a class="headerlink" href="#dragonfly-trace-translate-model-to-trace700-zip" title="Link to this heading">¶</a></h3>
+<p>Translate a Dragonfly Model to a gbXML file.</p>
+<div class="line-block">
+<div class="line">Args:</div>
+<div class="line-block">
+<div class="line">model_file: Path to either a DFJSON or DFpkl file. This can also be a</div>
+<div class="line-block">
+<div class="line">HBJSON or a HBpkl from which a Dragonfly model should be derived.</div>
+</div>
+</div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dragonfly-trace<span class="w"> </span>translate<span class="w"> </span>model-to-trace700-zip<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>MODEL_FILE
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-zip-ip">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-zip-imperial"></span><span id="cmdoption-dragonfly-trace-translate-model-to-trace700-zip-si"></span><span id="cmdoption-dragonfly-trace-translate-model-to-trace700-zip-metric"></span><span class="sig-name descname"><span class="pre">-ip</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--imperial</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">-si</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--metric</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-zip-ip" title="Link to this definition">¶</a></dt>
+<dd><p>Flag to note whether imperial or metric units should be used for values in the output CSV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-zip-s">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-zip-opening-simplification"></span><span class="sig-name descname"><span class="pre">-s</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--opening-simplification</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;opening_simplification&gt;</span></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-zip-s" title="Link to this definition">¶</a></dt>
+<dd><p>Text string for the type of simplification to perform on windows and doors in the dragonfly model. Choose from: None, MergeAdjWindows, SingleWindow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">'MergeAdjWindows'</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-zip-v">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-zip-ventilation-method"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--ventilation-method</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;ventilation_method&gt;</span></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-zip-v" title="Link to this definition">¶</a></dt>
+<dd><p>Text for the ventilation method to be used to calculate outdoor air. Choose from: Sum of Outdoor Air, ASHRAE 62.1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">'Sum</span> <span class="pre">of</span> <span class="pre">Outdoor</span> <span class="pre">Air'</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-zip-p">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-zip-program-name"></span><span class="sig-name descname"><span class="pre">-p</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--program-name</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;program_name&gt;</span></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-zip-p" title="Link to this definition">¶</a></dt>
+<dd><p>Optional text to set the name of the software that will appear under the programId and ProductName tags of the DocumentHistory section. This can be set things like “Ladybug Tools” or “Pollination” or some other software in which this gbXML export capability is being run. If None, “OpenStudio” will be used.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-zip-0">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-zip-program-version"></span><span class="sig-name descname"><span class="pre">-v</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--program-version</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;program_version&gt;</span></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-zip-0" title="Link to this definition">¶</a></dt>
+<dd><p>Optional text to set the version of the software that will appear under the DocumentHistory section. If None, and the program_name is also unspecified, only the version of OpenStudio will appear. Otherwise, this will default to “0.0.0” given that the version field is required.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-zip-f">
+<span id="cmdoption-dragonfly-trace-translate-model-to-trace700-zip-output-file"></span><span class="sig-name descname"><span class="pre">-f</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--output-file</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;output_file&gt;</span></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-zip-f" title="Link to this definition">¶</a></dt>
+<dd><p>Optional ,zip file to output the content of the translation. By default it printed out to stdout.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">'-'</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-dragonfly-trace-translate-model-to-trace700-zip-arg-MODEL_FILE">
+<span class="sig-name descname"><span class="pre">MODEL_FILE</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-dragonfly-trace-translate-model-to-trace700-zip-arg-MODEL_FILE" title="Link to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2026, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.0.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

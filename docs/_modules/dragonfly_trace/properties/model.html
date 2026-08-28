@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dragonfly_trace.properties.model &#8212; dragonfly-trace  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/bootstrap-sphinx.css?v=0bf093e7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=0b9525ea" />
+    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<link rel="icon" type="image/x-icon" href="https://github.com/ladybug-tools/artwork/raw/refs/heads/master/icons_bugs/ico/dragonfly.ico">
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          dragonfly-trace</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../cli/translate.html#dragonfly-trace-translate">dragonfly-trace translate</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../cli/translate.html#dragonfly-trace-translate-model-to-trace700-csv">model-to-trace700-csv</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../cli/translate.html#dragonfly-trace-translate-model-to-trace700-exp">model-to-trace700-exp</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../cli/translate.html#dragonfly-trace-translate-model-to-trace700-gbxml">model-to-trace700-gbxml</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../cli/translate.html#dragonfly-trace-translate-model-to-trace700-xlsx">model-to-trace700-xlsx</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../cli/translate.html#dragonfly-trace-translate-model-to-trace700-zip">model-to-trace700-zip</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../cli/exp.html">exp</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../cli/exp.html#dragonfly-trace-exp">dragonfly-trace exp</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../cli/exp.html#dragonfly-trace-exp-program-to-trace700-airflow">program-to-trace700-airflow</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../cli/exp.html#dragonfly-trace-exp-program-to-trace700-exp">program-to-trace700-exp</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../cli/exp.html#dragonfly-trace-exp-program-to-trace700-internal-loads">program-to-trace700-internal-loads</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../cli/exp.html#dragonfly-trace-exp-program-to-trace700-thermostat">program-to-trace700-thermostat</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../dragonfly_trace.html">dragonfly_trace package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../dragonfly_trace.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../dragonfly_trace.cli.html">dragonfly_trace.cli package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.cli.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../dragonfly_trace.cli.exp.html">dragonfly_trace.cli.exp module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../dragonfly_trace.cli.translate.html">dragonfly_trace.cli.translate module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_csv"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_csv()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_gbxml"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_gbxml()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_xlsx"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_xlsx()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_zip"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_zip()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.cli.html#module-dragonfly_trace.cli">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dragonfly_trace.properties.html">dragonfly_trace.properties package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.properties.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html">dragonfly_trace.properties.model module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties"><code class="docutils literal notranslate"><span class="pre">ModelTraceProperties</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.ToString"><code class="docutils literal notranslate"><span class="pre">ToString()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_all"><code class="docutils literal notranslate"><span class="pre">check_all()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_for_extension"><code class="docutils literal notranslate"><span class="pre">check_for_extension()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_generic"><code class="docutils literal notranslate"><span class="pre">check_generic()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_no_room_2d_floor_plate_holes"><code class="docutils literal notranslate"><span class="pre">check_no_room_2d_floor_plate_holes()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_no_skylights"><code class="docutils literal notranslate"><span class="pre">check_no_skylights()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_story_floor_plates"><code class="docutils literal notranslate"><span class="pre">check_story_floor_plates()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_windows_above_origin"><code class="docutils literal notranslate"><span class="pre">check_windows_above_origin()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.ERROR_MAP"><code class="docutils literal notranslate"><span class="pre">ERROR_MAP</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.host"><code class="docutils literal notranslate"><span class="pre">host</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../../dragonfly_trace.properties.room2d.html">dragonfly_trace.properties.room2d module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties"><code class="docutils literal notranslate"><span class="pre">Room2DTraceProperties</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.ToString"><code class="docutils literal notranslate"><span class="pre">ToString()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.check_no_floor_plate_holes"><code class="docutils literal notranslate"><span class="pre">check_no_floor_plate_holes()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.check_no_skylights"><code class="docutils literal notranslate"><span class="pre">check_no_skylights()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.check_windows_above_origin"><code class="docutils literal notranslate"><span class="pre">check_windows_above_origin()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.host"><code class="docutils literal notranslate"><span class="pre">host</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.properties.html#module-dragonfly_trace.properties">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dragonfly_trace.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../dragonfly_trace.airflows.html">dragonfly_trace.airflows module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.airflows.html#dragonfly_trace.airflows.airflows_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">airflows_trace700_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dragonfly_trace.calculation.html">dragonfly_trace.calculation module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.calculation.html#dragonfly_trace.calculation.calculation_matrix"><code class="docutils literal notranslate"><span class="pre">calculation_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dragonfly_trace.exp.html">dragonfly_trace.exp module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.airflow_to_exp"><code class="docutils literal notranslate"><span class="pre">airflow_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.construction_set_to_trace700_template"><code class="docutils literal notranslate"><span class="pre">construction_set_to_trace700_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.construction_sets_to_exp"><code class="docutils literal notranslate"><span class="pre">construction_sets_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.energy_material_to_trace700_material"><code class="docutils literal notranslate"><span class="pre">energy_material_to_trace700_material()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.equipment_to_trace700_miscellaneous"><code class="docutils literal notranslate"><span class="pre">equipment_to_trace700_miscellaneous()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.internal_loads_to_exp"><code class="docutils literal notranslate"><span class="pre">internal_loads_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.lighting_to_trace700_lighting"><code class="docutils literal notranslate"><span class="pre">lighting_to_trace700_lighting()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.opaque_construction_to_trace700_construction"><code class="docutils literal notranslate"><span class="pre">opaque_construction_to_trace700_construction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.people_to_trace700_people"><code class="docutils literal notranslate"><span class="pre">people_to_trace700_people()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_exp"><code class="docutils literal notranslate"><span class="pre">program_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_airflow_template"><code class="docutils literal notranslate"><span class="pre">program_to_trace700_airflow_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_internal_load_template"><code class="docutils literal notranslate"><span class="pre">program_to_trace700_internal_load_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_room_template"><code class="docutils literal notranslate"><span class="pre">program_to_trace700_room_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_thermostat_template"><code class="docutils literal notranslate"><span class="pre">program_to_trace700_thermostat_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.programs_to_exp"><code class="docutils literal notranslate"><span class="pre">programs_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.thermostat_to_exp"><code class="docutils literal notranslate"><span class="pre">thermostat_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.window_construction_to_trace700_glass"><code class="docutils literal notranslate"><span class="pre">window_construction_to_trace700_glass()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dragonfly_trace.loads.html">dragonfly_trace.loads module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.loads.html#dragonfly_trace.loads.miscellaneous_loads_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">miscellaneous_loads_trace700_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.loads.html#dragonfly_trace.loads.people_and_lights_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">people_and_lights_trace700_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dragonfly_trace.util.html">dragonfly_trace.util module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.util.html#dragonfly_trace.util.sort_rooms_for_trace_700"><code class="docutils literal notranslate"><span class="pre">sort_rooms_for_trace_700()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dragonfly_trace.writer.html">dragonfly_trace.writer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_exp"><code class="docutils literal notranslate"><span class="pre">model_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_csv"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_csv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_gbxml"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_gbxml()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_workbook"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_workbook()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_zip_bytes"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_zip_bytes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.writer.html#dragonfly_trace.writer.rooms_to_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">rooms_to_trace700_matrix()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dragonfly_trace.html#module-dragonfly_trace">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../dragonfly_trace.html">dragonfly_trace package</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../dragonfly_trace.html">dragonfly_trace package</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <h1>Source code for dragonfly_trace.properties.model</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="sd">"""Model TACE Properties."""</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ladybug_geometry.geometry2d</span><span class="w"> </span><span class="kn">import</span> <span class="n">Point2D</span><span class="p">,</span> <span class="n">Polygon2D</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ladybug_geometry.geometry3d</span><span class="w"> </span><span class="kn">import</span> <span class="n">Point3D</span><span class="p">,</span> <span class="n">Face3D</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">honeybee.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_distance_string</span>
+
+
+<div class="viewcode-block" id="ModelTraceProperties">
+<a class="viewcode-back" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ModelTraceProperties</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""TRACE Properties for Dragonfly Model.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        host: A dragonfly_core Model object that hosts these properties.</span>
+
+<span class="sd">    Properties:</span>
+<span class="sd">        * host</span>
+<span class="sd">    """</span>
+    <span class="c1"># dictionary mapping validation error codes to a corresponding check function</span>
+    <span class="n">ERROR_MAP</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'040101'</span><span class="p">:</span> <span class="s1">'check_no_room_2d_floor_plate_holes'</span><span class="p">,</span>
+        <span class="s1">'040102'</span><span class="p">:</span> <span class="s1">'check_story_floor_plates'</span><span class="p">,</span>
+        <span class="s1">'040103'</span><span class="p">:</span> <span class="s1">'check_no_skylights'</span><span class="p">,</span>
+        <span class="s1">'040104'</span><span class="p">:</span> <span class="s1">'check_windows_above_origin'</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Initialize ModelTraceProperties."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_host</span> <span class="o">=</span> <span class="n">host</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">host</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Get the Model object hosting these properties."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host</span>
+
+<div class="viewcode-block" id="ModelTraceProperties.check_for_extension">
+<a class="viewcode-back" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_for_extension">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_for_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Check that the Model is valid for TRACE 3D Plus simulation.</span>
+
+<span class="sd">        This process includes all relevant dragonfly-core checks as well as checks</span>
+<span class="sd">        that apply only for TRACE 3D Plus.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            raise_exception: Boolean to note whether a ValueError should be raised</span>
+<span class="sd">                if any errors are found. If False, this method will simply</span>
+<span class="sd">                return a text string with all errors that were found. (Default: True).</span>
+<span class="sd">            detailed: Boolean for whether the returned object is a detailed list of</span>
+<span class="sd">                dicts with error info or a string with a message. (Default: False).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A text string with all errors that were found or a list if detailed is True.</span>
+<span class="sd">            This string (or list) will be empty if no errors were found.</span>
+<span class="sd">        """</span>
+        <span class="c1"># set up defaults to ensure the method runs correctly</span>
+        <span class="n">detailed</span> <span class="o">=</span> <span class="kc">False</span> <span class="k">if</span> <span class="n">raise_exception</span> <span class="k">else</span> <span class="n">detailed</span>
+        <span class="n">msgs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">tol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">tolerance</span>
+        <span class="n">ang_tol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">angle_tolerance</span>
+
+        <span class="c1"># perform checks for duplicate identifiers, which might mess with other checks</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">check_all_duplicate_identifiers</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">))</span>
+
+        <span class="c1"># perform checks for key dragonfly model schema rules</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">check_degenerate_room_2ds</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">))</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">check_self_intersecting_room_2ds</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">))</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">check_plenum_depths</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">))</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">check_window_parameters_valid</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">))</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">check_no_room2d_overlaps</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">))</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">check_collisions_between_stories</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">check_roofs_above_rooms</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">))</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">check_room2d_floor_heights_valid</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">))</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">check_missing_adjacencies</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">))</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">check_all_room3d</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="n">ang_tol</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">))</span>
+
+        <span class="c1"># perform checks that are specific to TRACE 3D Plus</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_no_room_2d_floor_plate_holes</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">))</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_story_floor_plates</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">))</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_no_skylights</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">))</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_windows_above_origin</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">))</span>
+
+        <span class="c1"># output a final report of errors or raise an exception</span>
+        <span class="n">full_msgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">msg</span> <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">msgs</span> <span class="k">if</span> <span class="n">msg</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">full_msgs</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">msg</span><span class="p">]</span>
+        <span class="n">full_msg</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">full_msgs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">raise_exception</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">full_msgs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">full_msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">full_msg</span></div>
+
+
+<div class="viewcode-block" id="ModelTraceProperties.check_generic">
+<a class="viewcode-back" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_generic">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_generic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Check generic of the aspects of the Model TRACE 3D Plus properties.</span>
+
+<span class="sd">        This includes checks for everything except holes in floor plates and</span>
+<span class="sd">        courtyard stories.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            raise_exception: Boolean to note whether a ValueError should be raised</span>
+<span class="sd">                if any errors are found. If False, this method will simply</span>
+<span class="sd">                return a text string with all errors that were found.</span>
+<span class="sd">            detailed: Boolean for whether the returned object is a detailed list of</span>
+<span class="sd">                dicts with error info or a string with a message. (Default: False).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A text string with all errors that were found or a list if detailed is True.</span>
+<span class="sd">            This string (or list) will be empty if no errors were found.</span>
+<span class="sd">        """</span>
+        <span class="c1"># set up defaults to ensure the method runs correctly</span>
+        <span class="n">detailed</span> <span class="o">=</span> <span class="kc">False</span> <span class="k">if</span> <span class="n">raise_exception</span> <span class="k">else</span> <span class="n">detailed</span>
+        <span class="n">msgs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># output a final report of errors or raise an exception</span>
+        <span class="n">full_msgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">msg</span> <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">msgs</span> <span class="k">if</span> <span class="n">msg</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">full_msgs</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">msg</span><span class="p">]</span>
+        <span class="n">full_msg</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">full_msgs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">raise_exception</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">full_msgs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">full_msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">full_msg</span></div>
+
+
+<div class="viewcode-block" id="ModelTraceProperties.check_all">
+<a class="viewcode-back" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_all">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Check all of the aspects of the Model TRACE 3D Plus properties.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            raise_exception: Boolean to note whether a ValueError should be raised</span>
+<span class="sd">                if any errors are found. If False, this method will simply</span>
+<span class="sd">                return a text string with all errors that were found.</span>
+<span class="sd">            detailed: Boolean for whether the returned object is a detailed list of</span>
+<span class="sd">                dicts with error info or a string with a message. (Default: False).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A text string with all errors that were found or a list if detailed is True.</span>
+<span class="sd">            This string (or list) will be empty if no errors were found.</span>
+<span class="sd">        """</span>
+        <span class="c1"># set up defaults to ensure the method runs correctly</span>
+        <span class="n">detailed</span> <span class="o">=</span> <span class="kc">False</span> <span class="k">if</span> <span class="n">raise_exception</span> <span class="k">else</span> <span class="n">detailed</span>
+        <span class="n">msgs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">tol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">tolerance</span>
+        <span class="c1"># perform checks for specific TRACE 3D Plus simulation rules</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_no_room_2d_floor_plate_holes</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">))</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_story_floor_plates</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">))</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_no_skylights</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">))</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_windows_above_origin</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">))</span>
+        <span class="c1"># output a final report of errors or raise an exception</span>
+        <span class="n">full_msgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">msg</span> <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">msgs</span> <span class="k">if</span> <span class="n">msg</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">full_msgs</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">msg</span><span class="p">]</span>
+        <span class="n">full_msg</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">full_msgs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">raise_exception</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">full_msgs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">full_msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">full_msg</span></div>
+
+
+<div class="viewcode-block" id="ModelTraceProperties.check_no_room_2d_floor_plate_holes">
+<a class="viewcode-back" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_no_room_2d_floor_plate_holes">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_no_room_2d_floor_plate_holes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Check whether any Room2D floor geometry has holes.</span>
+
+<span class="sd">        TRACE 3D Plus currently has no way to represent holes.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            raise_exception: If True, a ValueError will be raised if the Room2D</span>
+<span class="sd">                floor plate has one or more holes. (Default: True).</span>
+<span class="sd">            detailed: Boolean for whether the returned object is a detailed list of</span>
+<span class="sd">                dicts with error info or a string with a message. (Default: False).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A string with the message or a list with a dictionary if detailed is True.</span>
+<span class="sd">        """</span>
+        <span class="n">detailed</span> <span class="o">=</span> <span class="kc">False</span> <span class="k">if</span> <span class="n">raise_exception</span> <span class="k">else</span> <span class="n">detailed</span>
+        <span class="n">msgs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">room</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">room_2ds</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">room</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">trace</span><span class="o">.</span><span class="n">check_no_floor_plate_holes</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+                <span class="n">msgs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">msg</span> <span class="o">!=</span> <span class="s1">''</span><span class="p">:</span>
+                <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">msgs</span>
+        <span class="n">full_msg</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">msgs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">raise_exception</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">msgs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">full_msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">full_msg</span></div>
+
+
+<div class="viewcode-block" id="ModelTraceProperties.check_story_floor_plates">
+<a class="viewcode-back" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_story_floor_plates">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_story_floor_plates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Check Story floor plates for courtyards.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            tolerance: The tolerance to be used when joining the Room2D floor</span>
+<span class="sd">                plates together into a Story floor plate. If None, the Model</span>
+<span class="sd">                tolerance will be used. (Default: None).</span>
+<span class="sd">            raise_exception: Boolean to note whether a ValueError should be raised</span>
+<span class="sd">                if the story contains a courtyard. (Default: True).</span>
+<span class="sd">            detailed: Boolean for whether the returned object is a detailed list of</span>
+<span class="sd">                dicts with error info or a string with a message. (Default: False).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A string with the message or a list with a dictionary if detailed is True.</span>
+<span class="sd">        """</span>
+        <span class="c1"># establish the tolerance and gap width at which point it is clearly a courtyard</span>
+        <span class="n">tolerance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">tolerance</span> <span class="k">if</span> <span class="n">tolerance</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">tolerance</span>
+        <span class="n">court_width</span> <span class="o">=</span> <span class="n">parse_distance_string</span><span class="p">(</span><span class="s1">'1ft'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+        <span class="c1"># loop through the stories and identify any courtyards</span>
+        <span class="n">story_msgs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">bldg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">buildings</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">story</span> <span class="ow">in</span> <span class="n">bldg</span><span class="o">.</span><span class="n">unique_stories</span><span class="p">:</span>
+                <span class="n">floor_geos</span> <span class="o">=</span> <span class="p">[</span><span class="n">room</span><span class="o">.</span><span class="n">floor_geometry</span> <span class="k">for</span> <span class="n">room</span> <span class="ow">in</span> <span class="n">story</span><span class="o">.</span><span class="n">room_2ds</span><span class="p">]</span>
+                <span class="n">joined_geos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grouped_floor_boundary</span><span class="p">(</span><span class="n">floor_geos</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">)</span>
+                <span class="n">c_count</span><span class="p">,</span> <span class="n">help_geo</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">geo</span> <span class="ow">in</span> <span class="n">joined_geos</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">geo</span><span class="o">.</span><span class="n">has_holes</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">hole</span> <span class="ow">in</span> <span class="n">geo</span><span class="o">.</span><span class="n">holes</span><span class="p">:</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="n">h_geo</span> <span class="o">=</span> <span class="n">Face3D</span><span class="p">(</span><span class="n">hole</span><span class="p">)</span>
+                                <span class="n">h_geo</span> <span class="o">=</span> <span class="n">h_geo</span><span class="o">.</span><span class="n">remove_colinear_vertices</span><span class="p">(</span><span class="n">court_width</span><span class="p">)</span>
+                                <span class="n">max_len</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">length</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">h_geo</span><span class="o">.</span><span class="n">boundary_segments</span><span class="p">)</span>
+                                <span class="n">tol_area</span> <span class="o">=</span> <span class="n">max_len</span> <span class="o">*</span> <span class="n">court_width</span>
+                                <span class="k">if</span> <span class="n">h_geo</span><span class="o">.</span><span class="n">area</span> <span class="o">&gt;</span> <span class="n">tol_area</span><span class="p">:</span>
+                                    <span class="n">c_count</span> <span class="o">+=</span> <span class="mi">1</span>
+                                    <span class="n">help_geo</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h_geo</span><span class="p">)</span>
+                            <span class="k">except</span> <span class="p">(</span><span class="ne">AssertionError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+                                <span class="k">pass</span>  <span class="c1"># gap is too small to be a true courtyard</span>
+                <span class="k">if</span> <span class="n">c_count</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">hole_msg</span> <span class="o">=</span> <span class="s1">'a courtyard'</span> <span class="k">if</span> <span class="n">c_count</span> <span class="o">==</span> <span class="mi">1</span> \
+                        <span class="k">else</span> <span class="s1">'</span><span class="si">{}</span><span class="s1"> courtyards'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">c_count</span><span class="p">)</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s1">'The geometry of Story "</span><span class="si">{}</span><span class="s1">" contains </span><span class="si">{}</span><span class="s1">, which TRACE 3D Plus '</span> \
+                        <span class="s1">'cannot represent.'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">story</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">hole_msg</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="p">{</span>
+                            <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'ValidationError'</span><span class="p">,</span>
+                            <span class="s1">'code'</span><span class="p">:</span> <span class="s1">'040102'</span><span class="p">,</span>
+                            <span class="s1">'error_type'</span><span class="p">:</span> <span class="s1">'Story Floor Plate Contains Courtyards'</span><span class="p">,</span>
+                            <span class="s1">'extension_type'</span><span class="p">:</span> <span class="s1">'TRACE3D'</span><span class="p">,</span>
+                            <span class="s1">'element_type'</span><span class="p">:</span> <span class="s1">'Room2D'</span><span class="p">,</span>
+                            <span class="s1">'element_id'</span><span class="p">:</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">identifier</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">story</span><span class="o">.</span><span class="n">room_2ds</span><span class="p">],</span>
+                            <span class="s1">'element_name'</span><span class="p">:</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">display_name</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">story</span><span class="o">.</span><span class="n">room_2ds</span><span class="p">],</span>
+                            <span class="s1">'message'</span><span class="p">:</span> <span class="n">msg</span><span class="p">,</span>
+                            <span class="s1">'helper_geometry'</span><span class="p">:</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">help_geo</span><span class="p">]</span>
+                        <span class="p">}</span>
+                    <span class="n">story_msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">story_msgs</span>
+        <span class="k">if</span> <span class="n">story_msgs</span> <span class="o">!=</span> <span class="p">[]:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">'The following Stories have issues with their floor plates'</span> \
+                <span class="s1">':</span><span class="se">\n</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">story_msgs</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">raise_exception</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">msg</span>
+        <span class="k">return</span> <span class="s1">''</span></div>
+
+
+<div class="viewcode-block" id="ModelTraceProperties.check_no_skylights">
+<a class="viewcode-back" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_no_skylights">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_no_skylights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Check whether any Room2D floor geometry has skylights.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            raise_exception: If True, a ValueError will be raised if a Room2D</span>
+<span class="sd">                has skylights. (Default: True).</span>
+<span class="sd">            detailed: Boolean for whether the returned object is a detailed list of</span>
+<span class="sd">                dicts with error info or a string with a message. (Default: False).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A string with the message or a list with a dictionary if detailed is True.</span>
+<span class="sd">        """</span>
+        <span class="n">detailed</span> <span class="o">=</span> <span class="kc">False</span> <span class="k">if</span> <span class="n">raise_exception</span> <span class="k">else</span> <span class="n">detailed</span>
+        <span class="n">msgs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">room</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">room_2ds</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">room</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">trace</span><span class="o">.</span><span class="n">check_no_skylights</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+                <span class="n">msgs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">msg</span> <span class="o">!=</span> <span class="s1">''</span><span class="p">:</span>
+                <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">msgs</span>
+        <span class="n">full_msg</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">msgs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">raise_exception</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">msgs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">full_msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">full_msg</span></div>
+
+
+<div class="viewcode-block" id="ModelTraceProperties.check_windows_above_origin">
+<a class="viewcode-back" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_windows_above_origin">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_windows_above_origin</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">detailed</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Check whether the Room2D has windows below the scene origin.</span>
+
+<span class="sd">        TRACE 3D Plus currently fails to import these windows since it believes</span>
+<span class="sd">        that they are below ground.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            tolerance: The maximum difference between coordinate values of two</span>
+<span class="sd">                vertices at which they can be considered equivalent. (Default: 0.01,</span>
+<span class="sd">                suitable for objects in meters).</span>
+<span class="sd">            raise_exception: Boolean to note whether a ValueError should be raised</span>
+<span class="sd">                if the story contains a courtyard. (Default: True).</span>
+<span class="sd">            detailed: Boolean for whether the returned object is a detailed list of</span>
+<span class="sd">                dicts with error info or a string with a message. (Default: False).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A string with the message or a list with a dictionary if detailed is True.</span>
+<span class="sd">        """</span>
+        <span class="n">detailed</span> <span class="o">=</span> <span class="kc">False</span> <span class="k">if</span> <span class="n">raise_exception</span> <span class="k">else</span> <span class="n">detailed</span>
+        <span class="n">msgs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">room</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">room_2ds</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">room</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">trace</span><span class="o">.</span><span class="n">check_windows_above_origin</span><span class="p">(</span><span class="n">tolerance</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">detailed</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+                <span class="n">msgs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">msg</span> <span class="o">!=</span> <span class="s1">''</span><span class="p">:</span>
+                <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">detailed</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">msgs</span>
+        <span class="n">full_msg</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">msgs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">raise_exception</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">msgs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">full_msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">full_msg</span></div>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_grouped_floor_boundary</span><span class="p">(</span><span class="n">floor_geos</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Get a list of Face3D for the boundary around several horizontal Face3Ds.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            floor_geos: A list of Honeybee Rooms for which the horizontal boundary will</span>
+<span class="sd">                be computed.</span>
+<span class="sd">            tolerance: The maximum difference between coordinate values of two</span>
+<span class="sd">                vertices at which they can be considered equivalent. (Default: 0.01,</span>
+<span class="sd">                suitable for objects in meters).</span>
+<span class="sd">        """</span>
+        <span class="c1"># remove colinear vertices and degenerate faces</span>
+        <span class="n">clean_floor_geos</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">geo</span> <span class="ow">in</span> <span class="n">floor_geos</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">clean_floor_geos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">geo</span><span class="o">.</span><span class="n">remove_colinear_vertices</span><span class="p">(</span><span class="n">tolerance</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>  <span class="c1"># degenerate geometry to ignore</span>
+                <span class="k">pass</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">clean_floor_geos</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>  <span class="c1"># no Room boundary to be found</span>
+
+        <span class="c1"># convert the floor Face3Ds into counterclockwise Polygon2Ds</span>
+        <span class="n">floor_polys</span><span class="p">,</span> <span class="n">z_vals</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">flr_geo</span> <span class="ow">in</span> <span class="n">clean_floor_geos</span><span class="p">:</span>
+            <span class="n">z_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">flr_geo</span><span class="o">.</span><span class="n">min</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+            <span class="n">b_poly</span> <span class="o">=</span> <span class="n">Polygon2D</span><span class="p">([</span><span class="n">Point2D</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">flr_geo</span><span class="o">.</span><span class="n">boundary</span><span class="p">])</span>
+            <span class="n">floor_polys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b_poly</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">flr_geo</span><span class="o">.</span><span class="n">has_holes</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">hole</span> <span class="ow">in</span> <span class="n">flr_geo</span><span class="o">.</span><span class="n">holes</span><span class="p">:</span>
+                    <span class="n">h_poly</span> <span class="o">=</span> <span class="n">Polygon2D</span><span class="p">([</span><span class="n">Point2D</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">hole</span><span class="p">])</span>
+                    <span class="n">floor_polys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h_poly</span><span class="p">)</span>
+        <span class="n">z_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">z_vals</span><span class="p">)</span>
+
+        <span class="c1"># find the joined intersected boundary</span>
+        <span class="n">closed_polys</span> <span class="o">=</span> <span class="n">Polygon2D</span><span class="o">.</span><span class="n">joined_intersected_boundary</span><span class="p">(</span><span class="n">floor_polys</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">)</span>
+
+        <span class="c1"># remove colinear vertices from the resulting polygons</span>
+        <span class="n">clean_polys</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">poly</span> <span class="ow">in</span> <span class="n">closed_polys</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">clean_polys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">remove_colinear_vertices</span><span class="p">(</span><span class="n">tolerance</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
+                <span class="k">pass</span>  <span class="c1"># degenerate polygon to ignore</span>
+
+        <span class="c1"># figure out if polygons represent holes in the others and make Face3D</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">clean_polys</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">clean_polys</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># can be represented with a single Face3D</span>
+            <span class="n">pts3d</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point3D</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">z_min</span><span class="p">)</span> <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">clean_polys</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">Face3D</span><span class="p">(</span><span class="n">pts3d</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># need to separate holes from distinct Face3Ds</span>
+            <span class="n">bound_faces</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">poly</span> <span class="ow">in</span> <span class="n">clean_polys</span><span class="p">:</span>
+                <span class="n">pts3d</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">Point3D</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">z_min</span><span class="p">)</span> <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">poly</span><span class="p">)</span>
+                <span class="n">bound_faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Face3D</span><span class="p">(</span><span class="n">pts3d</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">Face3D</span><span class="o">.</span><span class="n">merge_faces_to_holes</span><span class="p">(</span><span class="n">bound_faces</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ModelTraceProperties.ToString">
+<a class="viewcode-back" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.ToString">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">'Model TRACE Properties: [host: </span><span class="si">{}</span><span class="s1">]'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">display_name</span><span class="p">)</span></div>
+
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2026, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.0.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

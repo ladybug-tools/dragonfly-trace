@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dragonfly_trace.cli.translate &#8212; dragonfly-trace  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/bootstrap-sphinx.css?v=0bf093e7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=0b9525ea" />
+    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<link rel="icon" type="image/x-icon" href="https://github.com/ladybug-tools/artwork/raw/refs/heads/master/icons_bugs/ico/dragonfly.ico">
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          dragonfly-trace</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../cli/translate.html#dragonfly-trace-translate">dragonfly-trace translate</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../cli/translate.html#dragonfly-trace-translate-model-to-trace700-csv">model-to-trace700-csv</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../cli/translate.html#dragonfly-trace-translate-model-to-trace700-exp">model-to-trace700-exp</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../cli/translate.html#dragonfly-trace-translate-model-to-trace700-gbxml">model-to-trace700-gbxml</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../cli/translate.html#dragonfly-trace-translate-model-to-trace700-xlsx">model-to-trace700-xlsx</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../cli/translate.html#dragonfly-trace-translate-model-to-trace700-zip">model-to-trace700-zip</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../cli/exp.html">exp</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../cli/exp.html#dragonfly-trace-exp">dragonfly-trace exp</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../cli/exp.html#dragonfly-trace-exp-program-to-trace700-airflow">program-to-trace700-airflow</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../cli/exp.html#dragonfly-trace-exp-program-to-trace700-exp">program-to-trace700-exp</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../cli/exp.html#dragonfly-trace-exp-program-to-trace700-internal-loads">program-to-trace700-internal-loads</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../cli/exp.html#dragonfly-trace-exp-program-to-trace700-thermostat">program-to-trace700-thermostat</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../dragonfly_trace.html">dragonfly_trace package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../dragonfly_trace.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../dragonfly_trace.cli.html">dragonfly_trace.cli package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.cli.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../dragonfly_trace.cli.exp.html">dragonfly_trace.cli.exp module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../dragonfly_trace.cli.translate.html">dragonfly_trace.cli.translate module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_csv"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_csv()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_gbxml"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_gbxml()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_xlsx"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_xlsx()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_zip"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_zip()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.cli.html#module-dragonfly_trace.cli">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dragonfly_trace.properties.html">dragonfly_trace.properties package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.properties.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html">dragonfly_trace.properties.model module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties"><code class="docutils literal notranslate"><span class="pre">ModelTraceProperties</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.ToString"><code class="docutils literal notranslate"><span class="pre">ToString()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_all"><code class="docutils literal notranslate"><span class="pre">check_all()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_for_extension"><code class="docutils literal notranslate"><span class="pre">check_for_extension()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_generic"><code class="docutils literal notranslate"><span class="pre">check_generic()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_no_room_2d_floor_plate_holes"><code class="docutils literal notranslate"><span class="pre">check_no_room_2d_floor_plate_holes()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_no_skylights"><code class="docutils literal notranslate"><span class="pre">check_no_skylights()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_story_floor_plates"><code class="docutils literal notranslate"><span class="pre">check_story_floor_plates()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_windows_above_origin"><code class="docutils literal notranslate"><span class="pre">check_windows_above_origin()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.ERROR_MAP"><code class="docutils literal notranslate"><span class="pre">ERROR_MAP</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.host"><code class="docutils literal notranslate"><span class="pre">host</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../../dragonfly_trace.properties.room2d.html">dragonfly_trace.properties.room2d module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties"><code class="docutils literal notranslate"><span class="pre">Room2DTraceProperties</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.ToString"><code class="docutils literal notranslate"><span class="pre">ToString()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.check_no_floor_plate_holes"><code class="docutils literal notranslate"><span class="pre">check_no_floor_plate_holes()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.check_no_skylights"><code class="docutils literal notranslate"><span class="pre">check_no_skylights()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.check_windows_above_origin"><code class="docutils literal notranslate"><span class="pre">check_windows_above_origin()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.host"><code class="docutils literal notranslate"><span class="pre">host</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.properties.html#module-dragonfly_trace.properties">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dragonfly_trace.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../dragonfly_trace.airflows.html">dragonfly_trace.airflows module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.airflows.html#dragonfly_trace.airflows.airflows_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">airflows_trace700_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dragonfly_trace.calculation.html">dragonfly_trace.calculation module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.calculation.html#dragonfly_trace.calculation.calculation_matrix"><code class="docutils literal notranslate"><span class="pre">calculation_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dragonfly_trace.exp.html">dragonfly_trace.exp module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.airflow_to_exp"><code class="docutils literal notranslate"><span class="pre">airflow_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.construction_set_to_trace700_template"><code class="docutils literal notranslate"><span class="pre">construction_set_to_trace700_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.construction_sets_to_exp"><code class="docutils literal notranslate"><span class="pre">construction_sets_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.energy_material_to_trace700_material"><code class="docutils literal notranslate"><span class="pre">energy_material_to_trace700_material()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.equipment_to_trace700_miscellaneous"><code class="docutils literal notranslate"><span class="pre">equipment_to_trace700_miscellaneous()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.internal_loads_to_exp"><code class="docutils literal notranslate"><span class="pre">internal_loads_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.lighting_to_trace700_lighting"><code class="docutils literal notranslate"><span class="pre">lighting_to_trace700_lighting()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.opaque_construction_to_trace700_construction"><code class="docutils literal notranslate"><span class="pre">opaque_construction_to_trace700_construction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.people_to_trace700_people"><code class="docutils literal notranslate"><span class="pre">people_to_trace700_people()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_exp"><code class="docutils literal notranslate"><span class="pre">program_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_airflow_template"><code class="docutils literal notranslate"><span class="pre">program_to_trace700_airflow_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_internal_load_template"><code class="docutils literal notranslate"><span class="pre">program_to_trace700_internal_load_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_room_template"><code class="docutils literal notranslate"><span class="pre">program_to_trace700_room_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_thermostat_template"><code class="docutils literal notranslate"><span class="pre">program_to_trace700_thermostat_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.programs_to_exp"><code class="docutils literal notranslate"><span class="pre">programs_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.thermostat_to_exp"><code class="docutils literal notranslate"><span class="pre">thermostat_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.exp.html#dragonfly_trace.exp.window_construction_to_trace700_glass"><code class="docutils literal notranslate"><span class="pre">window_construction_to_trace700_glass()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dragonfly_trace.loads.html">dragonfly_trace.loads module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.loads.html#dragonfly_trace.loads.miscellaneous_loads_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">miscellaneous_loads_trace700_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.loads.html#dragonfly_trace.loads.people_and_lights_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">people_and_lights_trace700_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dragonfly_trace.util.html">dragonfly_trace.util module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.util.html#dragonfly_trace.util.sort_rooms_for_trace_700"><code class="docutils literal notranslate"><span class="pre">sort_rooms_for_trace_700()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dragonfly_trace.writer.html">dragonfly_trace.writer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_exp"><code class="docutils literal notranslate"><span class="pre">model_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_csv"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_csv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_gbxml"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_gbxml()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_workbook"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_workbook()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_zip_bytes"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_zip_bytes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dragonfly_trace.writer.html#dragonfly_trace.writer.rooms_to_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">rooms_to_trace700_matrix()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dragonfly_trace.html#module-dragonfly_trace">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../dragonfly_trace.html">dragonfly_trace package</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../dragonfly_trace.html">dragonfly_trace package</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <h1>Source code for dragonfly_trace.cli.translate</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""dragonfly trace translation commands."""</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">click</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ladybug.commandutil</span><span class="w"> </span><span class="kn">import</span> <span class="n">process_content_to_output</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dragonfly.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dragonfly_trace.writer</span><span class="w"> </span><span class="kn">import</span> <span class="n">model_to_trace700_csv</span> <span class="k">as</span> <span class="n">model_to_csv</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dragonfly_trace.writer</span><span class="w"> </span><span class="kn">import</span> <span class="n">model_to_trace700_workbook</span> <span class="k">as</span> <span class="n">model_to_workbook</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dragonfly_trace.writer</span><span class="w"> </span><span class="kn">import</span> <span class="n">model_to_trace700_gbxml</span> <span class="k">as</span> <span class="n">model_to_gbxml</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dragonfly_trace.writer</span><span class="w"> </span><span class="kn">import</span> <span class="n">model_to_exp</span><span class="p">,</span> <span class="n">model_to_trace700_zip_bytes</span>
+
+
+<span class="n">_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="nd">@click</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">help</span><span class="o">=</span><span class="s1">'Commands for translating URBANopt systems to OSM/IDF.'</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">translate</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+
+<span class="nd">@translate</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">'model-to-trace700-csv'</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s1">'model-file'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+    <span class="n">exists</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">file_okay</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dir_okay</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolve_path</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--imperial/--metric'</span><span class="p">,</span> <span class="s1">'-ip/-si'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Flag to note whether imperial '</span>
+              <span class="s1">'or metric units should be used for values in the output CSV.'</span><span class="p">,</span>
+              <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--ventilation-method'</span><span class="p">,</span> <span class="s1">'-v'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Text for the ventilation method to be '</span>
+              <span class="s1">'used to calculate outdoor air. Choose from: Sum of Outdoor Air, ASHRAE 62.1'</span><span class="p">,</span>
+              <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">'Sum of Outdoor Air'</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--multiplier/--full-geometry'</span><span class="p">,</span> <span class="s1">' /-fg'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Flag to note if the '</span>
+              <span class="s1">'multipliers on each Building story will be passed along to the '</span>
+              <span class="s1">'generated Honeybee Room objects or if full geometry objects should be '</span>
+              <span class="s1">'written for each story in the building.'</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--plenum/--separate-plenum'</span><span class="p">,</span> <span class="s1">'-p/-sp'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Flag to indicate whether '</span>
+              <span class="s1">'ceiling/floor plenum depths assigned to Room2Ds should simply be '</span>
+              <span class="s1">'reported as plenum depths in the CSV or they should be used to generate '</span>
+              <span class="s1">'distinct separated plenum rooms in the translation.'</span><span class="p">,</span>
+              <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--merge-method'</span><span class="p">,</span> <span class="s1">'-m'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Text to describe how the Room2Ds should '</span>
+              <span class="s1">'be merged into individual Rooms during the translation. Specifying a '</span>
+              <span class="s1">'value here can be an effective way to reduce the number of Room '</span>
+              <span class="s1">'volumes in the resulting Model and, ultimately, yield a faster simulation '</span>
+              <span class="s1">'time with less results to manage. Choose from: None, Zones, PlenumZones, '</span>
+              <span class="s1">'Stories, PlenumStories.'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">'None'</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--geometry-ids/--geometry-names'</span><span class="p">,</span> <span class="s1">' /-gn'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Flag to note whether a '</span>
+              <span class="s1">'cleaned version of all geometry display names should be used instead '</span>
+              <span class="s1">'of identifiers when translating the Model.'</span><span class="p">,</span>
+              <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--output-file'</span><span class="p">,</span> <span class="s1">'-f'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Optional CSV file to output the string '</span>
+              <span class="s1">'of the translation. By default it printed out to stdout.'</span><span class="p">,</span>
+              <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="s1">'w'</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="s1">'-'</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">model_to_trace700_csv_cli</span><span class="p">(</span>
+    <span class="n">model_file</span><span class="p">,</span> <span class="n">imperial</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="p">,</span>
+    <span class="n">multiplier</span><span class="p">,</span> <span class="n">plenum</span><span class="p">,</span> <span class="n">merge_method</span><span class="p">,</span> <span class="n">geometry_ids</span><span class="p">,</span> <span class="n">output_file</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Translate a Dragonfly Model to a CSV with tables for TRACE 700 attributes.</span>
+
+<span class="sd">    The resulting CSV tables can be copied into the tables that appear in the</span>
+<span class="sd">    Component Tree view of TRACE 700. The order and organization of rooms in</span>
+<span class="sd">    the resulting matrix should match that of the gbXML produced from the same model.</span>
+
+<span class="sd">    \b</span>
+<span class="sd">    Args:</span>
+<span class="sd">        model_file: Full path to a Dragonfly Model file (DFJSON or DFpkl).</span>
+<span class="sd">    """</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">full_geometry</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">multiplier</span>
+        <span class="n">separate_plenum</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">plenum</span>
+        <span class="n">metric</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">imperial</span>
+        <span class="n">geo_names</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">geometry_ids</span>
+        <span class="n">model_to_trace700_csv</span><span class="p">(</span>
+            <span class="n">model_file</span><span class="p">,</span> <span class="n">full_geometry</span><span class="p">,</span> <span class="n">separate_plenum</span><span class="p">,</span> <span class="n">merge_method</span><span class="p">,</span>
+            <span class="n">metric</span><span class="p">,</span> <span class="n">geo_names</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="p">,</span> <span class="n">output_file</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">_logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">'System translation failed.</span><span class="se">\n</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="model_to_trace700_csv">
+<a class="viewcode-back" href="../../../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_csv">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">model_to_trace700_csv</span><span class="p">(</span>
+    <span class="n">model_file</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="o">=</span><span class="s1">'Sum of Outdoor Air'</span><span class="p">,</span>
+    <span class="n">full_geometry</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">separate_plenum</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">merge_method</span><span class="o">=</span><span class="s1">'None'</span><span class="p">,</span>
+    <span class="n">geometry_names</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">imperial</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plenum</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">geometry_ids</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Translate a Dragonfly Model to a CSV with tables for TRACE 700 attributes.</span>
+
+<span class="sd">    The resulting CSV tables can be copied into the tables that appear in the</span>
+<span class="sd">    Component Tree view of TRACE 700. The order and organization of rooms in</span>
+<span class="sd">    the resulting matrix should match that of the gbXML produced from the same model.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model: A dragonfly Model for which a TRACE 700 CSV matrix will be returned.</span>
+<span class="sd">        metric: Boolean to note whether the units of the values in the resulting</span>
+<span class="sd">            matrix are in SI (True) instead of IP (False). (Default: False).</span>
+<span class="sd">        ventilation_method: Optional text for the ventilation method to be used in the</span>
+<span class="sd">            resulting matrix. Choose from the following.</span>
+
+<span class="sd">            * Sum of Outdoor Air</span>
+<span class="sd">            * ASHRAE 62.1</span>
+
+<span class="sd">        full_geometry: If False, the multipliers on this Model's Stories will be</span>
+<span class="sd">            passed along to the CSV. If True, full geometry objects will be written</span>
+<span class="sd">            for each and every floor in the building that are represented through</span>
+<span class="sd">            multipliers and all resulting multipliers will be 1. (Default: True).</span>
+<span class="sd">        separate_plenum: Boolean to indicate whether ceiling/floor plenum depths</span>
+<span class="sd">            assigned to Room2Ds should simply be reported as plenum depths in the</span>
+<span class="sd">            CSV or they should be used to generate distinct separated plenum</span>
+<span class="sd">            rooms in the translation. (Default: False).</span>
+<span class="sd">        merge_method: An optional text string to describe how the Room2Ds should</span>
+<span class="sd">            be merged into individual Rooms during the translation. Specifying a</span>
+<span class="sd">            value here can be an effective way to reduce the number of Room</span>
+<span class="sd">            volumes in the resulting model and, ultimately, yield a faster</span>
+<span class="sd">            simulation time in the destination engine with fewer results</span>
+<span class="sd">            to manage. Note that Room2Ds will only be merged if they form a</span>
+<span class="sd">            continuous volume. Otherwise, there will be multiple Rooms per</span>
+<span class="sd">            zone or story, each with an integer added at the end of their</span>
+<span class="sd">            identifiers. Choose from the following options:</span>
+
+<span class="sd">            * None - No merging of Room2Ds will occur</span>
+<span class="sd">            * Zones - Room2Ds in the same zone will be merged</span>
+<span class="sd">            * PlenumZones - Only plenums in the same zone will be merged</span>
+<span class="sd">            * Stories - Rooms in the same story will be merged</span>
+<span class="sd">            * PlenumStories - Only plenums in the same story will be merged</span>
+
+<span class="sd">        geometry_names: Boolean to note whether a cleaned version of all geometry</span>
+<span class="sd">            display names should be used instead of identifiers when translating</span>
+<span class="sd">            the Model to OSM and IDF. Using this flag will affect all Rooms, Faces,</span>
+<span class="sd">            Apertures, Doors, and Shades. It will generally result in more read-able</span>
+<span class="sd">            names in the OSM and IDF but this means that it will not be easy to map</span>
+<span class="sd">            the EnergyPlus results back to the original Honeybee Model. Cases</span>
+<span class="sd">            of duplicate IDs resulting from non-unique names will be resolved</span>
+<span class="sd">            by adding integers to the ends of the new IDs that are derived from</span>
+<span class="sd">            the name. (Default: False).</span>
+<span class="sd">        output_file: Optional CSV file to output the CSV string of the translation.</span>
+<span class="sd">            By default this string will be returned from this method.</span>
+<span class="sd">    """</span>
+    <span class="c1"># load the model and translate it to a CSV</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">model_file</span><span class="p">)</span>
+    <span class="n">exclude_plenums</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">separate_plenum</span>
+    <span class="n">csv_str</span> <span class="o">=</span> <span class="n">model_to_csv</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="p">,</span>
+        <span class="n">multiplier</span><span class="p">,</span> <span class="n">exclude_plenums</span><span class="p">,</span> <span class="n">merge_method</span><span class="p">,</span> <span class="n">geometry_names</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">process_content_to_output</span><span class="p">(</span><span class="n">csv_str</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@translate</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">'model-to-trace700-xlsx'</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s1">'model-file'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+    <span class="n">exists</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">file_okay</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dir_okay</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolve_path</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--imperial/--metric'</span><span class="p">,</span> <span class="s1">'-ip/-si'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Flag to note whether imperial '</span>
+              <span class="s1">'or metric units should be used for values in the output XLSX.'</span><span class="p">,</span>
+              <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--ventilation-method'</span><span class="p">,</span> <span class="s1">'-v'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Text for the ventilation method to be '</span>
+              <span class="s1">'used to calculate outdoor air. Choose from: Sum of Outdoor Air, ASHRAE 62.1'</span><span class="p">,</span>
+              <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">'Sum of Outdoor Air'</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--multiplier/--full-geometry'</span><span class="p">,</span> <span class="s1">' /-fg'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Flag to note if the '</span>
+              <span class="s1">'multipliers on each Building story will be passed along to the '</span>
+              <span class="s1">'generated Honeybee Room objects or if full geometry objects should be '</span>
+              <span class="s1">'written for each story in the building.'</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--plenum/--separate-plenum'</span><span class="p">,</span> <span class="s1">'-p/-sp'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Flag to indicate whether '</span>
+              <span class="s1">'ceiling/floor plenum depths assigned to Room2Ds should simply be '</span>
+              <span class="s1">'reported as plenum depths in the tables or they should be used to generate '</span>
+              <span class="s1">'distinct separated plenum rooms in the translation.'</span><span class="p">,</span>
+              <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--merge-method'</span><span class="p">,</span> <span class="s1">'-m'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Text to describe how the Room2Ds should '</span>
+              <span class="s1">'be merged into individual Rooms during the translation. Specifying a '</span>
+              <span class="s1">'value here can be an effective way to reduce the number of Room '</span>
+              <span class="s1">'volumes in the resulting Model and, ultimately, yield a faster simulation '</span>
+              <span class="s1">'time with less results to manage. Choose from: None, Zones, PlenumZones, '</span>
+              <span class="s1">'Stories, PlenumStories.'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">'None'</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--geometry-ids/--geometry-names'</span><span class="p">,</span> <span class="s1">' /-gn'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Flag to note whether a '</span>
+              <span class="s1">'cleaned version of all geometry display names should be used instead '</span>
+              <span class="s1">'of identifiers when translating the Model.'</span><span class="p">,</span>
+              <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--output-file'</span><span class="p">,</span> <span class="s1">'-f'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Optional XLSX file to output the content '</span>
+              <span class="s1">'of the translation. By default it printed out to stdout.'</span><span class="p">,</span>
+              <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="s1">'wb'</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="s1">'-'</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">model_to_trace700_xlsx_cli</span><span class="p">(</span>
+    <span class="n">model_file</span><span class="p">,</span> <span class="n">imperial</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="p">,</span>
+    <span class="n">multiplier</span><span class="p">,</span> <span class="n">plenum</span><span class="p">,</span> <span class="n">merge_method</span><span class="p">,</span> <span class="n">geometry_ids</span><span class="p">,</span> <span class="n">output_file</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Translate a Dragonfly Model to an Excel file with tables for TRACE 700 attributes.</span>
+
+<span class="sd">    The resulting Excel tables can be copied into the tables that appear in the</span>
+<span class="sd">    Component Tree view of TRACE 700. The order and organization of rooms in</span>
+<span class="sd">    the resulting matrix should match that of the gbXML produced from the same model.</span>
+
+<span class="sd">    \b</span>
+<span class="sd">    Args:</span>
+<span class="sd">        model_file: Full path to a Dragonfly Model file (DFJSON or DFpkl).</span>
+<span class="sd">    """</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">full_geometry</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">multiplier</span>
+        <span class="n">separate_plenum</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">plenum</span>
+        <span class="n">metric</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">imperial</span>
+        <span class="n">geo_names</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">geometry_ids</span>
+        <span class="n">model_to_trace700_xlsx</span><span class="p">(</span>
+            <span class="n">model_file</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="p">,</span>
+            <span class="n">full_geometry</span><span class="p">,</span> <span class="n">separate_plenum</span><span class="p">,</span> <span class="n">merge_method</span><span class="p">,</span> <span class="n">geo_names</span><span class="p">,</span> <span class="n">output_file</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">_logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">'System translation failed.</span><span class="se">\n</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="model_to_trace700_xlsx">
+<a class="viewcode-back" href="../../../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_xlsx">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">model_to_trace700_xlsx</span><span class="p">(</span>
+    <span class="n">model_file</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="o">=</span><span class="s1">'Sum of Outdoor Air'</span><span class="p">,</span>
+    <span class="n">full_geometry</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">separate_plenum</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">merge_method</span><span class="o">=</span><span class="s1">'None'</span><span class="p">,</span>
+    <span class="n">geometry_names</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">imperial</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plenum</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">geometry_ids</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Translate a Dragonfly Model to an Excel file with tables for TRACE 700 attributes.</span>
+
+<span class="sd">    The resulting Excel tables can be copied into the tables that appear in the</span>
+<span class="sd">    Component Tree view of TRACE 700. The order and organization of rooms in</span>
+<span class="sd">    the resulting matrix should match that of the gbXML produced from the same model.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model: A dragonfly Model for which a TRACE 700 XLSX file will be returned.</span>
+<span class="sd">        metric: Boolean to note whether the units of the values in the resulting</span>
+<span class="sd">            matrix are in SI (True) instead of IP (False). (Default: False).</span>
+<span class="sd">        ventilation_method: Optional text for the ventilation method to be used in the</span>
+<span class="sd">            resulting matrix. Choose from the following.</span>
+
+<span class="sd">            * Sum of Outdoor Air</span>
+<span class="sd">            * ASHRAE 62.1</span>
+
+<span class="sd">        full_geometry: If False, the multipliers on this Model's Stories will be</span>
+<span class="sd">            passed along to the XLSX. If True, full geometry objects will be written</span>
+<span class="sd">            for each and every floor in the building that are represented through</span>
+<span class="sd">            multipliers and all resulting multipliers will be 1. (Default: True).</span>
+<span class="sd">        separate_plenum: Boolean to indicate whether ceiling/floor plenum depths</span>
+<span class="sd">            assigned to Room2Ds should simply be reported as plenum depths in the</span>
+<span class="sd">            tables or they should be used to generate distinct separated plenum</span>
+<span class="sd">            rooms in the translation. (Default: False).</span>
+<span class="sd">        merge_method: An optional text string to describe how the Room2Ds should</span>
+<span class="sd">            be merged into individual Rooms during the translation. Specifying a</span>
+<span class="sd">            value here can be an effective way to reduce the number of Room</span>
+<span class="sd">            volumes in the resulting model and, ultimately, yield a faster</span>
+<span class="sd">            simulation time in the destination engine with fewer results</span>
+<span class="sd">            to manage. Note that Room2Ds will only be merged if they form a</span>
+<span class="sd">            continuous volume. Otherwise, there will be multiple Rooms per</span>
+<span class="sd">            zone or story, each with an integer added at the end of their</span>
+<span class="sd">            identifiers. Choose from the following options:</span>
+
+<span class="sd">            * None - No merging of Room2Ds will occur</span>
+<span class="sd">            * Zones - Room2Ds in the same zone will be merged</span>
+<span class="sd">            * PlenumZones - Only plenums in the same zone will be merged</span>
+<span class="sd">            * Stories - Rooms in the same story will be merged</span>
+<span class="sd">            * PlenumStories - Only plenums in the same story will be merged</span>
+
+<span class="sd">        geometry_names: Boolean to note whether a cleaned version of all geometry</span>
+<span class="sd">            display names should be used instead of identifiers when translating</span>
+<span class="sd">            the Model to OSM and IDF. Using this flag will affect all Rooms, Faces,</span>
+<span class="sd">            Apertures, Doors, and Shades. It will generally result in more read-able</span>
+<span class="sd">            names in the OSM and IDF but this means that it will not be easy to map</span>
+<span class="sd">            the EnergyPlus results back to the original Honeybee Model. Cases</span>
+<span class="sd">            of duplicate IDs resulting from non-unique names will be resolved</span>
+<span class="sd">            by adding integers to the ends of the new IDs that are derived from</span>
+<span class="sd">            the name. (Default: False).</span>
+<span class="sd">        output_file: Optional XLSX file to output the XLSX content of the translation.</span>
+<span class="sd">            By default this content will be returned from this method as a</span>
+<span class="sd">            base64 string.</span>
+<span class="sd">    """</span>
+    <span class="c1"># load the model and translate it to a Workbook</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">model_file</span><span class="p">)</span>
+    <span class="n">exclude_plenums</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">separate_plenum</span>
+    <span class="n">workbook</span> <span class="o">=</span> <span class="n">model_to_workbook</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="p">,</span>
+        <span class="n">multiplier</span><span class="p">,</span> <span class="n">exclude_plenums</span><span class="p">,</span> <span class="n">merge_method</span><span class="p">,</span> <span class="n">geometry_names</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">workbook</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">output_file</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># save workbook to a byte stream</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+        <span class="n">workbook</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="n">workbook</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># reset stream position to the beginning</span>
+        <span class="n">excel_bytes</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">output_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">output_file</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">'&lt;stdout&gt;'</span> <span class="ow">and</span> \
+                <span class="n">output_file</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">'wb'</span><span class="p">:</span>
+            <span class="n">output_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">excel_bytes</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># convert the bytes to a base64 string</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">excel_bytes</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">output_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">f_contents</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">f_contents</span>
+            <span class="k">elif</span> <span class="n">output_file</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">'w'</span><span class="p">:</span>
+                <span class="n">f_contents</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">)</span>
+                <span class="n">output_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">f_contents</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">output_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@translate</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">'model-to-trace700-gbxml'</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s1">'model-file'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+    <span class="n">exists</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">file_okay</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dir_okay</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolve_path</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--imperial/--metric'</span><span class="p">,</span> <span class="s1">'-ip/-si'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Flag to note whether imperial '</span>
+              <span class="s1">'or metric units should be used for values in the output CSV.'</span><span class="p">,</span>
+              <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--opening-simplification'</span><span class="p">,</span> <span class="s1">'-s'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Text string for the type of '</span>
+              <span class="s1">'simplification to perform on windows and doors in the dragonfly model. '</span>
+              <span class="s1">'Choose from: None, MergeAdjWindows, SingleWindow.'</span><span class="p">,</span>
+              <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">'MergeAdjWindows'</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--program-name'</span><span class="p">,</span> <span class="s1">'-p'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Optional text to set the name of the '</span>
+              <span class="s1">'software that will appear under the programId and ProductName tags '</span>
+              <span class="s1">'of the DocumentHistory section. This can be set things like "Ladybug '</span>
+              <span class="s1">'Tools" or "Pollination" or some other software in which this gbXML '</span>
+              <span class="s1">'export capability is being run. If None, "OpenStudio" will be used.'</span><span class="p">,</span>
+              <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--program-version'</span><span class="p">,</span> <span class="s1">'-v'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Optional text to set the version of '</span>
+              <span class="s1">'the software that will appear under the DocumentHistory section. '</span>
+              <span class="s1">'If None, and the program_name is also unspecified, only the version '</span>
+              <span class="s1">'of OpenStudio will appear. Otherwise, this will default to "0.0.0" '</span>
+              <span class="s1">'given that the version field is required.'</span><span class="p">,</span>
+              <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--output-file'</span><span class="p">,</span> <span class="s1">'-f'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Optional gbXML file to output the string '</span>
+              <span class="s1">'of the translation. By default it printed out to stdout'</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">'-'</span><span class="p">,</span>
+              <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">file_okay</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dir_okay</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolve_path</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">model_to_trace700_gbxml_cli</span><span class="p">(</span>
+    <span class="n">model_file</span><span class="p">,</span> <span class="n">imperial</span><span class="p">,</span> <span class="n">opening_simplification</span><span class="p">,</span>
+    <span class="n">program_name</span><span class="p">,</span> <span class="n">program_version</span><span class="p">,</span> <span class="n">output_file</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Translate a Dragonfly Model to a gbXML file.</span>
+
+<span class="sd">    \b</span>
+<span class="sd">    Args:</span>
+<span class="sd">        model_file: Path to either a DFJSON or DFpkl file. This can also be a</span>
+<span class="sd">            HBJSON or a HBpkl from which a Dragonfly model should be derived.</span>
+<span class="sd">    """</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">metric</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">imperial</span>
+        <span class="n">model_to_trace700_gbxml</span><span class="p">(</span>
+            <span class="n">model_file</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">opening_simplification</span><span class="p">,</span>
+            <span class="n">program_name</span><span class="p">,</span> <span class="n">program_version</span><span class="p">,</span> <span class="n">output_file</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">_logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">'Model translation failed.</span><span class="se">\n</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="model_to_trace700_gbxml">
+<a class="viewcode-back" href="../../../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_gbxml">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">model_to_trace700_gbxml</span><span class="p">(</span>
+    <span class="n">model_file</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">opening_simplification</span><span class="o">=</span><span class="s1">'MergeAdjWindows'</span><span class="p">,</span>
+    <span class="n">program_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">program_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">imperial</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Translate a Dragonfly Model to a gbXML file suitable for TRACE 700.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model_file: Path to either a DFJSON or DFpkl file. This can also be a</span>
+<span class="sd">            HBJSON or a HBpkl from which a Dragonfly model should be derived.</span>
+<span class="sd">        metric: Boolean to note whether the units of the values in the resulting</span>
+<span class="sd">            matrix are in SI (True) instead of IP (False). (Default: False).</span>
+<span class="sd">        opening_simplification: Optional text to note the method by which openings</span>
+<span class="sd">            are simplified as part of the translation to gbXML. (Default: MergeAdjWindows).</span>
+<span class="sd">            Choose from the following options.</span>
+
+<span class="sd">            * None - No sub-face simplification will occur</span>
+<span class="sd">            * MergeAdjWindows - Adjacent windows are merged; doors are left as is</span>
+<span class="sd">            * SingleWindow - All doors removed; windows are merged into one per wall</span>
+
+<span class="sd">        program_name: Optional text to set the name of the software that will</span>
+<span class="sd">            appear under the programId and ProductName tags of the DocumentHistory</span>
+<span class="sd">            section. This can be set things like "Ladybug Tools" or "Pollination"</span>
+<span class="sd">            or some other software in which this gbXML export capability is being</span>
+<span class="sd">            run. If None, the "OpenStudio" will be used. (Default: None).</span>
+<span class="sd">        program_version: Optional text to set the version of the software that</span>
+<span class="sd">            will appear under the DocumentHistory section. If None, and the</span>
+<span class="sd">            program_name is also unspecified, only the version of OpenStudio will</span>
+<span class="sd">            appear. Otherwise, this will default to "0.0.0" given that the version</span>
+<span class="sd">            field is required. (Default: None).</span>
+<span class="sd">        output_file: Optional gbXML file to output the string of the translation.</span>
+<span class="sd">            By default it will be returned from this method.</span>
+<span class="sd">    """</span>
+    <span class="c1"># re-serialize the Dragonfly Model and translate it</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">model_file</span><span class="p">)</span>
+    <span class="n">gbxml_str</span> <span class="o">=</span> <span class="n">model_to_gbxml</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">opening_simplification</span><span class="p">,</span> <span class="n">program_name</span><span class="p">,</span> <span class="n">program_version</span>
+    <span class="p">)</span>
+    <span class="c1"># write out the gbXML file</span>
+    <span class="k">return</span> <span class="n">process_content_to_output</span><span class="p">(</span><span class="n">gbxml_str</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@translate</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">'model-to-trace700-exp'</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s1">'model-file'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+    <span class="n">exists</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">file_okay</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dir_okay</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolve_path</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--imperial/--metric'</span><span class="p">,</span> <span class="s1">'-ip/-si'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Flag to note whether imperial '</span>
+              <span class="s1">'or metric units should be used for values in the output EXP file.'</span><span class="p">,</span>
+              <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--ventilation-method'</span><span class="p">,</span> <span class="s1">'-v'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Text for the ventilation method to be '</span>
+              <span class="s1">'used to calculate outdoor air. Choose from: Sum of Outdoor Air, ASHRAE 62.1'</span><span class="p">,</span>
+              <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">'Sum of Outdoor Air'</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--output-file'</span><span class="p">,</span> <span class="s1">'-f'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Optional EXP file to output the string '</span>
+              <span class="s1">'of the translation. By default it is printed out to stdout.'</span><span class="p">,</span>
+              <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="s1">'w'</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="s1">'-'</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">model_to_trace700_exp_cli</span><span class="p">(</span><span class="n">model_file</span><span class="p">,</span> <span class="n">imperial</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="p">,</span> <span class="n">output_file</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Translate all unique ProgramTypes in a Dragonfly Model file into a single TRACE 700 EXP file.</span>
+
+<span class="sd">    \b</span>
+<span class="sd">    Args:</span>
+<span class="sd">        model_file: Full path to a Dragonfly Model file (DFJSON or DFpkl).</span>
+<span class="sd">    """</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">metric</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">imperial</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">model_file</span><span class="p">)</span>
+        <span class="n">exp_contents</span> <span class="o">=</span> <span class="n">model_to_exp</span><span class="p">(</span>
+            <span class="n">model</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="o">=</span><span class="n">ventilation_method</span>
+        <span class="p">)</span>
+        <span class="n">process_content_to_output</span><span class="p">(</span><span class="n">exp_contents</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">_logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">'Model EXP translation failed.</span><span class="se">\n</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="nd">@translate</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">'model-to-trace700-zip'</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s1">'model-file'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+    <span class="n">exists</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">file_okay</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dir_okay</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolve_path</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--imperial/--metric'</span><span class="p">,</span> <span class="s1">'-ip/-si'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Flag to note whether imperial '</span>
+              <span class="s1">'or metric units should be used for values in the output CSV.'</span><span class="p">,</span>
+              <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--opening-simplification'</span><span class="p">,</span> <span class="s1">'-s'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Text string for the type of '</span>
+              <span class="s1">'simplification to perform on windows and doors in the dragonfly model. '</span>
+              <span class="s1">'Choose from: None, MergeAdjWindows, SingleWindow.'</span><span class="p">,</span>
+              <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">'MergeAdjWindows'</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--ventilation-method'</span><span class="p">,</span> <span class="s1">'-v'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Text for the ventilation method to be '</span>
+              <span class="s1">'used to calculate outdoor air. Choose from: Sum of Outdoor Air, ASHRAE 62.1'</span><span class="p">,</span>
+              <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">'Sum of Outdoor Air'</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--program-name'</span><span class="p">,</span> <span class="s1">'-p'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Optional text to set the name of the '</span>
+              <span class="s1">'software that will appear under the programId and ProductName tags '</span>
+              <span class="s1">'of the DocumentHistory section. This can be set things like "Ladybug '</span>
+              <span class="s1">'Tools" or "Pollination" or some other software in which this gbXML '</span>
+              <span class="s1">'export capability is being run. If None, "OpenStudio" will be used.'</span><span class="p">,</span>
+              <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--program-version'</span><span class="p">,</span> <span class="s1">'-v'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Optional text to set the version of '</span>
+              <span class="s1">'the software that will appear under the DocumentHistory section. '</span>
+              <span class="s1">'If None, and the program_name is also unspecified, only the version '</span>
+              <span class="s1">'of OpenStudio will appear. Otherwise, this will default to "0.0.0" '</span>
+              <span class="s1">'given that the version field is required.'</span><span class="p">,</span>
+              <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">'--output-file'</span><span class="p">,</span> <span class="s1">'-f'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Optional ,zip file to output the content '</span>
+              <span class="s1">'of the translation. By default it printed out to stdout.'</span><span class="p">,</span>
+              <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="s1">'wb'</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="s1">'-'</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">model_to_trace700_zip_cli</span><span class="p">(</span>
+    <span class="n">model_file</span><span class="p">,</span> <span class="n">imperial</span><span class="p">,</span> <span class="n">opening_simplification</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="p">,</span>
+    <span class="n">program_name</span><span class="p">,</span> <span class="n">program_version</span><span class="p">,</span> <span class="n">output_file</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Translate a Dragonfly Model to a gbXML file.</span>
+
+<span class="sd">    \b</span>
+<span class="sd">    Args:</span>
+<span class="sd">        model_file: Path to either a DFJSON or DFpkl file. This can also be a</span>
+<span class="sd">            HBJSON or a HBpkl from which a Dragonfly model should be derived.</span>
+<span class="sd">    """</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">metric</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">imperial</span>
+        <span class="n">model_to_trace700_zip</span><span class="p">(</span>
+            <span class="n">model_file</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">opening_simplification</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="p">,</span>
+            <span class="n">program_name</span><span class="p">,</span> <span class="n">program_version</span><span class="p">,</span> <span class="n">output_file</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">_logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">'Model translation failed.</span><span class="se">\n</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="model_to_trace700_zip">
+<a class="viewcode-back" href="../../../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_zip">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">model_to_trace700_zip</span><span class="p">(</span>
+    <span class="n">model_file</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">opening_simplification</span><span class="o">=</span><span class="s1">'MergeAdjWindows'</span><span class="p">,</span>
+    <span class="n">ventilation_method</span><span class="o">=</span><span class="s1">'Sum of Outdoor Air'</span><span class="p">,</span>
+    <span class="n">program_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">program_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">imperial</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Translate a Dragonfly Model to a gbXML file suitable for TRACE 700.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model_file: Path to either a DFJSON or DFpkl file. This can also be a</span>
+<span class="sd">            HBJSON or a HBpkl from which a Dragonfly model should be derived.</span>
+<span class="sd">        metric: Boolean to note whether the units of the values in the resulting</span>
+<span class="sd">            matrix are in SI (True) instead of IP (False). (Default: False).</span>
+<span class="sd">        opening_simplification: Optional text to note the method by which openings</span>
+<span class="sd">            are simplified as part of the translation to gbXML. (Default: MergeAdjWindows).</span>
+<span class="sd">            Choose from the following options.</span>
+
+<span class="sd">            * None - No sub-face simplification will occur</span>
+<span class="sd">            * MergeAdjWindows - Adjacent windows are merged; doors are left as is</span>
+<span class="sd">            * SingleWindow - All doors removed; windows are merged into one per wall</span>
+
+<span class="sd">        ventilation_method: Optional text for the ventilation method to be used in the</span>
+<span class="sd">            resulting matrix. Choose from the following.</span>
+
+<span class="sd">            * Sum of Outdoor Air</span>
+<span class="sd">            * ASHRAE 62.1</span>
+
+<span class="sd">        program_name: Optional text to set the name of the software that will</span>
+<span class="sd">            appear under the programId and ProductName tags of the DocumentHistory</span>
+<span class="sd">            section. This can be set things like "Ladybug Tools" or "Pollination"</span>
+<span class="sd">            or some other software in which this gbXML export capability is being</span>
+<span class="sd">            run. If None, the "OpenStudio" will be used. (Default: None).</span>
+<span class="sd">        program_version: Optional text to set the version of the software that</span>
+<span class="sd">            will appear under the DocumentHistory section. If None, and the</span>
+<span class="sd">            program_name is also unspecified, only the version of OpenStudio will</span>
+<span class="sd">            appear. Otherwise, this will default to "0.0.0" given that the version</span>
+<span class="sd">            field is required. (Default: None).</span>
+<span class="sd">        output_file: Optional gbXML file to output the string of the translation.</span>
+<span class="sd">            By default it will be returned from this method.</span>
+<span class="sd">    """</span>
+    <span class="c1"># re-serialize the Dragonfly Model and translate it</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">model_file</span><span class="p">)</span>
+    <span class="n">zip_bytes</span> <span class="o">=</span> <span class="n">model_to_trace700_zip_bytes</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">opening_simplification</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="p">,</span>
+        <span class="n">program_name</span><span class="p">,</span> <span class="n">program_version</span>
+    <span class="p">)</span>
+    <span class="c1"># write out the ZIP file</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="s1">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">out_f</span><span class="p">:</span>
+            <span class="n">out_f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">zip_bytes</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">output_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">output_file</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">'&lt;stdout&gt;'</span> <span class="ow">and</span> \
+                <span class="n">output_file</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">'wb'</span><span class="p">:</span>
+            <span class="n">output_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">zip_bytes</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># convert the bytes to a base64 string</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">zip_bytes</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">output_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">f_contents</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">f_contents</span>
+            <span class="k">elif</span> <span class="n">output_file</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">'w'</span><span class="p">:</span>
+                <span class="n">f_contents</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">)</span>
+                <span class="n">output_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">f_contents</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">output_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">)</span></div>
+
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2026, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.0.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

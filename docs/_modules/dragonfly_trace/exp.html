@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dragonfly_trace.exp &#8212; dragonfly-trace  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=0bf093e7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0b9525ea" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<link rel="icon" type="image/x-icon" href="https://github.com/ladybug-tools/artwork/raw/refs/heads/master/icons_bugs/ico/dragonfly.ico">
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          dragonfly-trace</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/translate.html#dragonfly-trace-translate">dragonfly-trace translate</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/translate.html#dragonfly-trace-translate-model-to-trace700-csv">model-to-trace700-csv</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/translate.html#dragonfly-trace-translate-model-to-trace700-exp">model-to-trace700-exp</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/translate.html#dragonfly-trace-translate-model-to-trace700-gbxml">model-to-trace700-gbxml</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/translate.html#dragonfly-trace-translate-model-to-trace700-xlsx">model-to-trace700-xlsx</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/translate.html#dragonfly-trace-translate-model-to-trace700-zip">model-to-trace700-zip</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/exp.html">exp</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/exp.html#dragonfly-trace-exp">dragonfly-trace exp</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/exp.html#dragonfly-trace-exp-program-to-trace700-airflow">program-to-trace700-airflow</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/exp.html#dragonfly-trace-exp-program-to-trace700-exp">program-to-trace700-exp</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/exp.html#dragonfly-trace-exp-program-to-trace700-internal-loads">program-to-trace700-internal-loads</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/exp.html#dragonfly-trace-exp-program-to-trace700-thermostat">program-to-trace700-thermostat</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dragonfly_trace.html">dragonfly_trace package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dragonfly_trace.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../dragonfly_trace.cli.html">dragonfly_trace.cli package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.cli.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../dragonfly_trace.cli.exp.html">dragonfly_trace.cli.exp module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../dragonfly_trace.cli.translate.html">dragonfly_trace.cli.translate module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_csv"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_csv()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_gbxml"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_gbxml()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_xlsx"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_xlsx()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../dragonfly_trace.cli.translate.html#dragonfly_trace.cli.translate.model_to_trace700_zip"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_zip()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.cli.html#module-dragonfly_trace.cli">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dragonfly_trace.properties.html">dragonfly_trace.properties package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.properties.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../dragonfly_trace.properties.model.html">dragonfly_trace.properties.model module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties"><code class="docutils literal notranslate"><span class="pre">ModelTraceProperties</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.ToString"><code class="docutils literal notranslate"><span class="pre">ToString()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_all"><code class="docutils literal notranslate"><span class="pre">check_all()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_for_extension"><code class="docutils literal notranslate"><span class="pre">check_for_extension()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_generic"><code class="docutils literal notranslate"><span class="pre">check_generic()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_no_room_2d_floor_plate_holes"><code class="docutils literal notranslate"><span class="pre">check_no_room_2d_floor_plate_holes()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_no_skylights"><code class="docutils literal notranslate"><span class="pre">check_no_skylights()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_story_floor_plates"><code class="docutils literal notranslate"><span class="pre">check_story_floor_plates()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.check_windows_above_origin"><code class="docutils literal notranslate"><span class="pre">check_windows_above_origin()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.ERROR_MAP"><code class="docutils literal notranslate"><span class="pre">ERROR_MAP</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../dragonfly_trace.properties.model.html#dragonfly_trace.properties.model.ModelTraceProperties.host"><code class="docutils literal notranslate"><span class="pre">host</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../dragonfly_trace.properties.room2d.html">dragonfly_trace.properties.room2d module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties"><code class="docutils literal notranslate"><span class="pre">Room2DTraceProperties</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="../../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.ToString"><code class="docutils literal notranslate"><span class="pre">ToString()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.check_no_floor_plate_holes"><code class="docutils literal notranslate"><span class="pre">check_no_floor_plate_holes()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.check_no_skylights"><code class="docutils literal notranslate"><span class="pre">check_no_skylights()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.check_windows_above_origin"><code class="docutils literal notranslate"><span class="pre">check_windows_above_origin()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="../../dragonfly_trace.properties.room2d.html#dragonfly_trace.properties.room2d.Room2DTraceProperties.host"><code class="docutils literal notranslate"><span class="pre">host</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.properties.html#module-dragonfly_trace.properties">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dragonfly_trace.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../dragonfly_trace.airflows.html">dragonfly_trace.airflows module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.airflows.html#dragonfly_trace.airflows.airflows_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">airflows_trace700_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dragonfly_trace.calculation.html">dragonfly_trace.calculation module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.calculation.html#dragonfly_trace.calculation.calculation_matrix"><code class="docutils literal notranslate"><span class="pre">calculation_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dragonfly_trace.exp.html">dragonfly_trace.exp module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.airflow_to_exp"><code class="docutils literal notranslate"><span class="pre">airflow_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.construction_set_to_trace700_template"><code class="docutils literal notranslate"><span class="pre">construction_set_to_trace700_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.construction_sets_to_exp"><code class="docutils literal notranslate"><span class="pre">construction_sets_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.energy_material_to_trace700_material"><code class="docutils literal notranslate"><span class="pre">energy_material_to_trace700_material()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.equipment_to_trace700_miscellaneous"><code class="docutils literal notranslate"><span class="pre">equipment_to_trace700_miscellaneous()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.internal_loads_to_exp"><code class="docutils literal notranslate"><span class="pre">internal_loads_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.lighting_to_trace700_lighting"><code class="docutils literal notranslate"><span class="pre">lighting_to_trace700_lighting()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.opaque_construction_to_trace700_construction"><code class="docutils literal notranslate"><span class="pre">opaque_construction_to_trace700_construction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.people_to_trace700_people"><code class="docutils literal notranslate"><span class="pre">people_to_trace700_people()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_exp"><code class="docutils literal notranslate"><span class="pre">program_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_airflow_template"><code class="docutils literal notranslate"><span class="pre">program_to_trace700_airflow_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_internal_load_template"><code class="docutils literal notranslate"><span class="pre">program_to_trace700_internal_load_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_room_template"><code class="docutils literal notranslate"><span class="pre">program_to_trace700_room_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_thermostat_template"><code class="docutils literal notranslate"><span class="pre">program_to_trace700_thermostat_template()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.programs_to_exp"><code class="docutils literal notranslate"><span class="pre">programs_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.thermostat_to_exp"><code class="docutils literal notranslate"><span class="pre">thermostat_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.window_construction_to_trace700_glass"><code class="docutils literal notranslate"><span class="pre">window_construction_to_trace700_glass()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dragonfly_trace.loads.html">dragonfly_trace.loads module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.loads.html#dragonfly_trace.loads.miscellaneous_loads_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">miscellaneous_loads_trace700_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.loads.html#dragonfly_trace.loads.people_and_lights_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">people_and_lights_trace700_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dragonfly_trace.util.html">dragonfly_trace.util module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.util.html#dragonfly_trace.util.sort_rooms_for_trace_700"><code class="docutils literal notranslate"><span class="pre">sort_rooms_for_trace_700()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dragonfly_trace.writer.html">dragonfly_trace.writer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_exp"><code class="docutils literal notranslate"><span class="pre">model_to_exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_csv"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_csv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_gbxml"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_gbxml()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_workbook"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_workbook()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.writer.html#dragonfly_trace.writer.model_to_trace700_zip_bytes"><code class="docutils literal notranslate"><span class="pre">model_to_trace700_zip_bytes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dragonfly_trace.writer.html#dragonfly_trace.writer.rooms_to_trace700_matrix"><code class="docutils literal notranslate"><span class="pre">rooms_to_trace700_matrix()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dragonfly_trace.html#module-dragonfly_trace">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dragonfly_trace.html">dragonfly_trace package</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dragonfly_trace.html">dragonfly_trace package</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <h1>Source code for dragonfly_trace.exp</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Methods to generate EXP templates for Trane TRACE."""</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">honeybee.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">readable_short_name</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ladybug.datatype.area</span><span class="w"> </span><span class="kn">import</span> <span class="n">Area</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ladybug.datatype.conductivity</span><span class="w"> </span><span class="kn">import</span> <span class="n">Conductivity</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ladybug.datatype.density</span><span class="w"> </span><span class="kn">import</span> <span class="n">Density</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ladybug.datatype.distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">Distance</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ladybug.datatype.power</span><span class="w"> </span><span class="kn">import</span> <span class="n">Power</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ladybug.datatype.energyflux</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnergyFlux</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ladybug.datatype.volumeflowrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">VolumeFlowRate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ladybug.datatype.temperature</span><span class="w"> </span><span class="kn">import</span> <span class="n">Temperature</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ladybug.datatype.specificheatcapacity</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpecificHeatCapacity</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ladybug.datatype.rvalue</span><span class="w"> </span><span class="kn">import</span> <span class="n">RValue</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ladybug.datatype.uvalue</span><span class="w"> </span><span class="kn">import</span> <span class="n">UValue</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">honeybee_energy.material.opaque</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnergyMaterialNoMass</span>
+
+
+<span class="n">area_dt</span> <span class="o">=</span> <span class="n">Area</span><span class="p">()</span>
+<span class="n">conductivity_dt</span> <span class="o">=</span> <span class="n">Conductivity</span><span class="p">()</span>
+<span class="n">density_dt</span> <span class="o">=</span> <span class="n">Density</span><span class="p">()</span>
+<span class="n">distance_dt</span> <span class="o">=</span> <span class="n">Distance</span><span class="p">()</span>
+<span class="n">power_dt</span> <span class="o">=</span> <span class="n">Power</span><span class="p">()</span>
+<span class="n">flux_dt</span> <span class="o">=</span> <span class="n">EnergyFlux</span><span class="p">()</span>
+<span class="n">flow_dt</span> <span class="o">=</span> <span class="n">VolumeFlowRate</span><span class="p">()</span>
+<span class="n">temp_dt</span> <span class="o">=</span> <span class="n">Temperature</span><span class="p">()</span>
+<span class="n">specific_heat_capacity_dt</span> <span class="o">=</span> <span class="n">SpecificHeatCapacity</span><span class="p">()</span>
+<span class="n">rvalue_dt</span> <span class="o">=</span> <span class="n">RValue</span><span class="p">()</span>
+<span class="n">uvalue_dt</span> <span class="o">=</span> <span class="n">UValue</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="people_to_trace700_people">
+<a class="viewcode-back" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.people_to_trace700_people">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">people_to_trace700_people</span><span class="p">(</span><span class="n">people</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get a TRACE 700 "T.LOAD_PEOPLE" entry string from a Honeybee People object.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        people: A Honeybee People object.</span>
+<span class="sd">        si_units: Boolean to note whether the units of the values in the resulting</span>
+<span class="sd">            matrix are in SI (True) instead of IP (False). (Default: False).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A text string for a TRACE 700 T.LOAD_PEOPLE library entry.</span>
+<span class="sd">    """</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">readable_short_name</span><span class="p">(</span><span class="n">people</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+    <span class="n">radiant_pct</span> <span class="o">=</span> <span class="n">people</span><span class="o">.</span><span class="n">radiant_fraction</span> <span class="o">*</span> <span class="mf">100.0</span>
+
+    <span class="n">area_unit</span> <span class="o">=</span> <span class="s1">'m2'</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">'ft2'</span>
+    <span class="n">power_unit</span> <span class="o">=</span> <span class="s1">'W'</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">'Btu/h'</span>
+    <span class="n">amount_unit_code</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">1</span>  <span class="c1"># 1 = sq ft/person, 2 = sq m/person</span>
+    <span class="n">load_unit_code</span> <span class="o">=</span> <span class="mi">8</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">7</span>  <span class="c1"># 7 = Btu/h, 8 = W</span>
+
+    <span class="n">people_amount</span> <span class="o">=</span> <span class="n">area_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">people</span><span class="o">.</span><span class="n">area_per_person</span><span class="p">],</span> <span class="n">area_unit</span><span class="p">,</span> <span class="s1">'m2'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">sensible_ppl</span> <span class="o">=</span> <span class="n">power_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">people</span><span class="o">.</span><span class="n">activity_max_sensible</span><span class="p">],</span> <span class="n">power_unit</span><span class="p">,</span> <span class="s1">'W'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">latent_ppl</span> <span class="o">=</span> <span class="n">power_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">people</span><span class="o">.</span><span class="n">activity_max_latent</span><span class="p">],</span> <span class="n">power_unit</span><span class="p">,</span> <span class="s1">'W'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># People;</span>
+    <span class="c1"># Description;</span>
+    <span class="c1"># 1;</span>
+    <span class="c1"># People amount;</span>
+    <span class="c1"># People amount unit;</span>
+    <span class="c1"># Sensible load;</span>
+    <span class="c1"># Sensible load unit;</span>
+    <span class="c1"># Latent load;</span>
+    <span class="c1"># Latent load unit;</span>
+    <span class="c1"># Longwave radiant %;</span>
+    <span class="n">exp_line</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s1">'People;</span><span class="si">{</span><span class="n">description</span><span class="si">}</span><span class="s1">;1;</span><span class="si">{</span><span class="n">people_amount</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">amount_unit_code</span><span class="si">}</span><span class="s1">;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">sensible_ppl</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">load_unit_code</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">latent_ppl</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">load_unit_code</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">radiant_pct</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">;'</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">exp_line</span></div>
+
+
+
+<div class="viewcode-block" id="lighting_to_trace700_lighting">
+<a class="viewcode-back" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.lighting_to_trace700_lighting">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">lighting_to_trace700_lighting</span><span class="p">(</span><span class="n">lighting</span><span class="p">,</span> <span class="n">fixture_type</span><span class="o">=</span><span class="s1">'SUSFLUOR'</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get a TRACE 700 "T.LOAD_LIGHTS" entry string from a Honeybee Lighting object.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        lighting: A Honeybee Lighting object.</span>
+<span class="sd">        fixture_type: Optional text string for the lighting fixture type.</span>
+<span class="sd">            (Default: 'SUSFLUOR').</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A text string for a TRACE 700 T.LOAD_LIGHTS library entry.</span>
+<span class="sd">    """</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">lighting</span><span class="o">.</span><span class="n">display_name</span>
+
+    <span class="n">plenum_pct</span> <span class="o">=</span> <span class="n">lighting</span><span class="o">.</span><span class="n">return_air_fraction</span> <span class="o">*</span> <span class="mf">100.0</span>
+    <span class="n">radiant_pct</span> <span class="o">=</span> <span class="n">lighting</span><span class="o">.</span><span class="n">radiant_fraction</span> <span class="o">*</span> <span class="mf">100.0</span>
+    <span class="n">visible_pct</span> <span class="o">=</span> <span class="n">lighting</span><span class="o">.</span><span class="n">visible_fraction</span> <span class="o">*</span> <span class="mf">100.0</span>
+
+    <span class="c1"># Lighting;</span>
+    <span class="c1"># Description;</span>
+    <span class="c1"># 1;</span>
+    <span class="c1"># Fixture type;</span>
+    <span class="c1"># Plenum %;</span>
+    <span class="c1"># Ballast factor;</span>
+    <span class="c1"># Longwave radiant %;</span>
+    <span class="c1"># Shortwave radiant %;</span>
+    <span class="n">exp_line</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s1">'Lighting;</span><span class="si">{</span><span class="n">description</span><span class="si">}</span><span class="s1">;1;</span><span class="si">{</span><span class="n">fixture_type</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">plenum_pct</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">;1;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">radiant_pct</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">visible_pct</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">;'</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">exp_line</span></div>
+
+
+
+<div class="viewcode-block" id="equipment_to_trace700_miscellaneous">
+<a class="viewcode-back" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.equipment_to_trace700_miscellaneous">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">equipment_to_trace700_miscellaneous</span><span class="p">(</span><span class="n">equipment</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">watts_per_area</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get a TRACE 700 "T.LOAD_MISEQUIP" entry string from a Honeybee Equipment object.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        equipment: A Honeybee ElectricEquipment or GasEquipment object.</span>
+<span class="sd">        si_units: Boolean to note whether the units of the values in the resulting</span>
+<span class="sd">            matrix are in SI (True) instead of IP (False). (Default: False).</span>
+<span class="sd">        watts_per_area: Optional float for total W/m2 override to represent a combined</span>
+<span class="sd">            electric + gas equipment load density. If None, equipment.watts_per_area</span>
+<span class="sd">            will be used. (Default: None).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A text string for a TRACE 700 T.LOAD_MISEQUIP library entry.</span>
+<span class="sd">    """</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">readable_short_name</span><span class="p">(</span><span class="n">equipment</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+    <span class="n">sensible_pct</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">equipment</span><span class="o">.</span><span class="n">latent_fraction</span><span class="p">)</span> <span class="o">*</span> <span class="mf">100.0</span>
+    <span class="n">radiant_pct</span> <span class="o">=</span> <span class="n">equipment</span><span class="o">.</span><span class="n">radiant_fraction</span> <span class="o">*</span> <span class="mf">100.0</span>
+    <span class="n">lost_pct</span> <span class="o">=</span> <span class="n">equipment</span><span class="o">.</span><span class="n">lost_fraction</span> <span class="o">*</span> <span class="mf">100.0</span>
+    <span class="n">room_pct</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">-</span> <span class="n">lost_pct</span>
+    <span class="n">plenum_pct</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="n">meter_code</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="s1">'Gas'</span> <span class="ow">in</span> <span class="n">equipment</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">else</span> <span class="mi">1</span>
+    <span class="n">air_path</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">lost_pct</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
+
+    <span class="n">flux_unit</span> <span class="o">=</span> <span class="s1">'W/m2'</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">'W/ft2'</span>
+    <span class="n">misc_unit_code</span> <span class="o">=</span> <span class="mi">9</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">8</span>  <span class="c1"># 8 = W/sq ft, 9 = W/sq m</span>
+
+    <span class="n">lpd_val</span> <span class="o">=</span> <span class="n">watts_per_area</span> <span class="k">if</span> <span class="n">watts_per_area</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">equipment</span><span class="o">.</span><span class="n">watts_per_area</span>
+    <span class="n">energy_value</span> <span class="o">=</span> <span class="n">flux_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">lpd_val</span><span class="p">],</span> <span class="n">flux_unit</span><span class="p">,</span> <span class="s1">'W/m2'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Miscellaneous;</span>
+    <span class="c1"># Description;</span>
+    <span class="c1"># 1;</span>
+    <span class="c1"># Energy consumption;</span>
+    <span class="c1"># Energy consumption unit;</span>
+    <span class="c1"># Sensible %;</span>
+    <span class="c1"># Room %;</span>
+    <span class="c1"># Plenum %;</span>
+    <span class="c1"># Radiant %;</span>
+    <span class="c1"># Energy meter;</span>
+    <span class="c1"># Air path;</span>
+    <span class="n">exp_line</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s1">'Miscellaneous;</span><span class="si">{</span><span class="n">description</span><span class="si">}</span><span class="s1">;1;</span><span class="si">{</span><span class="n">energy_value</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">misc_unit_code</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">sensible_pct</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">room_pct</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">plenum_pct</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">radiant_pct</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">meter_code</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">air_path</span><span class="si">}</span><span class="s1">;'</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">exp_line</span></div>
+
+
+
+<div class="viewcode-block" id="program_to_trace700_internal_load_template">
+<a class="viewcode-back" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_internal_load_template">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">program_to_trace700_internal_load_template</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get a TRACE 700 "T.InternalLoadTemplate" entry string from a Honeybee ProgramType.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        program: A Honeybee ProgramType object.</span>
+<span class="sd">        si_units: Boolean to note whether the units of the values in the resulting</span>
+<span class="sd">            matrix are in SI (True) instead of IP (False). (Default: False).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A text string for a TRACE 700 T.InternalLoadTemplate entry.</span>
+<span class="sd">    """</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">display_name</span>
+
+    <span class="n">area_unit</span> <span class="o">=</span> <span class="s1">'m2'</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">'ft2'</span>
+    <span class="n">power_unit</span> <span class="o">=</span> <span class="s1">'W'</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">'Btu/h'</span>
+    <span class="n">flux_unit</span> <span class="o">=</span> <span class="s1">'W/m2'</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">'W/ft2'</span>
+
+    <span class="n">ppl_amount_unit</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">1</span>
+    <span class="n">ppl_load_unit</span> <span class="o">=</span> <span class="mi">8</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">7</span>
+    <span class="n">ltg_unit</span> <span class="o">=</span> <span class="mi">4</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">3</span>
+    <span class="n">misc_unit</span> <span class="o">=</span> <span class="mi">9</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">8</span>
+
+    <span class="c1"># Fields 2-9 (People)</span>
+    <span class="n">ppl</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">people</span>
+    <span class="k">if</span> <span class="n">ppl</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ppl_type</span> <span class="o">=</span> <span class="n">readable_short_name</span><span class="p">(</span><span class="n">ppl</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+        <span class="n">ppl_amount</span> <span class="o">=</span> <span class="n">area_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">ppl</span><span class="o">.</span><span class="n">area_per_person</span><span class="p">],</span> <span class="n">area_unit</span><span class="p">,</span> <span class="s1">'m2'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">sensible_watts</span> <span class="o">=</span> <span class="n">power_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">ppl</span><span class="o">.</span><span class="n">activity_max_sensible</span><span class="p">],</span> <span class="n">power_unit</span><span class="p">,</span> <span class="s1">'W'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">latent_watts</span> <span class="o">=</span> <span class="n">power_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">ppl</span><span class="o">.</span><span class="n">activity_max_latent</span><span class="p">],</span> <span class="n">power_unit</span><span class="p">,</span> <span class="s1">'W'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ppl_type</span> <span class="o">=</span> <span class="s1">'None'</span>
+        <span class="n">ppl_amount</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># default sensible and latent loads: 250 Btu/h (73.26775 W)</span>
+        <span class="c1"># unit is hardcoded to IP since the sensible and latent values are converted</span>
+        <span class="c1"># to Btu/h when importing the template</span>
+        <span class="n">sensible_watts</span> <span class="o">=</span> <span class="mi">250</span>
+        <span class="n">latent_watts</span> <span class="o">=</span> <span class="mi">250</span>
+        <span class="n">ppl_load_unit</span> <span class="o">=</span> <span class="mi">7</span>
+
+    <span class="c1"># Fields 10-13 (Lighting)</span>
+    <span class="n">ltg</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">lighting</span>
+    <span class="k">if</span> <span class="n">ltg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ltg_type</span> <span class="o">=</span> <span class="n">ltg</span><span class="o">.</span><span class="n">display_name</span>
+        <span class="n">ltg_lpd</span> <span class="o">=</span> <span class="n">flux_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">ltg</span><span class="o">.</span><span class="n">watts_per_area</span><span class="p">],</span> <span class="n">flux_unit</span><span class="p">,</span> <span class="s1">'W/m2'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">ltg</span> <span class="k">else</span> <span class="mf">0.0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ltg_type</span> <span class="o">=</span> <span class="s1">'Fluorescent, hung below ceiling, 100</span><span class="si">% lo</span><span class="s1">ad to space'</span>
+        <span class="n">ltg_lpd</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="c1"># Fields 14-18 (Miscellaneous Equipment)</span>
+    <span class="n">elec_eq</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">electric_equipment</span>
+    <span class="n">gas_eq</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">gas_equipment</span>
+
+    <span class="k">if</span> <span class="n">elec_eq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">gas_eq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">elec_lpd</span> <span class="o">=</span> <span class="n">elec_eq</span><span class="o">.</span><span class="n">watts_per_area</span> <span class="k">if</span> <span class="n">elec_eq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">0.0</span>
+        <span class="n">gas_lpd</span> <span class="o">=</span> <span class="n">gas_eq</span><span class="o">.</span><span class="n">watts_per_area</span> <span class="k">if</span> <span class="n">gas_eq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">0.0</span>
+        <span class="n">combined_lpd</span> <span class="o">=</span> <span class="n">elec_lpd</span> <span class="o">+</span> <span class="n">gas_lpd</span>
+        <span class="k">if</span> <span class="n">combined_lpd</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">misc_energy</span> <span class="o">=</span> <span class="n">flux_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">combined_lpd</span><span class="p">],</span> <span class="n">flux_unit</span><span class="p">,</span> <span class="s1">'W/m2'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">eq_obj</span> <span class="o">=</span> <span class="n">elec_eq</span> <span class="k">if</span> <span class="n">elec_lpd</span> <span class="o">&gt;=</span> <span class="n">gas_lpd</span> <span class="k">else</span> <span class="n">gas_eq</span>
+            <span class="n">energy_meter</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">elec_lpd</span> <span class="o">&gt;=</span> <span class="n">gas_lpd</span> <span class="k">else</span> <span class="mi">2</span>
+            <span class="n">misc_type</span> <span class="o">=</span> <span class="n">readable_short_name</span><span class="p">(</span><span class="n">eq_obj</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">misc_type</span> <span class="o">=</span> <span class="s1">'None'</span>
+            <span class="n">misc_energy</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">energy_meter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">misc_type</span> <span class="o">=</span> <span class="s1">'None'</span>
+        <span class="n">misc_energy</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">energy_meter</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">field_19</span><span class="p">,</span> <span class="n">field_20</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span>  <span class="c1"># workstation, workstation unit</span>
+
+    <span class="n">exp_line</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">template_name</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">ppl_type</span><span class="si">}</span><span class="s2">;Cooling Only (Design);</span><span class="si">{</span><span class="n">ppl_amount</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">ppl_amount_unit</span><span class="si">}</span><span class="s2">;"</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">sensible_watts</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">ppl_load_unit</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">latent_watts</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">ppl_load_unit</span><span class="si">}</span><span class="s2">;"</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ltg_type</span><span class="si">}</span><span class="s2">;Cooling Only (Design);</span><span class="si">{</span><span class="n">ltg_lpd</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">ltg_unit</span><span class="si">}</span><span class="s2">;"</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">misc_type</span><span class="si">}</span><span class="s2">;Cooling Only (Design);</span><span class="si">{</span><span class="n">misc_energy</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">misc_unit</span><span class="si">}</span><span class="s2">;"</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">energy_meter</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">field_19</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">field_20</span><span class="si">}</span><span class="s2">;"</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">exp_line</span></div>
+
+
+
+<div class="viewcode-block" id="program_to_trace700_airflow_template">
+<a class="viewcode-back" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_airflow_template">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">program_to_trace700_airflow_template</span><span class="p">(</span>
+    <span class="n">program</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="o">=</span><span class="s1">'Sum of Outdoor Air'</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get a TRACE 700 "T.AirflowTemplate" entry string from a Honeybee ProgramType.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        program: A Honeybee ProgramType object.</span>
+<span class="sd">        si_units: Boolean to note whether the units of the values in the resulting</span>
+<span class="sd">            matrix are in SI (True) instead of IP (False). (Default: False).</span>
+<span class="sd">        ventilation_method: Optional text for the ventilation method to be used in the</span>
+<span class="sd">            airflow template. Choose from the following.</span>
+
+<span class="sd">            * Sum of Outdoor Air</span>
+<span class="sd">            * ASHRAE 62.1</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A text string for a TRACE 700 T.AirflowTemplate entry.</span>
+<span class="sd">    """</span>
+    <span class="n">blank_val</span> <span class="o">=</span> <span class="s1">'9999.99'</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">display_name</span>
+
+    <span class="c1"># Fields 4-7 (Ventilation Layout)</span>
+    <span class="n">vent</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">ventilation</span>
+    <span class="n">vent_flow_unit</span> <span class="o">=</span> <span class="s1">'L/s'</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">'cfm'</span>
+    <span class="n">vent_unit</span> <span class="o">=</span> <span class="mi">6</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">3</span>  <span class="c1"># 6 = L/s/sq m, 3 = cfm/sq ft</span>
+    <span class="n">ppl_unit</span> <span class="o">=</span> <span class="mi">7</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">2</span>  <span class="c1"># 7 = L/s/person m, 2 = cfm/person</span>
+
+    <span class="n">vent_val</span><span class="p">,</span> <span class="n">ppl</span><span class="p">,</span> <span class="n">ez_cool</span><span class="p">,</span> <span class="n">ez_heat</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span>
+    <span class="k">if</span> <span class="n">vent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ventilation_method</span> <span class="o">==</span> <span class="s1">'ASHRAE 62.1'</span><span class="p">:</span>
+        <span class="n">vent_val</span> <span class="o">=</span> <span class="n">flow_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">vent</span><span class="o">.</span><span class="n">flow_per_area</span><span class="p">],</span> <span class="n">vent_flow_unit</span><span class="p">,</span> <span class="s1">'m3/s'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">vent_val</span> <span class="o">=</span> <span class="n">vent_val</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="n">vent_val</span> <span class="o">*</span> <span class="mf">10.7639104</span>  <span class="c1"># convert to cfm/ft2</span>
+        <span class="n">ppl</span> <span class="o">=</span> <span class="n">flow_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">vent</span><span class="o">.</span><span class="n">flow_per_person</span><span class="p">],</span> <span class="n">vent_flow_unit</span><span class="p">,</span> <span class="s1">'m3/s'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ez_cool</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">vent</span><span class="o">.</span><span class="n">effectiveness_cooling</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="n">ez_cool</span> <span class="o">=</span> <span class="mi">100</span> <span class="k">if</span> <span class="n">ez_cool</span> <span class="o">&gt;</span> <span class="mi">100</span> <span class="k">else</span> <span class="n">ez_cool</span>
+        <span class="n">ez_heat</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">vent</span><span class="o">.</span><span class="n">effectiveness_heating</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="n">ez_heat</span> <span class="o">=</span> <span class="mi">100</span> <span class="k">if</span> <span class="n">ez_heat</span> <span class="o">&gt;</span> <span class="mi">100</span> <span class="k">else</span> <span class="n">ez_heat</span>
+
+    <span class="c1"># Fields 8-13 (Infiltration Layout)</span>
+    <span class="n">inf</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">infiltration</span>
+    <span class="n">inf_unit</span> <span class="o">=</span> <span class="mi">5</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">3</span>  <span class="c1"># 5 = L/s/sq m, 3 = cfm/sq ft</span>
+
+    <span class="n">inf_val</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">inf</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">inf_val</span> <span class="o">=</span> <span class="n">inf</span><span class="o">.</span><span class="n">flow_per_exterior_area_si</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="n">inf</span><span class="o">.</span><span class="n">flow_per_exterior_area_ip</span>
+
+    <span class="k">if</span> <span class="n">ventilation_method</span> <span class="o">==</span> <span class="s1">'ASHRAE 62.1'</span><span class="p">:</span>
+        <span class="n">exp_line</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">template_name</span><span class="si">}</span><span class="s2">;Default Std62;Available (100%);</span><span class="si">{</span><span class="n">ppl</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">ppl_unit</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">vent_val</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">vent_unit</span><span class="si">}</span><span class="s2">;"</span>
+            <span class="sa">f</span><span class="s2">"None;Available (100%);</span><span class="si">{</span><span class="n">inf_val</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">inf_unit</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">inf_val</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">inf_unit</span><span class="si">}</span><span class="s2">;"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">blank_val</span><span class="si">}</span><span class="s2">;0;Available (100%);</span><span class="si">{</span><span class="n">blank_val</span><span class="si">}</span><span class="s2">;8;</span><span class="si">{</span><span class="n">blank_val</span><span class="si">}</span><span class="s2">;9;</span><span class="si">{</span><span class="n">blank_val</span><span class="si">}</span><span class="s2">;10;</span><span class="si">{</span><span class="n">blank_val</span><span class="si">}</span><span class="s2">;10;0;2;"</span>
+            <span class="sa">f</span><span class="s2">"Available (100%);1;0;</span><span class="si">{</span><span class="n">ez_cool</span><span class="si">}</span><span class="s2">;0;</span><span class="si">{</span><span class="n">ez_heat</span><span class="si">}</span><span class="s2">;1;</span><span class="si">{</span><span class="n">blank_val</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">blank_val</span><span class="si">}</span><span class="s2">;0;0;</span><span class="si">{</span><span class="n">blank_val</span><span class="si">}</span><span class="s2">;0;"</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">exp_line</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">template_name</span><span class="si">}</span><span class="s2">;None;Available (100%);</span><span class="si">{</span><span class="n">vent_val</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">vent_unit</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">vent_val</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">vent_unit</span><span class="si">}</span><span class="s2">;"</span>
+            <span class="sa">f</span><span class="s2">"None;Available (100%);</span><span class="si">{</span><span class="n">inf_val</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">inf_unit</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">inf_val</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">inf_unit</span><span class="si">}</span><span class="s2">;"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">blank_val</span><span class="si">}</span><span class="s2">;0;Available (100%);</span><span class="si">{</span><span class="n">blank_val</span><span class="si">}</span><span class="s2">;8;</span><span class="si">{</span><span class="n">blank_val</span><span class="si">}</span><span class="s2">;9;</span><span class="si">{</span><span class="n">blank_val</span><span class="si">}</span><span class="s2">;10;</span><span class="si">{</span><span class="n">blank_val</span><span class="si">}</span><span class="s2">;10;0;2;"</span>
+            <span class="sa">f</span><span class="s2">"Available (100%);0;0;</span><span class="si">{</span><span class="n">blank_val</span><span class="si">}</span><span class="s2">;0;</span><span class="si">{</span><span class="n">blank_val</span><span class="si">}</span><span class="s2">;1;</span><span class="si">{</span><span class="n">blank_val</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">blank_val</span><span class="si">}</span><span class="s2">;0;0;</span><span class="si">{</span><span class="n">blank_val</span><span class="si">}</span><span class="s2">;0;"</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">exp_line</span></div>
+
+
+
+<div class="viewcode-block" id="program_to_trace700_thermostat_template">
+<a class="viewcode-back" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_thermostat_template">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">program_to_trace700_thermostat_template</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get a TRACE 700 "T.ThermostatTemplate" entry string from a Honeybee ProgramType.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        program: A Honeybee ProgramType object.</span>
+<span class="sd">        si_units: Boolean to note whether the units of the values in the resulting</span>
+<span class="sd">            matrix are in SI (True) instead of IP (False). (Default: False).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A text string for a TRACE 700 T.ThermostatTemplate entry.</span>
+<span class="sd">    """</span>
+    <span class="n">set_pt</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">setpoint</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">display_name</span>
+
+    <span class="n">temp_unit_label</span> <span class="o">=</span> <span class="s1">'C'</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">'F'</span>
+    <span class="n">temp_unit_code</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">1</span>  <span class="c1"># 0 = Celsius, 1 = Fahrenheit</span>
+
+    <span class="k">if</span> <span class="n">set_pt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">clg_db</span> <span class="o">=</span> <span class="n">temp_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">set_pt</span><span class="o">.</span><span class="n">cooling_setpoint</span><span class="p">],</span> <span class="n">temp_unit_label</span><span class="p">,</span> <span class="s1">'C'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">htg_db</span> <span class="o">=</span> <span class="n">temp_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">set_pt</span><span class="o">.</span><span class="n">heating_setpoint</span><span class="p">],</span> <span class="n">temp_unit_label</span><span class="p">,</span> <span class="s1">'C'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">clg_drift</span> <span class="o">=</span> <span class="n">temp_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">set_pt</span><span class="o">.</span><span class="n">cooling_setback</span><span class="p">],</span> <span class="n">temp_unit_label</span><span class="p">,</span> <span class="s1">'C'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">htg_drift</span> <span class="o">=</span> <span class="n">temp_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">set_pt</span><span class="o">.</span><span class="n">heating_setback</span><span class="p">],</span> <span class="n">temp_unit_label</span><span class="p">,</span> <span class="s1">'C'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">rh_val</span> <span class="o">=</span> <span class="n">set_pt</span><span class="o">.</span><span class="n">dehumidifying_setpoint</span> <span class="k">if</span> <span class="n">set_pt</span><span class="o">.</span><span class="n">dehumidifying_setpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">50.0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">clg_db</span> <span class="o">=</span> <span class="n">temp_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="mf">75.0</span><span class="p">],</span> <span class="n">temp_unit_label</span><span class="p">,</span> <span class="s1">'F'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">htg_db</span> <span class="o">=</span> <span class="n">temp_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="mf">68.0</span><span class="p">],</span> <span class="n">temp_unit_label</span><span class="p">,</span> <span class="s1">'F'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">clg_drift</span> <span class="o">=</span> <span class="n">temp_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="mf">90.0</span><span class="p">],</span> <span class="n">temp_unit_label</span><span class="p">,</span> <span class="s1">'F'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">htg_drift</span> <span class="o">=</span> <span class="n">temp_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="mf">55.0</span><span class="p">],</span> <span class="n">temp_unit_label</span><span class="p">,</span> <span class="s1">'F'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">rh_val</span> <span class="o">=</span> <span class="mf">50.0</span>
+
+    <span class="n">control_fields</span> <span class="o">=</span> <span class="s1">'1;0;2;1;'</span>
+
+    <span class="n">exp_line</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">template_name</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">clg_db</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">temp_unit_code</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">htg_db</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">temp_unit_code</span><span class="si">}</span><span class="s2">;"</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">rh_val</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">clg_drift</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">;None;</span><span class="si">{</span><span class="n">htg_drift</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">;None;"</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">control_fields</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">exp_line</span></div>
+
+
+
+<div class="viewcode-block" id="program_to_trace700_room_template">
+<a class="viewcode-back" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_trace700_room_template">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">program_to_trace700_room_template</span><span class="p">(</span><span class="n">program</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get a TRACE 700 "T.RoomTemplate" entry string from a Honeybee ProgramType.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        program: A Honeybee ProgramType object.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A text string for a TRACE 700 T.RoomTemplate entry.</span>
+<span class="sd">    """</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">display_name</span>
+    <span class="n">construction_template</span> <span class="o">=</span> <span class="s1">'Default'</span>
+
+    <span class="n">exp_line</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">template_name</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">template_name</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">template_name</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">template_name</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">construction_template</span><span class="si">}</span><span class="s1">;'</span>
+    <span class="k">return</span> <span class="n">exp_line</span></div>
+
+
+
+<div class="viewcode-block" id="internal_loads_to_exp">
+<a class="viewcode-back" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.internal_loads_to_exp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">internal_loads_to_exp</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get an EXP string containing internal load library entries and templates for a ProgramType.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        program: A Honeybee ProgramType object.</span>
+<span class="sd">        si_units: Boolean to note whether the units of the values in the resulting</span>
+<span class="sd">            matrix are in SI (True) instead of IP (False). (Default: False).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Text string of an EXP file for TRACE 700 containing internal load definitions.</span>
+<span class="sd">    """</span>
+    <span class="n">newline</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
+    <span class="n">standalone_blocks</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'EDITORSv6.3.1'</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">program</span><span class="o">.</span><span class="n">people</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+            <span class="s1">'T.LOAD_PEOPLE'</span><span class="p">,</span>
+            <span class="n">people_to_trace700_people</span><span class="p">(</span><span class="n">program</span><span class="o">.</span><span class="n">people</span><span class="p">,</span> <span class="n">si_units</span><span class="p">)</span>
+        <span class="p">])</span>
+    <span class="k">if</span> <span class="n">program</span><span class="o">.</span><span class="n">lighting</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+            <span class="s1">'T.LOAD_LIGHTS'</span><span class="p">,</span>
+            <span class="n">lighting_to_trace700_lighting</span><span class="p">(</span><span class="n">program</span><span class="o">.</span><span class="n">lighting</span><span class="p">)</span>
+        <span class="p">])</span>
+
+    <span class="n">elec_eq</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">electric_equipment</span>
+    <span class="n">gas_eq</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">gas_equipment</span>
+    <span class="k">if</span> <span class="n">elec_eq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">gas_eq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">elec_lpd</span> <span class="o">=</span> <span class="n">elec_eq</span><span class="o">.</span><span class="n">watts_per_area</span> <span class="k">if</span> <span class="n">elec_eq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">0.0</span>
+        <span class="n">gas_lpd</span> <span class="o">=</span> <span class="n">gas_eq</span><span class="o">.</span><span class="n">watts_per_area</span> <span class="k">if</span> <span class="n">gas_eq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">0.0</span>
+        <span class="n">combined_lpd</span> <span class="o">=</span> <span class="n">elec_lpd</span> <span class="o">+</span> <span class="n">gas_lpd</span>
+        <span class="k">if</span> <span class="n">elec_lpd</span> <span class="o">+</span> <span class="n">gas_lpd</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">eq_obj</span> <span class="o">=</span> <span class="n">elec_eq</span> <span class="k">if</span> <span class="n">elec_lpd</span> <span class="o">&gt;=</span> <span class="n">gas_lpd</span> <span class="k">else</span> <span class="n">gas_eq</span>
+            <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+                <span class="s1">'T.LOAD_MISEQUIP'</span><span class="p">,</span>
+                <span class="n">equipment_to_trace700_miscellaneous</span><span class="p">(</span><span class="n">eq_obj</span><span class="p">,</span> <span class="n">si_units</span><span class="p">,</span> <span class="n">watts_per_area</span><span class="o">=</span><span class="n">combined_lpd</span><span class="p">)</span>
+            <span class="p">])</span>
+
+    <span class="n">internal_load_template</span> <span class="o">=</span> <span class="n">program_to_trace700_internal_load_template</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">si_units</span><span class="p">)</span>
+    <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+        <span class="s1">'T.InternalLoadTemplate'</span><span class="p">,</span>
+        <span class="n">internal_load_template</span>
+    <span class="p">])</span>
+
+    <span class="n">file_data</span> <span class="o">=</span> <span class="n">newline</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">standalone_blocks</span><span class="p">)</span> <span class="o">+</span> <span class="n">newline</span>
+    <span class="k">return</span> <span class="n">file_data</span></div>
+
+
+
+<div class="viewcode-block" id="airflow_to_exp">
+<a class="viewcode-back" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.airflow_to_exp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">airflow_to_exp</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="o">=</span><span class="s1">'Sum of Outdoor Air'</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get an EXP string containing only the airflow template for a ProgramType.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        program: A Honeybee ProgramType object.</span>
+<span class="sd">        si_units: Boolean to note whether the units of the values in the resulting</span>
+<span class="sd">            matrix are in SI (True) instead of IP (False). (Default: False).</span>
+<span class="sd">        ventilation_method: Optional text for the ventilation method to be used in the</span>
+<span class="sd">            airflow template. Choose from the following.</span>
+
+<span class="sd">            * Sum of Outdoor Air</span>
+<span class="sd">            * ASHRAE 62.1</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Text string of an EXP file for TRACE 700 containing the airflow template.</span>
+<span class="sd">    """</span>
+    <span class="n">newline</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
+
+    <span class="n">airflow_template</span> <span class="o">=</span> <span class="n">program_to_trace700_airflow_template</span><span class="p">(</span>
+        <span class="n">program</span><span class="p">,</span> <span class="n">si_units</span><span class="p">,</span> <span class="n">ventilation_method</span>
+    <span class="p">)</span>
+
+    <span class="n">standalone_blocks</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">'EDITORSv6.3.1'</span><span class="p">,</span>
+        <span class="s1">'T.AirflowTemplate'</span><span class="p">,</span>
+        <span class="n">airflow_template</span>
+    <span class="p">]</span>
+
+    <span class="n">file_data</span> <span class="o">=</span> <span class="n">newline</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">b</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">standalone_blocks</span> <span class="k">if</span> <span class="n">b</span> <span class="o">!=</span> <span class="s1">''</span><span class="p">])</span> <span class="o">+</span> <span class="n">newline</span>
+    <span class="k">return</span> <span class="n">file_data</span></div>
+
+
+
+<div class="viewcode-block" id="thermostat_to_exp">
+<a class="viewcode-back" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.thermostat_to_exp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">thermostat_to_exp</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get an EXP string containing only the thermostat template for a ProgramType.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        program: A Honeybee ProgramType object.</span>
+<span class="sd">        si_units: Boolean to note whether the units of the values in the resulting</span>
+<span class="sd">            matrix are in SI (True) instead of IP (False). (Default: False).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Text string of an EXP file for TRACE 700 containing the thermostat template.</span>
+<span class="sd">    """</span>
+    <span class="n">newline</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
+
+    <span class="n">thermostat_template</span> <span class="o">=</span> <span class="n">program_to_trace700_thermostat_template</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">si_units</span><span class="p">)</span>
+
+    <span class="n">standalone_blocks</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">'EDITORSv6.3.1'</span><span class="p">,</span>
+        <span class="s1">'T.ThermostatTemplate'</span><span class="p">,</span>
+        <span class="n">thermostat_template</span>
+    <span class="p">]</span>
+
+    <span class="n">file_data</span> <span class="o">=</span> <span class="n">newline</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">b</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">standalone_blocks</span> <span class="k">if</span> <span class="n">b</span> <span class="o">!=</span> <span class="s1">''</span><span class="p">])</span> <span class="o">+</span> <span class="n">newline</span>
+    <span class="k">return</span> <span class="n">file_data</span></div>
+
+
+
+<div class="viewcode-block" id="program_to_exp">
+<a class="viewcode-back" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.program_to_exp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">program_to_exp</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="o">=</span><span class="s1">'Sum of Outdoor Air'</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get a complete EXP string for a Honeybee ProgramType.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        program: A Honeybee ProgramType object for which the TRACE 700 EXP string</span>
+<span class="sd">            will be generated.</span>
+<span class="sd">        si_units: Boolean to note whether the units of the values in the resulting</span>
+<span class="sd">            matrix are in SI (True) instead of IP (False). (Default: False).</span>
+<span class="sd">        ventilation_method: Optional text for the ventilation method to be used in the</span>
+<span class="sd">            airflow template. Choose from the following.</span>
+
+<span class="sd">            * Sum of Outdoor Air</span>
+<span class="sd">            * ASHRAE 62.1</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Text string of a complete EXP file for TRACE 700.</span>
+<span class="sd">    """</span>
+    <span class="n">newline</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
+    <span class="n">standalone_blocks</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'EDITORSv6.3.1'</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">program</span><span class="o">.</span><span class="n">people</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+            <span class="s1">'T.LOAD_PEOPLE'</span><span class="p">,</span>
+            <span class="n">people_to_trace700_people</span><span class="p">(</span><span class="n">program</span><span class="o">.</span><span class="n">people</span><span class="p">,</span> <span class="n">si_units</span><span class="p">)</span>
+        <span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">program</span><span class="o">.</span><span class="n">lighting</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+            <span class="s1">'T.LOAD_LIGHTS'</span><span class="p">,</span>
+            <span class="n">lighting_to_trace700_lighting</span><span class="p">(</span><span class="n">program</span><span class="o">.</span><span class="n">lighting</span><span class="p">)</span>
+        <span class="p">])</span>
+
+    <span class="n">elec_eq</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">electric_equipment</span>
+    <span class="n">gas_eq</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">gas_equipment</span>
+    <span class="k">if</span> <span class="n">elec_eq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">gas_eq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">elec_lpd</span> <span class="o">=</span> <span class="n">elec_eq</span><span class="o">.</span><span class="n">watts_per_area</span> <span class="k">if</span> <span class="n">elec_eq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">0.0</span>
+        <span class="n">gas_lpd</span> <span class="o">=</span> <span class="n">gas_eq</span><span class="o">.</span><span class="n">watts_per_area</span> <span class="k">if</span> <span class="n">gas_eq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">0.0</span>
+        <span class="n">combined_lpd</span> <span class="o">=</span> <span class="n">elec_lpd</span> <span class="o">+</span> <span class="n">gas_lpd</span>
+        <span class="k">if</span> <span class="n">elec_lpd</span> <span class="o">+</span> <span class="n">gas_lpd</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">eq_obj</span> <span class="o">=</span> <span class="n">elec_eq</span> <span class="k">if</span> <span class="n">elec_lpd</span> <span class="o">&gt;=</span> <span class="n">gas_lpd</span> <span class="k">else</span> <span class="n">gas_eq</span>
+            <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+                <span class="s1">'T.LOAD_MISEQUIP'</span><span class="p">,</span>
+                <span class="n">equipment_to_trace700_miscellaneous</span><span class="p">(</span><span class="n">eq_obj</span><span class="p">,</span> <span class="n">si_units</span><span class="p">,</span> <span class="n">watts_per_area</span><span class="o">=</span><span class="n">combined_lpd</span><span class="p">)</span>
+            <span class="p">])</span>
+
+    <span class="n">internal_load_template</span> <span class="o">=</span> <span class="n">program_to_trace700_internal_load_template</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">si_units</span><span class="p">)</span>
+    <span class="n">airflow_template</span> <span class="o">=</span> <span class="n">program_to_trace700_airflow_template</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">si_units</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="p">)</span>
+    <span class="n">thermostat_template</span> <span class="o">=</span> <span class="n">program_to_trace700_thermostat_template</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">si_units</span><span class="p">)</span>
+    <span class="n">room_template</span> <span class="o">=</span> <span class="n">program_to_trace700_room_template</span><span class="p">(</span><span class="n">program</span><span class="p">)</span>
+
+    <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+        <span class="s1">'T.InternalLoadTemplate'</span><span class="p">,</span> <span class="n">internal_load_template</span><span class="p">,</span>
+        <span class="s1">'T.AirflowTemplate'</span><span class="p">,</span> <span class="n">airflow_template</span><span class="p">,</span>
+        <span class="s1">'T.ThermostatTemplate'</span><span class="p">,</span> <span class="n">thermostat_template</span><span class="p">,</span>
+        <span class="s1">'T.RoomTemplate'</span><span class="p">,</span> <span class="n">room_template</span>
+    <span class="p">])</span>
+
+    <span class="n">file_data</span> <span class="o">=</span> <span class="n">newline</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">standalone_blocks</span><span class="p">)</span> <span class="o">+</span> <span class="n">newline</span>
+    <span class="k">return</span> <span class="n">file_data</span></div>
+
+
+
+<div class="viewcode-block" id="programs_to_exp">
+<a class="viewcode-back" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.programs_to_exp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">programs_to_exp</span><span class="p">(</span><span class="n">programs</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="o">=</span><span class="s1">'Sum of Outdoor Air'</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get a single combined EXP string for a list of Honeybee ProgramTypes.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        programs: A list of Honeybee ProgramType objects.</span>
+<span class="sd">        si_units: Boolean to note whether the units of the values in the resulting</span>
+<span class="sd">            matrix are in SI (True) instead of IP (False). (Default: False).</span>
+<span class="sd">        ventilation_method: Optional text for the ventilation method to be used in the</span>
+<span class="sd">            airflow template. Choose from the following.</span>
+
+<span class="sd">            * Sum of Outdoor Air</span>
+<span class="sd">            * ASHRAE 62.1</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Text string of a combined EXP file for TRACE 700.</span>
+<span class="sd">    """</span>
+    <span class="n">newline</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
+
+    <span class="n">people_templates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">lighting_templates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">equip_templates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">internal_load_templates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">airflow_templates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">thermostat_templates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">room_templates</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">seen_people</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">seen_lighting</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">seen_equip</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">program</span> <span class="ow">in</span> <span class="n">programs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">program</span><span class="o">.</span><span class="n">people</span> <span class="ow">and</span> <span class="n">program</span><span class="o">.</span><span class="n">people</span><span class="o">.</span><span class="n">identifier</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen_people</span><span class="p">:</span>
+            <span class="n">people_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">people_to_trace700_people</span><span class="p">(</span><span class="n">program</span><span class="o">.</span><span class="n">people</span><span class="p">,</span> <span class="n">si_units</span><span class="p">))</span>
+            <span class="n">seen_people</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">program</span><span class="o">.</span><span class="n">people</span><span class="o">.</span><span class="n">identifier</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">program</span><span class="o">.</span><span class="n">lighting</span> <span class="ow">and</span> <span class="n">program</span><span class="o">.</span><span class="n">lighting</span><span class="o">.</span><span class="n">identifier</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen_lighting</span><span class="p">:</span>
+            <span class="n">lighting_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lighting_to_trace700_lighting</span><span class="p">(</span><span class="n">program</span><span class="o">.</span><span class="n">lighting</span><span class="p">))</span>
+            <span class="n">seen_lighting</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">program</span><span class="o">.</span><span class="n">lighting</span><span class="o">.</span><span class="n">identifier</span><span class="p">)</span>
+
+        <span class="n">elec_eq</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">electric_equipment</span>
+        <span class="n">gas_eq</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">gas_equipment</span>
+        <span class="k">if</span> <span class="n">elec_eq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">gas_eq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">elec_lpd</span> <span class="o">=</span> <span class="n">elec_eq</span><span class="o">.</span><span class="n">watts_per_area</span> <span class="k">if</span> <span class="n">elec_eq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">0.0</span>
+            <span class="n">gas_lpd</span> <span class="o">=</span> <span class="n">gas_eq</span><span class="o">.</span><span class="n">watts_per_area</span> <span class="k">if</span> <span class="n">gas_eq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">0.0</span>
+            <span class="n">combined_lpd</span> <span class="o">=</span> <span class="n">elec_lpd</span> <span class="o">+</span> <span class="n">gas_lpd</span>
+
+            <span class="k">if</span> <span class="n">combined_lpd</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">eq_obj</span> <span class="o">=</span> <span class="n">elec_eq</span> <span class="k">if</span> <span class="n">elec_lpd</span> <span class="o">&gt;=</span> <span class="n">gas_lpd</span> <span class="k">else</span> <span class="n">gas_eq</span>
+                <span class="k">if</span> <span class="n">eq_obj</span><span class="o">.</span><span class="n">identifier</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen_equip</span><span class="p">:</span>
+                    <span class="n">equip_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">equipment_to_trace700_miscellaneous</span><span class="p">(</span>
+                            <span class="n">eq_obj</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="n">si_units</span><span class="p">,</span> <span class="n">watts_per_area</span><span class="o">=</span><span class="n">combined_lpd</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="n">seen_equip</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">eq_obj</span><span class="o">.</span><span class="n">identifier</span><span class="p">)</span>
+
+        <span class="n">internal_load_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">program_to_trace700_internal_load_template</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">si_units</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">airflow_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">program_to_trace700_airflow_template</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">si_units</span><span class="p">,</span> <span class="n">ventilation_method</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">thermostat_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">program_to_trace700_thermostat_template</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">si_units</span><span class="p">))</span>
+        <span class="n">room_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">program_to_trace700_room_template</span><span class="p">(</span><span class="n">program</span><span class="p">))</span>
+
+    <span class="n">standalone_blocks</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'EDITORSv6.3.1'</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">people_templates</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'T.LOAD_PEOPLE'</span><span class="p">)</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">people_templates</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">lighting_templates</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'T.LOAD_LIGHTS'</span><span class="p">)</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">lighting_templates</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">equip_templates</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'T.LOAD_MISEQUIP'</span><span class="p">)</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">equip_templates</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">internal_load_templates</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'T.InternalLoadTemplate'</span><span class="p">)</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">internal_load_templates</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">airflow_templates</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'T.AirflowTemplate'</span><span class="p">)</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">airflow_templates</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">thermostat_templates</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'T.ThermostatTemplate'</span><span class="p">)</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">thermostat_templates</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">room_templates</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'T.RoomTemplate'</span><span class="p">)</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">room_templates</span><span class="p">)</span>
+
+    <span class="n">file_data</span> <span class="o">=</span> <span class="n">newline</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">standalone_blocks</span><span class="p">)</span> <span class="o">+</span> <span class="n">newline</span>
+    <span class="k">return</span> <span class="n">file_data</span></div>
+
+
+
+<div class="viewcode-block" id="energy_material_to_trace700_material">
+<a class="viewcode-back" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.energy_material_to_trace700_material">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">energy_material_to_trace700_material</span><span class="p">(</span><span class="n">material</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">999</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Converts a Honeybee EnergyMaterial or EnergyMaterialNoMass to a T.MATR_MATERIAL entry."""</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">readable_short_name</span><span class="p">(</span><span class="n">material</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+    <span class="n">material_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'M</span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s1">'</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'M'</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+
+    <span class="n">thickness_unit</span> <span class="o">=</span> <span class="s1">'m'</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">'in'</span>
+    <span class="n">thickness_code</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">1</span>
+
+    <span class="n">conductivity_unit</span> <span class="o">=</span> <span class="s1">'W/m-K'</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">'Btu/h-ft-F'</span>
+    <span class="n">conductivity_code</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">1</span>
+
+    <span class="n">density_unit</span> <span class="o">=</span> <span class="s1">'kg/m3'</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">'lb/ft3'</span>
+    <span class="n">density_code</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">0</span>
+
+    <span class="n">specific_heat_unit</span> <span class="o">=</span> <span class="s1">'J/kg-K'</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">'Btu/lb-F'</span>
+    <span class="n">specific_heat_code</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">1</span>
+
+    <span class="n">resistance_unit</span> <span class="o">=</span> <span class="s1">'m2-K/W'</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">'h-ft2-F/Btu'</span>
+    <span class="n">resistance_unit_code</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">category</span> <span class="o">=</span> <span class="s1">'Undefined Material'</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">material</span><span class="p">,</span> <span class="n">EnergyMaterialNoMass</span><span class="p">):</span>
+        <span class="n">resistance</span> <span class="o">=</span> <span class="n">rvalue_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">material</span><span class="o">.</span><span class="n">r_value</span><span class="p">],</span> <span class="n">resistance_unit</span><span class="p">,</span> <span class="s1">'m2-K/W'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">thickness</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">conductivity</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">density</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">specific_heat</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">thickness</span> <span class="o">=</span> <span class="n">distance_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">material</span><span class="o">.</span><span class="n">thickness</span><span class="p">],</span> <span class="n">thickness_unit</span><span class="p">,</span> <span class="s1">'m'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">conductivity</span> <span class="o">=</span> <span class="n">conductivity_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">material</span><span class="o">.</span><span class="n">conductivity</span><span class="p">],</span> <span class="n">conductivity_unit</span><span class="p">,</span> <span class="s1">'W/m-K'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">density</span> <span class="o">=</span> <span class="n">density_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">material</span><span class="o">.</span><span class="n">density</span><span class="p">],</span> <span class="n">density_unit</span><span class="p">,</span> <span class="s1">'kg/m3'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">thickness</span> <span class="o">=</span> <span class="n">distance_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">material</span><span class="o">.</span><span class="n">thickness</span><span class="p">],</span> <span class="n">thickness_unit</span><span class="p">,</span> <span class="s1">'m'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">specific_heat</span> <span class="o">=</span> <span class="n">specific_heat_capacity_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">material</span><span class="o">.</span><span class="n">specific_heat</span><span class="p">],</span> <span class="n">specific_heat_unit</span><span class="p">,</span> <span class="s1">'J/kg-K'</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">resistance</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># this is 0 because the other fields are used</span>
+
+    <span class="n">exp_line</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s1">'0;</span><span class="si">{</span><span class="n">material_id</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s1">;0;</span><span class="si">{</span><span class="n">description</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">thickness</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">thickness_code</span><span class="si">}</span><span class="s1">;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">conductivity</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">conductivity_code</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">density</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">density_code</span><span class="si">}</span><span class="s1">;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">specific_heat</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">specific_heat_code</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">resistance</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">resistance_unit_code</span><span class="si">}</span><span class="s1">;'</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">exp_line</span></div>
+
+
+
+<div class="viewcode-block" id="opaque_construction_to_trace700_construction">
+<a class="viewcode-back" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.opaque_construction_to_trace700_construction">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">opaque_construction_to_trace700_construction</span><span class="p">(</span>
+    <span class="n">construction</span><span class="p">,</span> <span class="n">const_type</span><span class="o">=</span><span class="s1">'Wall'</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">starting_material_id</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">material_id_map</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Converts a Honeybee OpaqueConstruction to a TRACE 700 construction entry."""</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">readable_short_name</span><span class="p">(</span><span class="n">construction</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+
+    <span class="n">film_map</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'Wall'</span><span class="p">:</span> <span class="p">(</span><span class="s1">'A0'</span><span class="p">,</span> <span class="s1">'E0'</span><span class="p">),</span>
+        <span class="s1">'Roof'</span><span class="p">:</span> <span class="p">(</span><span class="s1">'A0'</span><span class="p">,</span> <span class="s1">'E0'</span><span class="p">),</span>
+        <span class="s1">'Floor'</span><span class="p">:</span> <span class="p">(</span><span class="s1">'E0'</span><span class="p">,</span> <span class="s1">'E0'</span><span class="p">),</span>
+        <span class="s1">'Partition'</span><span class="p">:</span> <span class="p">(</span><span class="s1">'A0'</span><span class="p">,</span> <span class="s1">'E0'</span><span class="p">),</span>
+        <span class="s1">'Exposed Floor'</span><span class="p">:</span> <span class="p">(</span><span class="s1">'A0'</span><span class="p">,</span> <span class="s1">'E0'</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="n">out_film</span><span class="p">,</span> <span class="n">in_film</span> <span class="o">=</span> <span class="n">film_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">const_type</span><span class="p">,</span> <span class="p">(</span><span class="s1">'A0'</span><span class="p">,</span> <span class="s1">'E0'</span><span class="p">))</span>
+
+    <span class="n">layers_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'None'</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span>
+    <span class="n">layers_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">out_film</span>
+
+    <span class="n">material_lines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">id_counter</span> <span class="o">=</span> <span class="n">starting_material_id</span>
+
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">mat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">construction</span><span class="o">.</span><span class="n">materials</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="mi">8</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">mat_key</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">identifier</span>
+        <span class="k">if</span> <span class="n">material_id_map</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">mat_key</span> <span class="ow">in</span> <span class="n">material_id_map</span><span class="p">:</span>
+            <span class="n">mat_tag</span> <span class="o">=</span> <span class="n">material_id_map</span><span class="p">[</span><span class="n">mat_key</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mat_tag</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'M</span><span class="si">{</span><span class="n">id_counter</span><span class="si">}</span><span class="s1">'</span>
+            <span class="n">mat_line</span> <span class="o">=</span> <span class="n">energy_material_to_trace700_material</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="n">si_units</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">id_counter</span><span class="p">)</span>
+            <span class="n">material_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mat_line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">material_id_map</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">material_id_map</span><span class="p">[</span><span class="n">mat_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">mat_tag</span>
+            <span class="n">id_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">layers_ids</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">mat_tag</span>
+
+    <span class="n">layers_ids</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">construction</span><span class="o">.</span><span class="n">materials</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">in_film</span>
+    <span class="n">layers_str</span> <span class="o">=</span> <span class="s1">';'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">layers_ids</span><span class="p">)</span>
+
+    <span class="n">b_coeffs</span> <span class="o">=</span> <span class="s1">';'</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">''</span><span class="p">]</span> <span class="o">*</span> <span class="mi">7</span><span class="p">)</span>
+    <span class="n">d_coeffs</span> <span class="o">=</span> <span class="s1">';'</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">''</span><span class="p">]</span> <span class="o">*</span> <span class="mi">7</span><span class="p">)</span>
+
+    <span class="n">u_factor_unit</span> <span class="o">=</span> <span class="s1">'W/m2-K'</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">'Btu/h-ft2-F'</span>
+    <span class="n">u_factor</span> <span class="o">=</span> <span class="n">uvalue_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">construction</span><span class="o">.</span><span class="n">u_factor</span><span class="p">],</span> <span class="n">u_factor_unit</span><span class="p">,</span> <span class="s1">'W/m2-K'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">u_code</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">1</span>
+
+    <span class="n">hc_si</span> <span class="o">=</span> <span class="n">construction</span><span class="o">.</span><span class="n">area_heat_capacity</span>
+    <span class="n">heat_capacity</span> <span class="o">=</span> <span class="n">hc_si</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="p">(</span><span class="n">hc_si</span> <span class="o">*</span> <span class="mf">0.000048919</span><span class="p">)</span>
+    <span class="n">hc_code</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">1</span>
+
+    <span class="n">wt_si</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">density</span> <span class="o">*</span> <span class="n">m</span><span class="o">.</span><span class="n">thickness</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">construction</span><span class="o">.</span><span class="n">materials</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s1">'density'</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s1">'thickness'</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">si_units</span><span class="p">:</span>
+        <span class="n">area_density</span> <span class="o">=</span> <span class="n">wt_si</span>
+        <span class="n">ad_code</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">area_density</span> <span class="o">=</span> <span class="n">wt_si</span> <span class="o">*</span> <span class="mf">0.20481614</span>
+        <span class="n">ad_code</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">out_mat</span> <span class="o">=</span> <span class="n">construction</span><span class="o">.</span><span class="n">outside_material</span>
+    <span class="n">in_mat</span> <span class="o">=</span> <span class="n">construction</span><span class="o">.</span><span class="n">inside_material</span>
+
+    <span class="n">sol_abs_out</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">out_mat</span><span class="p">,</span> <span class="s1">'solar_absorptance'</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">)</span>
+    <span class="n">therm_abs_out</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">out_mat</span><span class="p">,</span> <span class="s1">'thermal_absorptance'</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">)</span>
+    <span class="n">sol_abs_in</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">in_mat</span><span class="p">,</span> <span class="s1">'solar_absorptance'</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">)</span>
+    <span class="n">therm_abs_in</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">in_mat</span><span class="p">,</span> <span class="s1">'thermal_absorptance'</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">)</span>
+    <span class="n">vis_refl_in</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">in_mat</span><span class="p">,</span> <span class="s1">'visible_reflectance'</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">)</span>
+
+    <span class="n">roughness_map</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'VeryRough'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'Rough'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'MediumRough'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'MediumSmooth'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">'Smooth'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">'VerySmooth'</span><span class="p">:</span> <span class="mi">5</span>
+    <span class="p">}</span>
+    <span class="n">roughness</span> <span class="o">=</span> <span class="n">roughness_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">out_mat</span><span class="p">,</span> <span class="s1">'roughness'</span><span class="p">,</span> <span class="s1">'Rough'</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">comment</span> <span class="o">=</span> <span class="s1">''</span>
+    <span class="n">zero_padding_block</span> <span class="o">=</span> <span class="s1">';'</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">'0'</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>
+
+    <span class="n">exp_line</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">const_type</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">description</span><span class="si">}</span><span class="s1">;1;0;</span><span class="si">{</span><span class="n">layers_str</span><span class="si">}</span><span class="s1">;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">b_coeffs</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">d_coeffs</span><span class="si">}</span><span class="s1">;'</span>
+        <span class="sa">f</span><span class="s1">'0;0;1;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">area_density</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">ad_code</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">heat_capacity</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">hc_code</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">u_factor</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">u_code</span><span class="si">}</span><span class="s1">;'</span>
+        <span class="sa">f</span><span class="s1">'0;</span><span class="si">{</span><span class="n">comment</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">sol_abs_out</span><span class="si">:</span><span class="s1">.8f</span><span class="si">}</span><span class="s1">;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">zero_padding_block</span><span class="si">}</span><span class="s1">;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">therm_abs_out</span><span class="si">:</span><span class="s1">.8f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">sol_abs_in</span><span class="si">:</span><span class="s1">.8f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">therm_abs_in</span><span class="si">:</span><span class="s1">.8f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">vis_refl_in</span><span class="si">:</span><span class="s1">.8f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">roughness</span><span class="si">}</span><span class="s1">;1;'</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">exp_line</span><span class="p">,</span> <span class="n">material_lines</span></div>
+
+
+
+<div class="viewcode-block" id="window_construction_to_trace700_glass">
+<a class="viewcode-back" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.window_construction_to_trace700_glass">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">window_construction_to_trace700_glass</span><span class="p">(</span><span class="n">construction</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_door</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Converts a Honeybee WindowConstruction object to a T.GLAS_GLASS entry."""</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">construction</span><span class="o">.</span><span class="n">display_name</span>
+    <span class="k">if</span> <span class="n">is_door</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">description</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">'door'</span><span class="p">):</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">description</span><span class="si">}</span><span class="s1"> Door'</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">readable_short_name</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+
+    <span class="n">u_value_unit</span> <span class="o">=</span> <span class="s1">'W/m2-K'</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">'Btu/h-ft2-F'</span>
+    <span class="n">u_value</span> <span class="o">=</span> <span class="n">uvalue_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">construction</span><span class="o">.</span><span class="n">u_factor</span><span class="p">],</span> <span class="n">u_value_unit</span><span class="p">,</span> <span class="s1">'W/m2-K'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">u_value_code</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">1</span>
+
+    <span class="n">shgc</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">construction</span><span class="p">,</span> <span class="s1">'shgc'</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">vt</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">construction</span><span class="p">,</span> <span class="s1">'visible_transmittance'</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">panes</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">construction</span><span class="p">,</span> <span class="s1">'glazing_count'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">inside_vis_refl</span> <span class="o">=</span> <span class="n">construction</span><span class="o">.</span><span class="n">inside_solar_reflectance</span>
+    <span class="n">inside_sol_refl</span> <span class="o">=</span> <span class="n">construction</span><span class="o">.</span><span class="n">inside_solar_reflectance</span>
+
+    <span class="n">solar_transmissivity</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">construction</span><span class="p">,</span> <span class="s1">'solar_transmittance'</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="n">outside_emissivity</span> <span class="o">=</span> <span class="n">construction</span><span class="o">.</span><span class="n">outside_emissivity</span>
+    <span class="n">inside_emissivity</span> <span class="o">=</span> <span class="n">construction</span><span class="o">.</span><span class="n">inside_emissivity</span>
+
+    <span class="c1"># Field 179: 1 for standard glass, 2 for glass doors</span>
+    <span class="n">glass_type_code</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">is_door</span> <span class="k">else</span> <span class="mi">1</span>
+
+    <span class="c1"># TRACE 700 custom glass data (213 fields)</span>
+    <span class="c1"># This is copied from an exported default glass material in TRACE 700</span>
+    <span class="n">glass_tail</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">"0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;"</span>
+        <span class="s2">"0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;"</span>
+        <span class="s2">"0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;"</span>
+        <span class="s2">"0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;"</span>
+        <span class="sa">f</span><span class="s2">"0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;</span><span class="si">{</span><span class="n">glass_type_code</span><span class="si">}</span><span class="s2">;0;0;"</span>
+        <span class="s2">"0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;57.1500015258789063;"</span>
+        <span class="s2">"25.3999996185302734;25.3999996185302734;4.59999990463256836;1.10099995136260986;"</span>
+        <span class="s2">".89999997615814209;.89999997615814209;.89999997615814209;0;0;0;0;0;0;0;0;0;0;0;0;"</span>
+    <span class="p">)</span>
+
+    <span class="n">exp_line</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">description</span><span class="si">}</span><span class="s1">;Glass;1;</span><span class="si">{</span><span class="n">shgc</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">u_value</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">u_value_code</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">panes</span><span class="si">}</span><span class="s1">;0;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">vt</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">inside_vis_refl</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">solar_transmissivity</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">inside_sol_refl</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">outside_emissivity</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">inside_emissivity</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">glass_tail</span><span class="si">}</span><span class="s1">'</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">exp_line</span></div>
+
+
+
+<div class="viewcode-block" id="construction_set_to_trace700_template">
+<a class="viewcode-back" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.construction_set_to_trace700_template">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">construction_set_to_trace700_template</span><span class="p">(</span><span class="n">construction_set</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Translates a Honeybee ConstructionSet into a TRACE 700 Construction Template line."""</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="n">readable_short_name</span><span class="p">(</span><span class="n">construction_set</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+    <span class="n">u_code</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="mi">1</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_opaque_info</span><span class="p">(</span><span class="n">cnst</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cnst</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">'None'</span><span class="p">,</span> <span class="mf">0.0</span>
+        <span class="n">u_value_unit</span> <span class="o">=</span> <span class="s1">'W/m2-K'</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">'Btu/h-ft2-F'</span>
+        <span class="n">u_value</span> <span class="o">=</span> <span class="n">uvalue_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">cnst</span><span class="o">.</span><span class="n">u_value</span><span class="p">],</span> <span class="n">u_value_unit</span><span class="p">,</span> <span class="s1">'W/m2-K'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">readable_short_name</span><span class="p">(</span><span class="n">cnst</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">40</span><span class="p">),</span> <span class="n">u_value</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_window_info</span><span class="p">(</span><span class="n">cnst</span><span class="p">,</span> <span class="n">is_door</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cnst</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">'None'</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
+        <span class="n">u_value_unit</span> <span class="o">=</span> <span class="s1">'W/m2-K'</span> <span class="k">if</span> <span class="n">si_units</span> <span class="k">else</span> <span class="s1">'Btu/h-ft2-F'</span>
+        <span class="n">u_value</span> <span class="o">=</span> <span class="n">uvalue_dt</span><span class="o">.</span><span class="n">to_unit</span><span class="p">([</span><span class="n">cnst</span><span class="o">.</span><span class="n">u_value</span><span class="p">],</span> <span class="n">u_value_unit</span><span class="p">,</span> <span class="s1">'W/m2-K'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="n">cnst</span><span class="o">.</span><span class="n">display_name</span>
+        <span class="k">if</span> <span class="n">is_door</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">desc</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">'door'</span><span class="p">):</span>
+            <span class="n">desc</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">desc</span><span class="si">}</span><span class="s1"> Door'</span>
+        <span class="k">return</span> <span class="n">readable_short_name</span><span class="p">(</span><span class="n">desc</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">40</span><span class="p">),</span> <span class="n">u_value</span><span class="p">,</span> <span class="n">cnst</span><span class="o">.</span><span class="n">shgc</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_door_info</span><span class="p">(</span><span class="n">cnst</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cnst</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">'None'</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
+        <span class="n">is_glass</span> <span class="o">=</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">cnst</span><span class="p">,</span> <span class="s1">'shgc'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_glass</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_get_window_info</span><span class="p">(</span><span class="n">cnst</span><span class="p">,</span> <span class="n">is_door</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">desc</span><span class="p">,</span> <span class="n">u_val</span> <span class="o">=</span> <span class="n">_get_opaque_info</span><span class="p">(</span><span class="n">cnst</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">readable_short_name</span><span class="p">(</span><span class="n">desc</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">40</span><span class="p">),</span> <span class="n">u_val</span><span class="p">,</span> <span class="mf">0.0</span>
+
+    <span class="n">roof_cnst</span> <span class="o">=</span> <span class="n">construction_set</span><span class="o">.</span><span class="n">roof_ceiling_set</span><span class="o">.</span><span class="n">exterior_construction</span>
+    <span class="n">roof_name</span><span class="p">,</span> <span class="n">roof_u</span> <span class="o">=</span> <span class="n">_get_opaque_info</span><span class="p">(</span><span class="n">roof_cnst</span><span class="p">)</span>
+
+    <span class="n">floor_cnst</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">construction_set</span><span class="o">.</span><span class="n">floor_set</span><span class="o">.</span><span class="n">ground_construction</span> <span class="ow">or</span>
+        <span class="n">construction_set</span><span class="o">.</span><span class="n">floor_set</span><span class="o">.</span><span class="n">exterior_construction</span> <span class="ow">or</span>
+        <span class="n">construction_set</span><span class="o">.</span><span class="n">floor_set</span><span class="o">.</span><span class="n">interior_construction</span>
+    <span class="p">)</span>
+    <span class="n">floor_name</span><span class="p">,</span> <span class="n">floor_u</span> <span class="o">=</span> <span class="n">_get_opaque_info</span><span class="p">(</span><span class="n">floor_cnst</span><span class="p">)</span>
+
+    <span class="n">skylight_cnst</span> <span class="o">=</span> <span class="n">construction_set</span><span class="o">.</span><span class="n">aperture_set</span><span class="o">.</span><span class="n">skylight_construction</span>
+    <span class="n">skylight_name</span><span class="p">,</span> <span class="n">skylight_u</span><span class="p">,</span> <span class="n">skylight_shgc</span> <span class="o">=</span> <span class="n">_get_window_info</span><span class="p">(</span><span class="n">skylight_cnst</span><span class="p">)</span>
+
+    <span class="n">wall_cnst</span> <span class="o">=</span> <span class="n">construction_set</span><span class="o">.</span><span class="n">wall_set</span><span class="o">.</span><span class="n">exterior_construction</span>
+    <span class="n">wall_name</span><span class="p">,</span> <span class="n">wall_u</span> <span class="o">=</span> <span class="n">_get_opaque_info</span><span class="p">(</span><span class="n">wall_cnst</span><span class="p">)</span>
+
+    <span class="n">window_cnst</span> <span class="o">=</span> <span class="n">construction_set</span><span class="o">.</span><span class="n">aperture_set</span><span class="o">.</span><span class="n">window_construction</span>
+    <span class="n">window_name</span><span class="p">,</span> <span class="n">window_u</span><span class="p">,</span> <span class="n">window_shgc</span> <span class="o">=</span> <span class="n">_get_window_info</span><span class="p">(</span><span class="n">window_cnst</span><span class="p">)</span>
+
+    <span class="n">partition_cnst</span> <span class="o">=</span> <span class="n">construction_set</span><span class="o">.</span><span class="n">wall_set</span><span class="o">.</span><span class="n">interior_construction</span>
+    <span class="n">partition_name</span><span class="p">,</span> <span class="n">partition_u</span> <span class="o">=</span> <span class="n">_get_opaque_info</span><span class="p">(</span><span class="n">partition_cnst</span><span class="p">)</span>
+
+    <span class="c1"># resolve door construction priority</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">construction_set</span><span class="o">.</span><span class="n">door_set</span><span class="p">,</span> <span class="s1">'_exterior_construction'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">door_cnst</span> <span class="o">=</span> <span class="n">construction_set</span><span class="o">.</span><span class="n">door_set</span><span class="o">.</span><span class="n">exterior_construction</span>
+    <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">construction_set</span><span class="o">.</span><span class="n">door_set</span><span class="p">,</span> <span class="s1">'_exterior_glass_construction'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">door_cnst</span> <span class="o">=</span> <span class="n">construction_set</span><span class="o">.</span><span class="n">door_set</span><span class="o">.</span><span class="n">exterior_glass_construction</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">door_cnst</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">construction_set</span><span class="o">.</span><span class="n">door_set</span><span class="o">.</span><span class="n">exterior_construction</span> <span class="ow">or</span>
+            <span class="n">construction_set</span><span class="o">.</span><span class="n">door_set</span><span class="o">.</span><span class="n">exterior_glass_construction</span>
+        <span class="p">)</span>
+
+    <span class="n">door_name</span><span class="p">,</span> <span class="n">door_u</span><span class="p">,</span> <span class="n">door_shgc</span> <span class="o">=</span> <span class="n">_get_door_info</span><span class="p">(</span><span class="n">door_cnst</span><span class="p">)</span>
+    <span class="n">tail_fields</span> <span class="o">=</span> <span class="s1">'0;0;'</span>
+
+    <span class="n">exp_line</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">template_name</span><span class="si">}</span><span class="s1">;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">floor_name</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">floor_u</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">u_code</span><span class="si">}</span><span class="s1">;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">roof_name</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">roof_u</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">u_code</span><span class="si">}</span><span class="s1">;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">skylight_name</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">skylight_u</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">u_code</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">skylight_shgc</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">wall_name</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">wall_u</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">u_code</span><span class="si">}</span><span class="s1">;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">window_name</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">window_u</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">u_code</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">window_shgc</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">partition_name</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">partition_u</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">u_code</span><span class="si">}</span><span class="s1">;'</span>
+        <span class="sa">f</span><span class="s1">'10;0;2;0;10;0;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">door_name</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">door_u</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">u_code</span><span class="si">}</span><span class="s1">;</span><span class="si">{</span><span class="n">door_shgc</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">;'</span>
+        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">tail_fields</span><span class="si">}</span><span class="s1">'</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">exp_line</span></div>
+
+
+
+<div class="viewcode-block" id="construction_sets_to_exp">
+<a class="viewcode-back" href="../../dragonfly_trace.exp.html#dragonfly_trace.exp.construction_sets_to_exp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">construction_sets_to_exp</span><span class="p">(</span><span class="n">construction_sets</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get a single combined EXP string for a list of Honeybee ConstructionSets."""</span>
+    <span class="n">newline</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
+
+    <span class="n">exfloor_templates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">floor_templates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">partition_templates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">roof_templates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">wall_templates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">glass_templates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">material_templates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">construction_templates</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">seen_constructions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">seen_materials</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">material_id_map</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">material_counter</span> <span class="o">=</span> <span class="mi">500</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_process_opaque</span><span class="p">(</span><span class="n">cnst</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+        <span class="k">nonlocal</span> <span class="n">material_counter</span>
+        <span class="k">if</span> <span class="n">cnst</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cnst</span><span class="o">.</span><span class="n">identifier</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen_constructions</span><span class="p">:</span>
+            <span class="n">line</span><span class="p">,</span> <span class="n">mat_lines</span> <span class="o">=</span> <span class="n">opaque_construction_to_trace700_construction</span><span class="p">(</span>
+                <span class="n">cnst</span><span class="p">,</span> <span class="n">const_type</span><span class="o">=</span><span class="n">category</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="n">si_units</span><span class="p">,</span>
+                <span class="n">starting_material_id</span><span class="o">=</span><span class="n">material_counter</span><span class="p">,</span> <span class="n">material_id_map</span><span class="o">=</span><span class="n">material_id_map</span>
+            <span class="p">)</span>
+            <span class="n">material_counter</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mat_lines</span><span class="p">)</span>
+            <span class="n">seen_constructions</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cnst</span><span class="o">.</span><span class="n">identifier</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">ml</span> <span class="ow">in</span> <span class="n">mat_lines</span><span class="p">:</span>
+                <span class="n">mat_id</span> <span class="o">=</span> <span class="n">ml</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">';'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">mat_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen_materials</span><span class="p">:</span>
+                    <span class="n">material_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ml</span><span class="p">)</span>
+                    <span class="n">seen_materials</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">mat_id</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">line</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_process_glass</span><span class="p">(</span><span class="n">cnst</span><span class="p">,</span> <span class="n">is_door</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cnst</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">cnst</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="n">is_door</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen_constructions</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">window_construction_to_trace700_glass</span><span class="p">(</span><span class="n">cnst</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="n">si_units</span><span class="p">,</span> <span class="n">is_door</span><span class="o">=</span><span class="n">is_door</span><span class="p">)</span>
+                <span class="n">seen_constructions</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">line</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">for</span> <span class="n">c_set</span> <span class="ow">in</span> <span class="n">construction_sets</span><span class="p">:</span>
+        <span class="n">w_ext</span> <span class="o">=</span> <span class="n">_process_opaque</span><span class="p">(</span><span class="n">c_set</span><span class="o">.</span><span class="n">wall_set</span><span class="o">.</span><span class="n">exterior_construction</span><span class="p">,</span> <span class="s1">'Wall'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">w_ext</span><span class="p">:</span>
+            <span class="n">wall_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w_ext</span><span class="p">)</span>
+
+        <span class="n">w_grd</span> <span class="o">=</span> <span class="n">_process_opaque</span><span class="p">(</span><span class="n">c_set</span><span class="o">.</span><span class="n">wall_set</span><span class="o">.</span><span class="n">ground_construction</span><span class="p">,</span> <span class="s1">'Wall'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">w_grd</span><span class="p">:</span>
+            <span class="n">wall_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w_grd</span><span class="p">)</span>
+
+        <span class="n">w_int</span> <span class="o">=</span> <span class="n">_process_opaque</span><span class="p">(</span><span class="n">c_set</span><span class="o">.</span><span class="n">wall_set</span><span class="o">.</span><span class="n">interior_construction</span><span class="p">,</span> <span class="s1">'Partition'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">w_int</span><span class="p">:</span>
+            <span class="n">partition_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w_int</span><span class="p">)</span>
+
+        <span class="n">r_ext</span> <span class="o">=</span> <span class="n">_process_opaque</span><span class="p">(</span><span class="n">c_set</span><span class="o">.</span><span class="n">roof_ceiling_set</span><span class="o">.</span><span class="n">exterior_construction</span><span class="p">,</span> <span class="s1">'Roof'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">r_ext</span><span class="p">:</span>
+            <span class="n">roof_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r_ext</span><span class="p">)</span>
+
+        <span class="n">r_grd</span> <span class="o">=</span> <span class="n">_process_opaque</span><span class="p">(</span><span class="n">c_set</span><span class="o">.</span><span class="n">roof_ceiling_set</span><span class="o">.</span><span class="n">ground_construction</span><span class="p">,</span> <span class="s1">'Roof'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">r_grd</span><span class="p">:</span>
+            <span class="n">roof_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r_grd</span><span class="p">)</span>
+
+        <span class="n">r_int</span> <span class="o">=</span> <span class="n">_process_opaque</span><span class="p">(</span><span class="n">c_set</span><span class="o">.</span><span class="n">roof_ceiling_set</span><span class="o">.</span><span class="n">interior_construction</span><span class="p">,</span> <span class="s1">'Floor'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">r_int</span><span class="p">:</span>
+            <span class="n">floor_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r_int</span><span class="p">)</span>
+
+        <span class="n">f_ext</span> <span class="o">=</span> <span class="n">_process_opaque</span><span class="p">(</span><span class="n">c_set</span><span class="o">.</span><span class="n">floor_set</span><span class="o">.</span><span class="n">exterior_construction</span><span class="p">,</span> <span class="s1">'Exposed Floor'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">f_ext</span><span class="p">:</span>
+            <span class="n">exfloor_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_ext</span><span class="p">)</span>
+
+        <span class="n">f_grd</span> <span class="o">=</span> <span class="n">_process_opaque</span><span class="p">(</span><span class="n">c_set</span><span class="o">.</span><span class="n">floor_set</span><span class="o">.</span><span class="n">ground_construction</span><span class="p">,</span> <span class="s1">'Floor'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">f_grd</span><span class="p">:</span>
+            <span class="n">floor_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_grd</span><span class="p">)</span>
+
+        <span class="n">f_int</span> <span class="o">=</span> <span class="n">_process_opaque</span><span class="p">(</span><span class="n">c_set</span><span class="o">.</span><span class="n">floor_set</span><span class="o">.</span><span class="n">interior_construction</span><span class="p">,</span> <span class="s1">'Floor'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">f_int</span><span class="p">:</span>
+            <span class="n">floor_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_int</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">ap_cnst</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="n">c_set</span><span class="o">.</span><span class="n">aperture_set</span><span class="o">.</span><span class="n">window_construction</span><span class="p">,</span>
+            <span class="n">c_set</span><span class="o">.</span><span class="n">aperture_set</span><span class="o">.</span><span class="n">interior_construction</span><span class="p">,</span>
+            <span class="n">c_set</span><span class="o">.</span><span class="n">aperture_set</span><span class="o">.</span><span class="n">skylight_construction</span><span class="p">,</span>
+            <span class="n">c_set</span><span class="o">.</span><span class="n">aperture_set</span><span class="o">.</span><span class="n">operable_construction</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="n">g_line</span> <span class="o">=</span> <span class="n">_process_glass</span><span class="p">(</span><span class="n">ap_cnst</span><span class="p">,</span> <span class="n">is_door</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">g_line</span><span class="p">:</span>
+                <span class="n">glass_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g_line</span><span class="p">)</span>
+
+        <span class="n">d_ovh</span> <span class="o">=</span> <span class="n">_process_glass</span><span class="p">(</span><span class="n">c_set</span><span class="o">.</span><span class="n">door_set</span><span class="o">.</span><span class="n">overhead_construction</span><span class="p">,</span> <span class="n">is_door</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">d_ovh</span><span class="p">:</span>
+            <span class="n">glass_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d_ovh</span><span class="p">)</span>
+
+        <span class="n">d_int</span> <span class="o">=</span> <span class="n">_process_glass</span><span class="p">(</span><span class="n">c_set</span><span class="o">.</span><span class="n">door_set</span><span class="o">.</span><span class="n">interior_construction</span><span class="p">,</span> <span class="n">is_door</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">d_int</span><span class="p">:</span>
+            <span class="n">glass_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d_int</span><span class="p">)</span>
+
+        <span class="n">d_int_gls</span> <span class="o">=</span> <span class="n">_process_glass</span><span class="p">(</span><span class="n">c_set</span><span class="o">.</span><span class="n">door_set</span><span class="o">.</span><span class="n">interior_glass_construction</span><span class="p">,</span> <span class="n">is_door</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">d_int_gls</span><span class="p">:</span>
+            <span class="n">glass_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d_int_gls</span><span class="p">)</span>
+
+        <span class="n">d_ext_gls</span> <span class="o">=</span> <span class="n">_process_glass</span><span class="p">(</span><span class="n">c_set</span><span class="o">.</span><span class="n">door_set</span><span class="o">.</span><span class="n">exterior_glass_construction</span><span class="p">,</span> <span class="n">is_door</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">d_ext_gls</span><span class="p">:</span>
+            <span class="n">glass_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d_ext_gls</span><span class="p">)</span>
+
+        <span class="n">d_ext</span> <span class="o">=</span> <span class="n">_process_glass</span><span class="p">(</span><span class="n">c_set</span><span class="o">.</span><span class="n">door_set</span><span class="o">.</span><span class="n">exterior_construction</span><span class="p">,</span> <span class="n">is_door</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">d_ext</span><span class="p">:</span>
+            <span class="n">glass_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d_ext</span><span class="p">)</span>
+
+        <span class="n">construction_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">construction_set_to_trace700_template</span><span class="p">(</span><span class="n">c_set</span><span class="p">,</span> <span class="n">si_units</span><span class="o">=</span><span class="n">si_units</span><span class="p">))</span>
+
+    <span class="n">standalone_blocks</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'EDITORSv6.3.1'</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">exfloor_templates</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'T.CNST_EXFLOOR'</span><span class="p">)</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">exfloor_templates</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">floor_templates</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'T.CNST_FLOOR'</span><span class="p">)</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">floor_templates</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">partition_templates</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'T.CNST_PART'</span><span class="p">)</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">partition_templates</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">roof_templates</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'T.CNST_ROOF'</span><span class="p">)</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">roof_templates</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">wall_templates</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'T.CNST_WALL'</span><span class="p">)</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">wall_templates</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">glass_templates</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'T.GLAS_GLASS'</span><span class="p">)</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">glass_templates</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">material_templates</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'T.MATR_MATERIAL'</span><span class="p">)</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">material_templates</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">construction_templates</span><span class="p">:</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'T.ConstructionTemplate'</span><span class="p">)</span>
+        <span class="n">standalone_blocks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">construction_templates</span><span class="p">)</span>
+
+    <span class="n">file_data</span> <span class="o">=</span> <span class="n">newline</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">standalone_blocks</span><span class="p">)</span> <span class="o">+</span> <span class="n">newline</span>
+    <span class="k">return</span> <span class="n">file_data</span></div>
+
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2026, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.0.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

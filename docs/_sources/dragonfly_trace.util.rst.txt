@@ -1,0 +1,7 @@
+dragonfly\_trace.util module
+============================
+
+.. automodule:: dragonfly_trace.util
+   :members:
+   :undoc-members:
+   :show-inheritance:
