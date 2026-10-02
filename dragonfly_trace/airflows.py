@@ -48,8 +48,8 @@ AIRFLOW_TABLE_FORMAT = (
     'default',
     'default',
     'default',
-    'default',
-    'default',
+    'user',
+    'user',
     'default'
 )
 
@@ -96,8 +96,8 @@ AIRFLOW_TABLE_FORMAT_62_1 = (
     'default',
     'default',
     'default',
-    'default',
-    'default',
+    'user',
+    'user',
     'default'
 )
 
@@ -193,10 +193,7 @@ def airflows_trace700_matrix(rooms, si_units=False, ventilation_method='Sum of O
         '',
         '% Clg Airflow',
         'Available (100%)',
-        'Default',
-        '0',
-        'air changes/hr',
-        'Available (100%)'
+        'Default'
     ]
 
     # loop through the rooms and add each of the attributes
@@ -213,8 +210,19 @@ def airflows_trace700_matrix(rooms, si_units=False, ventilation_method='Sum of O
                     inf_obj.flow_per_exterior_area_ip
                 inf_unit = flow_intensity_unit
 
+        # calculate the exhaust fields for the room
+        exhaust_obj = room.properties.energy.exhaust
+        exhaust_flow = exhaust_obj.room_absolute_flow(room) \
+            if exhaust_obj is not None else 0
+        exhaust_attr = [
+            exhaust_flow,
+            flow_unit,
+            'Available (100%)'
+        ]
+
         # calculate the total outdoor air fields using the ventilation_method
         vent_obj = room.properties.energy.ventilation
+
         if ventilation_method == 'Sum of Outdoor Air':
             if vent_obj is not None:
                 vent_flow = vent_obj.room_absolute_flow(room)
@@ -255,7 +263,7 @@ def airflows_trace700_matrix(rooms, si_units=False, ventilation_method='Sum of O
                 inf_flow,
                 inf_unit
             ]
-            airflow_mtx.append(airflow_attr + calculated_fields)
+            airflow_mtx.append(airflow_attr + calculated_fields + exhaust_attr)
 
         else:  # assume we are using ASHRAE 62.1
             if vent_obj is not None:
@@ -301,7 +309,7 @@ def airflows_trace700_matrix(rooms, si_units=False, ventilation_method='Sum of O
                 inf_flow,
                 inf_unit
             ]
-            airflow_mtx.append(airflow_attr + calculated_fields)
+            airflow_mtx.append(airflow_attr + calculated_fields + exhaust_attr)
 
     # transpose the matrix and round the numbers so that they display nicely
     airflow_matrix = [list(row) for row in zip(*airflow_mtx)]
@@ -322,6 +330,10 @@ def airflows_trace700_matrix(rooms, si_units=False, ventilation_method='Sum of O
     # round the infiltration number so that they display nicely
     for row_i in (23, 25):
         airflow_matrix[row_i] = [round(val, 3) for val in airflow_matrix[row_i]]
+    # convert and round the exhaust air so it displays nicely
+    airflow_matrix[42] = list(flow.to_unit(airflow_matrix[42], 'cfm', 'm3/s')) \
+        if not si_units else list(flow.to_unit(airflow_matrix[42], 'L/s', 'm3/s'))
+    airflow_matrix[42] = [round(val, 1) for val in airflow_matrix[42]]
 
     # insert the column for the row names
     for row_name, row in zip(row_names, airflow_matrix):

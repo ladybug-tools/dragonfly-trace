@@ -1,2 +1,2 @@
-dragonfly-energy>=1.46.7
+dragonfly-energy>=1.46.42
 openpyxl==3.1.5
