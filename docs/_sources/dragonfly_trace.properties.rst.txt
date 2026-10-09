@@ -1,0 +1,19 @@
+dragonfly\_trace.properties package
+===================================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   dragonfly_trace.properties.model
+   dragonfly_trace.properties.room2d
+
+Module contents
+---------------
+
+.. automodule:: dragonfly_trace.properties
+   :members:
+   :undoc-members:
+   :show-inheritance:
