@@ -7,12 +7,23 @@ from ladybug.datatype.distance import Distance
 from ladybug.datatype.power import Power
 from ladybug.datatype.energyflux import EnergyFlux
 from ladybug.datatype.volumeflowrate import VolumeFlowRate
+from ladybug.datatype.volumeflowrateintensity import VolumeFlowRateIntensity
 from ladybug.datatype.temperature import Temperature
 from ladybug.datatype.specificheatcapacity import SpecificHeatCapacity
 from ladybug.datatype.rvalue import RValue
 from ladybug.datatype.uvalue import UValue
-from honeybee_energy.material.opaque import EnergyMaterialNoMass
 
+from honeybee_energy.material.opaque import EnergyMaterialNoMass
+from honeybee_energy.schedule.ruleset import ScheduleRuleset
+from honeybee_energy.load.people import People
+from honeybee_energy.load.lighting import Lighting
+from honeybee_energy.load.equipment import ElectricEquipment, GasEquipment
+from honeybee_energy.load.ventilation import Ventilation
+from honeybee_energy.load.infiltration import Infiltration
+from honeybee_energy.load.exhaust import ExhaustAir
+from honeybee_energy.load.setpoint import Setpoint
+from honeybee_energy.programtype import ProgramType
+from honeybee_energy.lib.scheduletypelimits import temperature, activity_level
 
 area_dt = Area()
 conductivity_dt = Conductivity()
@@ -21,13 +32,17 @@ distance_dt = Distance()
 power_dt = Power()
 flux_dt = EnergyFlux()
 flow_dt = VolumeFlowRate()
+flow_int_dt = VolumeFlowRateIntensity()
 temp_dt = Temperature()
 specific_heat_capacity_dt = SpecificHeatCapacity()
 rvalue_dt = RValue()
 uvalue_dt = UValue()
 
 
-def people_to_trace700_people(people, si_units=False):
+"""____________TRANSLATORS TO EXP____________"""
+
+
+def people_to_exp(people, si_units=False):
     """Get a TRACE 700 "T.LOAD_PEOPLE" entry string from a Honeybee People object.
 
     Args:
@@ -49,6 +64,9 @@ def people_to_trace700_people(people, si_units=False):
     people_amount = area_dt.to_unit([people.area_per_person], area_unit, 'm2')[0]
     sensible_ppl = power_dt.to_unit([people.activity_max_sensible], power_unit, 'W')[0]
     latent_ppl = power_dt.to_unit([people.activity_max_latent], power_unit, 'W')[0]
+    people_amount = round(people_amount, 1)
+    sensible_ppl = round(sensible_ppl, 1)
+    latent_ppl = round(latent_ppl, 1)
 
     # People;
     # Description;
@@ -67,7 +85,7 @@ def people_to_trace700_people(people, si_units=False):
     return exp_line
 
 
-def lighting_to_trace700_lighting(lighting, fixture_type='SUSFLUOR'):
+def lighting_to_exp(lighting, fixture_type='SUSFLUOR'):
     """Get a TRACE 700 "T.LOAD_LIGHTS" entry string from a Honeybee Lighting object.
 
     Args:
@@ -99,7 +117,7 @@ def lighting_to_trace700_lighting(lighting, fixture_type='SUSFLUOR'):
     return exp_line
 
 
-def equipment_to_trace700_miscellaneous(equipment, si_units=False, watts_per_area=None):
+def equipment_to_exp(equipment, si_units=False, watts_per_area=None):
     """Get a TRACE 700 "T.LOAD_MISEQUIP" entry string from a Honeybee Equipment object.
 
     Args:
@@ -128,6 +146,7 @@ def equipment_to_trace700_miscellaneous(equipment, si_units=False, watts_per_are
 
     lpd_val = watts_per_area if watts_per_area is not None else equipment.watts_per_area
     energy_value = flux_dt.to_unit([lpd_val], flux_unit, 'W/m2')[0]
+    energy_value = round(energy_value, 2)
 
     # Miscellaneous;
     # Description;
@@ -176,6 +195,9 @@ def program_to_trace700_internal_load_template(program, si_units=False):
         ppl_amount = area_dt.to_unit([ppl.area_per_person], area_unit, 'm2')[0]
         sensible_watts = power_dt.to_unit([ppl.activity_max_sensible], power_unit, 'W')[0]
         latent_watts = power_dt.to_unit([ppl.activity_max_latent], power_unit, 'W')[0]
+        ppl_amount = round(ppl_amount, 1)
+        sensible_watts = round(sensible_watts, 1)
+        latent_watts = round(latent_watts, 1)
     else:
         ppl_type = 'None'
         ppl_amount = 0
@@ -191,6 +213,7 @@ def program_to_trace700_internal_load_template(program, si_units=False):
     if ltg is not None:
         ltg_type = ltg.display_name
         ltg_lpd = flux_dt.to_unit([ltg.watts_per_area], flux_unit, 'W/m2')[0] if ltg else 0.0
+        ltg_lpd = round(ltg_lpd, 2)
     else:
         ltg_type = 'Fluorescent, hung below ceiling, 100% load to space'
         ltg_lpd = 0.0
@@ -205,6 +228,7 @@ def program_to_trace700_internal_load_template(program, si_units=False):
         combined_lpd = elec_lpd + gas_lpd
         if combined_lpd > 0:
             misc_energy = flux_dt.to_unit([combined_lpd], flux_unit, 'W/m2')[0]
+            misc_energy = round(misc_energy, 2)
             eq_obj = elec_eq if elec_lpd >= gas_lpd else gas_eq
             energy_meter = 1 if elec_lpd >= gas_lpd else 2
             misc_type = readable_short_name(eq_obj.display_name, max_length=40)
@@ -379,12 +403,12 @@ def internal_loads_to_exp(program, si_units=False):
     if program.people:
         standalone_blocks.extend([
             'T.LOAD_PEOPLE',
-            people_to_trace700_people(program.people, si_units)
+            people_to_exp(program.people, si_units)
         ])
     if program.lighting:
         standalone_blocks.extend([
             'T.LOAD_LIGHTS',
-            lighting_to_trace700_lighting(program.lighting)
+            lighting_to_exp(program.lighting)
         ])
 
     elec_eq = program.electric_equipment
@@ -397,7 +421,7 @@ def internal_loads_to_exp(program, si_units=False):
             eq_obj = elec_eq if elec_lpd >= gas_lpd else gas_eq
             standalone_blocks.extend([
                 'T.LOAD_MISEQUIP',
-                equipment_to_trace700_miscellaneous(eq_obj, si_units, watts_per_area=combined_lpd)
+                equipment_to_exp(eq_obj, si_units, watts_per_area=combined_lpd)
             ])
 
     internal_load_template = program_to_trace700_internal_load_template(program, si_units)
@@ -490,13 +514,13 @@ def program_to_exp(program, si_units=False, ventilation_method='Sum of Outdoor A
     if program.people:
         standalone_blocks.extend([
             'T.LOAD_PEOPLE',
-            people_to_trace700_people(program.people, si_units)
+            people_to_exp(program.people, si_units)
         ])
 
     if program.lighting:
         standalone_blocks.extend([
             'T.LOAD_LIGHTS',
-            lighting_to_trace700_lighting(program.lighting)
+            lighting_to_exp(program.lighting)
         ])
 
     elec_eq = program.electric_equipment
@@ -509,7 +533,7 @@ def program_to_exp(program, si_units=False, ventilation_method='Sum of Outdoor A
             eq_obj = elec_eq if elec_lpd >= gas_lpd else gas_eq
             standalone_blocks.extend([
                 'T.LOAD_MISEQUIP',
-                equipment_to_trace700_miscellaneous(eq_obj, si_units, watts_per_area=combined_lpd)
+                equipment_to_exp(eq_obj, si_units, watts_per_area=combined_lpd)
             ])
 
     internal_load_template = program_to_trace700_internal_load_template(program, si_units)
@@ -560,11 +584,11 @@ def programs_to_exp(programs, si_units=False, ventilation_method='Sum of Outdoor
 
     for program in programs:
         if program.people and program.people.identifier not in seen_people:
-            people_templates.append(people_to_trace700_people(program.people, si_units))
+            people_templates.append(people_to_exp(program.people, si_units))
             seen_people.add(program.people.identifier)
 
         if program.lighting and program.lighting.identifier not in seen_lighting:
-            lighting_templates.append(lighting_to_trace700_lighting(program.lighting))
+            lighting_templates.append(lighting_to_exp(program.lighting))
             seen_lighting.add(program.lighting.identifier)
 
         elec_eq = program.electric_equipment
@@ -578,7 +602,7 @@ def programs_to_exp(programs, si_units=False, ventilation_method='Sum of Outdoor
                 eq_obj = elec_eq if elec_lpd >= gas_lpd else gas_eq
                 if eq_obj.identifier not in seen_equip:
                     equip_templates.append(
-                        equipment_to_trace700_miscellaneous(
+                        equipment_to_exp(
                             eq_obj, si_units=si_units, watts_per_area=combined_lpd
                         )
                     )
@@ -1046,3 +1070,325 @@ def construction_sets_to_exp(construction_sets, si_units=False):
 
     file_data = newline.join(standalone_blocks) + newline
     return file_data
+
+
+"""____________TRANSLATORS FROM EXP____________"""
+
+
+def internal_loads_from_exp(exp_str):
+    """Get Honeybee People, Lighting and Equipment from a TRACE 700 InternalLoadTemplate.
+
+    Args:
+        exp_str: A TRACE 700 InternalLoadTemplate entry string.
+
+    Returns:
+        A tuple with three elements.
+
+        -   people: A Honeybee People object if people are non-zero and defined
+            per floor area. None otherwise.
+
+        -   lighting: A Honeybee Lighting object if lights are non-zero and defined
+            per floor area. None otherwise.
+
+        -   equipment: A Honeybee ElectricEquipment or GasEquipment object if
+            miscellaneous loads are non-zero and defined per floor area. None otherwise.
+    """
+    # deconstruct the string and get the identifiers
+    exp_vals = exp_str.split(';')
+    load_id = exp_vals[0]
+    people_id = exp_vals[1] if exp_vals[1] != 'None' else '{}_People'.format(load_id)
+    lights_id = exp_vals[9] if exp_vals[9] != 'None' else '{}_Lighting'.format(load_id)
+    equip_id = exp_vals[13] if exp_vals[13] != 'None' else '{}_Equipment'.format(load_id)
+
+    # process the people
+    people = None
+    ppl_val, ppl_unit = float(exp_vals[3]), int(exp_vals[4])
+    if ppl_val != 0 and ppl_unit in (1, 2):
+        if ppl_unit == 1:
+            ppl_val = area_dt.to_unit([ppl_val], 'm2', 'ft2')[0]
+        people = People(people_id, ppl_val)
+        sens_val, sens_unit = float(exp_vals[5]), int(exp_vals[6])
+        lat_val, lat_unit = float(exp_vals[7]), int(exp_vals[8])
+        if sens_unit in (7, 8) and sens_unit == lat_unit:
+            total = sens_val + lat_val
+            latent_fraction = lat_val / total
+            act_unit = 'Btu/h' if sens_unit == 7 else 'W'
+            sch_id = 'People Activity - {} [{}]'.format(total, act_unit)
+            if sens_unit == 7:
+                total = power_dt.to_unit([total], 'W', 'Btu/h')[0]
+            people.activity_schedule = \
+                ScheduleRuleset.from_constant_value(sch_id, total, activity_level)
+            people.latent_fraction = latent_fraction
+
+    # process the lighting
+    lighting = None
+    lgt_val, lgt_unit = float(exp_vals[11]), int(exp_vals[12])
+    if lgt_val != 0 and lgt_unit in (1, 3, 4):
+        if lgt_unit == 1:
+            lgt_val = flux_dt.to_unit([lgt_val], 'W/m2', 'Btu/h-ft2')[0]
+        elif lgt_unit == 3:
+            lgt_val = flux_dt.to_unit([lgt_val], 'W/m2', 'W/ft2')[0]
+        lighting = Lighting(lights_id, lgt_val)
+
+    # process the miscellaneous loafs
+    equipment = None
+    equip_val, equip_unit = float(exp_vals[15]), int(exp_vals[16])
+    if equip_val != 0 and equip_unit in (1, 8, 9):
+        equip_type = int(exp_vals[17])
+        if equip_unit == 1:
+            equip_val = flux_dt.to_unit([equip_val], 'W/m2', 'Btu/h-ft2')[0]
+        elif equip_type == 8:
+            equip_val = flux_dt.to_unit([equip_val], 'W/m2', 'W/ft2')[0]
+        if equip_type == 2:
+            equipment = GasEquipment(equip_id, equip_val)
+        else:
+            equipment = ElectricEquipment(equip_id, equip_val)
+
+    return people, lighting, equipment
+
+
+def airflow_from_exp(exp_str):
+    """"Get Infiltration, Ventilation and ExhaustAir from TRACE 700 AirflowTemplate.
+
+    Args:
+        exp_str: A TRACE 700 AirflowTemplate entry string.
+
+    Returns:
+        A tuple with three elements.
+
+        -   infiltration: A Honeybee Infiltration object if the infiltration is
+            non-zero and defined per exterior area. None otherwise.
+
+        -   ventilation: A Honeybee Ventilation object if ventilation is non-zero
+            and is either "Sum of Outdoor Air" or "ASHRAE 62.1." None otherwise.
+
+        -   exhaust: A Honeybee ExhaustAir object if exhaust air is non-zero and
+            defined per floor area or as an absolute flow rate. None otherwise.
+    """
+    blank_val = '9999.99'
+    # deconstruct the string and get the identifier
+    exp_vals = exp_str.split(';')
+    airflow_id = exp_vals[0]
+    vent_id = exp_vals[1] if exp_vals[1] != 'None' else '{}_Ventilation'.format(airflow_id)
+    inf_id = exp_vals[7] if exp_vals[7] != 'None' else '{}_Infiltration'.format(airflow_id)
+    exhaust_id = '{}_ExhaustAir'.format(airflow_id)
+
+    # process the ventilation
+    ventilation = None
+    vent_method = exp_vals[27]
+    if vent_method == 0:  # Sum of Outdoor Air
+        v_cool_unit, v_heat_unit = int(exp_vals[4]), int(exp_vals[6])
+        vc_val, vh_val = float(exp_vals[3]), float(exp_vals[5])
+        if vc_val != 0 and vh_val != 0 and v_cool_unit != 4:
+            ventilation = Ventilation(vent_id)
+            if v_cool_unit == 0:  # ACH
+                ventilation.air_changes_per_hour = vc_val
+            elif v_cool_unit == 1:  # cfm
+                vc_val = flow_dt.to_unit([vc_val], 'm3/s', 'cfm')[0]
+                ventilation.flow_per_zone = vc_val
+            elif v_cool_unit == 2:  # cfm/person
+                vc_val = flow_dt.to_unit([vc_val], 'm3/s', 'cfm')[0]
+                ventilation.flow_per_person = vc_val
+            elif v_cool_unit == 3:  # cfm/ft2
+                vc_val = flow_int_dt.to_unit([vc_val], 'm3/s-m2', 'cfm/ft2')[0]
+                ventilation.flow_per_area = vc_val
+            elif v_cool_unit == 5:  # L/s
+                vc_val = flow_dt.to_unit([vc_val], 'm3/s', 'L/s')[0]
+                ventilation.flow_per_zone = vc_val
+            elif v_cool_unit == 6:  # L/s-m2
+                vc_val = flow_int_dt.to_unit([vc_val], 'm3/s-m2', 'L/s-m2')[0]
+                ventilation.flow_per_area = vc_val
+            elif v_cool_unit == 7:  # L/s-person
+                vc_val = flow_dt.to_unit([vc_val], 'm3/s', 'L/s')[0]
+                ventilation.flow_per_person = vc_val
+            if v_cool_unit == v_heat_unit:
+                ventilation.effectiveness_heating = round(vc_val / vh_val, 3)
+    elif vent_method == 1:  # ASHRAE 62.1
+        ppl_unit, area_unit = int(exp_vals[4]), int(exp_vals[6])
+        ppl_val, area_val = float(exp_vals[3]), float(exp_vals[5])
+        if (ppl_val != 0 or area_val != 0) and ppl_unit in (2, 7) and area_unit in (3, 6):
+            ventilation = Ventilation(vent_id)
+            if ppl_unit == 2:  # cfm/person
+                ppl_val = flow_dt.to_unit([ppl_val], 'm3/s', 'cfm')[0]
+            else:
+                ppl_val = flow_dt.to_unit([ppl_val], 'm3/s', 'L/s')[0]
+            ventilation.flow_per_person = ppl_val
+            if area_unit == 3:  # cfm/ft2
+                area_val = flow_int_dt.to_unit([area_val], 'm3/s-m2', 'cfm/ft2')[0]
+            else:
+                area_val = flow_int_dt.to_unit([area_val], 'm3/s-m2', 'L/s-m2')[0]
+            ventilation.flow_per_area = area_val
+            if exp_vals[29] != blank_val and float(exp_vals[29]) != 100:
+                ventilation.effectiveness_cooling = float(exp_vals[29]) / 100
+            if exp_vals[31] != blank_val and float(exp_vals[31]) != 100:
+                ventilation.effectiveness_heating = float(exp_vals[31]) / 100
+            if int(exp_vals[32]) != 1 and exp_vals[33] != blank_val:
+                ventilation.secondary_recirculation = float(exp_vals[33]) / 100
+
+    # process the infiltration
+    infiltration = None
+    inf_val, inf_unit = float(exp_vals[9]), int(exp_vals[10])
+    if inf_val != 0 and inf_unit in (3, 5):
+        if inf_unit == 3:  # cfm/ft2
+            inf_val = flow_int_dt.to_unit([inf_val], 'm3/s-m2', 'cfm/ft2')[0]
+        else:
+            inf_val = flow_int_dt.to_unit([inf_val], 'm3/s-m2', 'L/s-m2')[0]
+        infiltration = Infiltration(inf_id, inf_val)
+
+    # process the exhaust air
+    exhaust = None
+    ea_val, ea_unit = float(exp_vals[24]), int(exp_vals[25])
+    if ea_val != 0 and ea_unit in (4, 5, 8, 9, 10, 11, 14, 15):
+        exhaust = ExhaustAir(exhaust_id)
+        if ea_unit in (4, 5):  # cfm
+            ea_val = flow_dt.to_unit([ea_val], 'm3/s', 'cfm')[0]
+            exhaust.flow_per_fixture = ea_val
+        elif ea_unit in (8, 9):  # cfm/ft2
+            ea_val = flow_int_dt.to_unit([ea_val], 'm3/s-m2', 'cfm/ft2')[0]
+            exhaust.flow_per_area = ea_val
+        elif ea_unit in (10, 11):  # L/s
+            ea_val = flow_dt.to_unit([ea_val], 'm3/s', 'L/s')[0]
+            exhaust.flow_per_fixture = ea_val
+        else:  # L/s-m2
+            ea_val = flow_int_dt.to_unit([ea_val], 'm3/s-m2', 'L/s-m2')[0]
+            exhaust.flow_per_area = ea_val
+
+    return infiltration, ventilation, exhaust
+
+
+def setpoint_from_exp(exp_str):
+    """Get a Honeybee Setpoint from a TRACE 700 ThermostatTemplate.
+
+    Args:
+        exp_str: A TRACE 700 ThermostatTemplate entry string.
+
+    Returns:
+        A Honeybee Setpoint object.
+    """
+    # deconstruct the string and get the identifier
+    exp_vals = exp_str.split(';')
+    set_id = exp_vals[0]
+
+    # process the thermostat setpoints
+    setpoint = None
+    clg_set, htg_set = float(exp_vals[1]), float(exp_vals[3])
+    c_set_unit, h_set_unit = int(exp_vals[2]), int(exp_vals[4])
+    if clg_set >= htg_set:
+        if c_set_unit == 1:  # F
+            clg_set = temp_dt.to_unit([clg_set], 'C', 'F')[0]
+        if h_set_unit == 1:  # F
+            htg_set = temp_dt.to_unit([htg_set], 'C', 'F')[0]
+        heat_sch = ScheduleRuleset.from_constant_value(
+            '{} Heating Setpoint'.format(set_id), htg_set, temperature
+        )
+        cool_sch = ScheduleRuleset.from_constant_value(
+            '{} Cooling Setpoint'.format(set_id), clg_set, temperature
+        )
+        setpoint = Setpoint(set_id, heat_sch, cool_sch)
+
+    return setpoint
+
+
+def program_from_exp(room_exp_str, internal_loads, airflows, setpoints):
+    """Get a complete Honeybee ProgramType from the EXP string of a RoomTemplate.
+
+    Args:
+        exp_str: A TRACE 700 RoomTemplate entry string.
+        internal_loads: A dictionary of Honeybee internal loads objects with the
+            identifiers of the TRACE 700 InternalLoadTemplate as keys and
+            tuples of 3 Honeybee load objects as values (people, lighting, equipment).
+        airflows: A dictionary of Honeybee airflow objects with the identifiers
+            of the TRACE 700 AirflowTemplate as keys and tuples of 3
+            airflow objects as values (infiltration, ventilation, exhaust).
+        setpoints: A dictionary of Honeybee Setpoint objects with the identifiers
+            of the TRACE 700 ThermostatTemplate as keys and Honeybee Setpoint
+            objects as values.
+
+    Returns:
+        A Honeybee ProgramType object from the RoomTemplate string.
+    """
+    # deconstruct the string and get the identifier
+    exp_vals = room_exp_str.split(';')
+    program = ProgramType(exp_vals[0])
+    def_templates = ('Default', 'Metric Default')
+    msg_t = 'Failed to find {} "{}" in the EXP file.'
+
+    # get the internal loads
+    if exp_vals[1] not in def_templates:
+        try:
+            people, lighting, equipment = internal_loads[exp_vals[1]]
+            program.people = people
+            program.lighting = lighting
+            if isinstance(equipment, ElectricEquipment):
+                program.electric_equipment = equipment
+            elif isinstance(equipment, GasEquipment):
+                program.gas_equipment = equipment
+        except KeyError:
+            raise ValueError(msg_t.format('InternalLoadTemplate', exp_vals[1]))
+
+    # get the airflows
+    if exp_vals[2] not in def_templates:
+        try:
+            infiltration, ventilation, exhaust = airflows[exp_vals[2]]
+            program.infiltration = infiltration
+            program.ventilation = ventilation
+            program.exhaust = exhaust
+        except KeyError:
+            raise ValueError(msg_t.format('AirflowTemplate', exp_vals[2]))
+
+    # get the setpoint
+    if exp_vals[3] not in def_templates:
+        try:
+            program.setpoint = setpoints[exp_vals[3]]
+        except KeyError:
+            raise ValueError(msg_t.format('ThermostatTemplate', exp_vals[3]))
+
+    return program
+
+
+def programs_from_exp(exp_file_content):
+    """Get a list of Honeybee ProgramTypes from the content of an EXP file.
+
+    Args:
+        exp_file_content: Text string for the contents of an EXP file.
+
+    Returns:
+        A list of Honeybee ProgramTypes.
+    """
+    # load the individual templates from the file contents
+    file_lines = exp_file_content.split('\n')
+    internal_loads, airflows, setpoints = {}, {}, {}
+    loads_section, airflows_section, setpoints_section = False, False, False
+    for line in file_lines:
+        if line.startswith('T.InternalLoadTemplate'):
+            loads_section, airflows_section, setpoints_section = True, False, False
+            continue
+        elif line.startswith('T.AirflowTemplate'):
+            loads_section, airflows_section, setpoints_section = False, True, False
+            continue
+        elif line.startswith('T.ThermostatTemplate'):
+            loads_section, airflows_section, setpoints_section = False, False, True
+            continue
+        elif line.startswith('T.'):
+            loads_section, airflows_section, setpoints_section = False, False, False
+
+        if loads_section:
+            internal_loads[line.split(';')[0]] = internal_loads_from_exp(line)
+        elif airflows_section:
+            airflows[line.split(';')[0]] = airflow_from_exp(line)
+        elif setpoints_section:
+            setpoints[line.split(';')[0]] = setpoint_from_exp(line)
+
+    # create the individual programs from the templates
+    programs = []
+    programs_section = False
+    for line in file_lines:
+        if line.startswith('T.RoomTemplate'):
+            programs_section = True
+            continue
+        elif programs_section and len(line.split(';')) != 6:
+            programs_section = False
+        if programs_section:
+            programs.append(program_from_exp(line, internal_loads, airflows, setpoints))
+
+    return programs

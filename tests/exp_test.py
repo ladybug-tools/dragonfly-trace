@@ -1,8 +1,9 @@
 """Test the translators to TRACE."""
 from honeybee_energy.lib.programtypes import office_program
+from honeybee_energy.programtype import ProgramType
 from dragonfly.model import Model
 
-from dragonfly_trace.exp import program_to_exp, construction_sets_to_exp
+from dragonfly_trace.exp import program_to_exp, construction_sets_to_exp, programs_from_exp
 from dragonfly_trace.writer import model_to_exp
 
 
@@ -55,3 +56,16 @@ def test_construction_sets_to_exp():
     assert 'T.CNST_ROOF' in exp
     assert 'T.CNST_WALL' in exp
     assert 'T.GLAS_GLASS' in exp
+
+
+def test_programs_from_exp():
+    """Test the programs_from_exp function."""
+    sample_path = './tests/assets/rac_basic_sample_project.exp'
+    with open(sample_path, 'r') as exp_f:
+        exp_file_content = exp_f.read()
+
+    programs = programs_from_exp(exp_file_content)
+    assert len(programs) == 5
+
+    for prog in programs:
+        assert isinstance(prog, ProgramType)
