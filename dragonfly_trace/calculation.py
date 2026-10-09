@@ -68,7 +68,7 @@ def calculation_matrix(rooms, si_units=False):
         'Rp',
         'Ra',
         'ACH',
-        '',
+        'M',
         'Ez Clg',
         'Ez Htg',
         'Er',
@@ -76,9 +76,9 @@ def calculation_matrix(rooms, si_units=False):
         'OA Clg',
         'OA Htg',
         '',
-        '',
-        '',
-        '',
+        'EAf',
+        'Fz',
+        'EAa',
         'EA'
     ]
 
@@ -133,11 +133,12 @@ def calculation_matrix(rooms, si_units=False):
         # get all of the exhaust air criteria
         exhaust_obj = room.properties.energy.exhaust
         if exhaust_obj is not None:
+            fc = exhaust_obj.fixture_count
             if not si_units:
-                eaf = round(exhaust_obj.flow_per_fixture_ip, 3)
+                eaf = round(exhaust_obj.flow_per_fixture_ip)
                 eaa = round(exhaust_obj.flow_per_area_ip, 3)
             else:
-                eaf = round(exhaust_obj.flow_per_fixture_si, 3)
+                eaf = round(exhaust_obj.flow_per_fixture_si)
                 eaa = round(exhaust_obj.flow_per_area_si, 3)
         else:
             eaf, fc, eaa = 0, 0, 0

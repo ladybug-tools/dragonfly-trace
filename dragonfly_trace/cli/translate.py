@@ -27,7 +27,7 @@ def translate():
 @click.option('--imperial/--metric', '-ip/-si', help='Flag to note whether imperial '
               'or metric units should be used for values in the output CSV.',
               default=True, show_default=True)
-@click.option('--ventilation-method', '-m', help='Text for the ventilation method to be '
+@click.option('--ventilation-method', '-vm', help='Text for the ventilation method to be '
               'used to calculate outdoor air. Choose from: Sum of Outdoor Air, ASHRAE 62.1',
               type=str, default='Sum of Outdoor Air', show_default=True)
 @click.option('--multiplier/--full-geometry', ' /-fg', help='Flag to note if the '
@@ -156,7 +156,7 @@ def model_to_trace700_csv(
 @click.option('--imperial/--metric', '-ip/-si', help='Flag to note whether imperial '
               'or metric units should be used for values in the output XLSX.',
               default=True, show_default=True)
-@click.option('--ventilation-method', '-m', help='Text for the ventilation method to be '
+@click.option('--ventilation-method', '-vm', help='Text for the ventilation method to be '
               'used to calculate outdoor air. Choose from: Sum of Outdoor Air, ASHRAE 62.1',
               type=str, default='Sum of Outdoor Air', show_default=True)
 @click.option('--multiplier/--full-geometry', ' /-fg', help='Flag to note if the '
@@ -398,7 +398,7 @@ def model_to_trace700_gbxml(
 @click.option('--imperial/--metric', '-ip/-si', help='Flag to note whether imperial '
               'or metric units should be used for values in the output EXP file.',
               default=True, show_default=True)
-@click.option('--ventilation-method', '-m', help='Text for the ventilation method to be '
+@click.option('--ventilation-method', '-vm', help='Text for the ventilation method to be '
               'used to calculate outdoor air. Choose from: Sum of Outdoor Air, ASHRAE 62.1',
               type=str, default='Sum of Outdoor Air', show_default=True)
 @click.option('--output-file', '-f', help='Optional EXP file to output the string '
@@ -435,7 +435,7 @@ def model_to_trace700_exp_cli(model_file, imperial, ventilation_method, output_f
               'simplification to perform on windows and doors in the dragonfly model. '
               'Choose from: None, MergeAdjWindows, SingleWindow.',
               type=str, default='MergeAdjWindows', show_default=True)
-@click.option('--ventilation-method', '-m', help='Text for the ventilation method to be '
+@click.option('--ventilation-method', '-vm', help='Text for the ventilation method to be '
               'used to calculate outdoor air. Choose from: Sum of Outdoor Air, ASHRAE 62.1',
               type=str, default='Sum of Outdoor Air', show_default=True)
 @click.option('--program-name', '-p', help='Optional text to set the name of the '

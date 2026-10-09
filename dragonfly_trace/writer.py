@@ -556,7 +556,7 @@ def model_to_trace700_workbook(
     if calc_matrix is not None:
         ws_oa = workbook.create_sheet('Calculation')
         _add_calc_workbook_table(ws_oa, 'Calculation', calc_matrix)
-        # reference the calculated value in the airflow table
+        # reference the calculated values in the airflow table
         ref_template = "='Calculation'!{}{}"
         for i, air_cell in enumerate(ws_air['7']):
             if i == 0:
@@ -566,6 +566,10 @@ def model_to_trace700_workbook(
             if i == 0:
                 continue
             air_cell.value = ref_template.format('T', i + 3)
+        for i, air_cell in enumerate(ws_air['44']):
+            if i == 0:
+                continue
+            air_cell.value = ref_template.format('Y', i + 3)
         # reference the person count in the people and lighting table
         for i, (ppl_cell, unit_cell) in enumerate(zip(ws_ppl['6'], ws_ppl['7'])):
             if i == 0:
@@ -746,6 +750,16 @@ def _add_calc_workbook_table(ws, title, matrix):
         q_clg, q_htg = 'S{}'.format(row_i), 'T{}'.format(row_i)
         ws[q_clg] = template.format(row_i, 'O')
         ws[q_htg] = template.format(row_i, 'P')
+        ws[q_clg].number_format = '0.0'
+        ws[q_htg].number_format = '0.0'
+
+    # set the exhaust air to be calculated from the input criteria
+    ea_template = '=SUM(V{0}*W{0}, I{0}*X{0})'
+    for i, row in enumerate(ws['4:{}'.format(len(col))]):
+        row_i = i + 4
+        q_ea = 'Y{}'.format(row_i)
+        ws[q_ea] = ea_template.format(row_i)
+        ws[q_ea].number_format = '0.0'
 
     # lock and hide the column of identifiers
     unlocked = openpyxl.styles.Protection(locked=False)
