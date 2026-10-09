@@ -266,6 +266,19 @@ def program_to_trace700_airflow_template(
         ez_heat = int(vent.effectiveness_heating * 100)
         ez_heat = 100 if ez_heat > 100 else ez_heat
 
+    # Fields 25-26 (Exhaust Air Layout)
+    exhaust = program.exhaust
+    ea_unit = 10 if si_units else 4  # 10 = L/s, 4 = cfm
+    ea_val = 0
+    if exhaust is not None:
+        if exhaust.flow_per_area != 0:
+            ea_unit = 14 if si_units else 8  # 14 = L/s/sq m, 8 = cfm/sq ft
+            ea_val = exhaust.flow_per_area_si if si_units else exhaust.flow_per_area_ip
+            ea_val = round(ea_val, 3)
+        elif exhaust.flow_per_fixture != 0:
+            ea_val = exhaust.flow_per_fixture_si if si_units else exhaust.flow_per_fixture_ip
+            ea_val = round(ea_val * exhaust.fixture_count)
+
     # Fields 8-13 (Infiltration Layout)
     inf = program.infiltration
     inf_unit = 5 if si_units else 3  # 5 = L/s/sq m, 3 = cfm/sq ft
@@ -278,15 +291,17 @@ def program_to_trace700_airflow_template(
         exp_line = (
             f"{template_name};Default Std62;Available (100%);{ppl:.6f};{ppl_unit};{vent_val:.6f};{vent_unit};"
             f"None;Available (100%);{inf_val:.6f};{inf_unit};{inf_val:.6f};{inf_unit};"
-            f"{blank_val};0;Available (100%);{blank_val};8;{blank_val};9;{blank_val};10;{blank_val};10;0;2;"
-            f"Available (100%);1;0;{ez_cool};0;{ez_heat};1;{blank_val};{blank_val};0;0;{blank_val};0;"
+            f"{blank_val};0;Available (100%);{blank_val};8;{blank_val};9;{blank_val};10;{blank_val};10;"
+            f"{ea_val};{ea_unit};Available (100%);"
+            f"1;0;{ez_cool};0;{ez_heat};1;{blank_val};{blank_val};0;0;{blank_val};0;"
         )
     else:
         exp_line = (
             f"{template_name};None;Available (100%);{vent_val:.6f};{vent_unit};{vent_val:.6f};{vent_unit};"
             f"None;Available (100%);{inf_val:.6f};{inf_unit};{inf_val:.6f};{inf_unit};"
-            f"{blank_val};0;Available (100%);{blank_val};8;{blank_val};9;{blank_val};10;{blank_val};10;0;2;"
-            f"Available (100%);0;0;{blank_val};0;{blank_val};1;{blank_val};{blank_val};0;0;{blank_val};0;"
+            f"{blank_val};0;Available (100%);{blank_val};8;{blank_val};9;{blank_val};10;{blank_val};10;"
+            f"{ea_val};{ea_unit};Available (100%);0;0;"
+            f"{blank_val};0;{blank_val};1;{blank_val};{blank_val};0;0;{blank_val};0;"
         )
     return exp_line
 
