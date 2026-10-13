@@ -1,5 +1,4 @@
 """Methods to generate EXP templates for Trane TRACE."""
-from honeybee.typing import readable_short_name
 from ladybug.datatype.area import Area
 from ladybug.datatype.conductivity import Conductivity
 from ladybug.datatype.density import Density
@@ -12,6 +11,7 @@ from ladybug.datatype.temperature import Temperature
 from ladybug.datatype.specificheatcapacity import SpecificHeatCapacity
 from ladybug.datatype.rvalue import RValue
 from ladybug.datatype.uvalue import UValue
+from honeybee.typing import readable_short_name, clean_ep_string
 
 from honeybee_energy.material.opaque import EnergyMaterialNoMass
 from honeybee_energy.schedule.ruleset import ScheduleRuleset
@@ -1086,10 +1086,13 @@ def internal_loads_from_exp(exp_str):
     """
     # deconstruct the string and get the identifiers
     exp_vals = exp_str.split(';')
-    load_id = exp_vals[0]
-    people_id = exp_vals[1] if exp_vals[1] != 'None' else '{}_People'.format(load_id)
-    lights_id = exp_vals[9] if exp_vals[9] != 'None' else '{}_Lighting'.format(load_id)
-    equip_id = exp_vals[13] if exp_vals[13] != 'None' else '{}_Equipment'.format(load_id)
+    load_id = clean_ep_string(exp_vals[0])
+    people_id = clean_ep_string(exp_vals[1]) \
+        if exp_vals[1] != 'None' else '{}_People'.format(load_id)
+    lights_id = clean_ep_string(exp_vals[9]) \
+        if exp_vals[9] != 'None' else '{}_Lighting'.format(load_id)
+    equip_id = clean_ep_string(exp_vals[13]) \
+        if exp_vals[13] != 'None' else '{}_Equipment'.format(load_id)
 
     # process the people
     people = None
@@ -1097,7 +1100,7 @@ def internal_loads_from_exp(exp_str):
     if ppl_val != 0 and ppl_unit in (1, 2):
         if ppl_unit == 1:
             ppl_val = area_dt.to_unit([ppl_val], 'm2', 'ft2')[0]
-        people = People(people_id, ppl_val)
+        people = People(people_id, 1 / ppl_val)
         sens_val, sens_unit = float(exp_vals[5]), int(exp_vals[6])
         lat_val, lat_unit = float(exp_vals[7]), int(exp_vals[8])
         if sens_unit in (7, 8) and sens_unit == lat_unit:
@@ -1128,7 +1131,7 @@ def internal_loads_from_exp(exp_str):
         equip_type = int(exp_vals[17])
         if equip_unit == 1:
             equip_val = flux_dt.to_unit([equip_val], 'W/m2', 'Btu/h-ft2')[0]
-        elif equip_type == 8:
+        elif equip_unit == 8:
             equip_val = flux_dt.to_unit([equip_val], 'W/m2', 'W/ft2')[0]
         if equip_type == 2:
             equipment = GasEquipment(equip_id, equip_val)
@@ -1159,9 +1162,11 @@ def airflow_from_exp(exp_str):
     blank_val = '9999.99'
     # deconstruct the string and get the identifier
     exp_vals = exp_str.split(';')
-    airflow_id = exp_vals[0]
-    vent_id = exp_vals[1] if exp_vals[1] != 'None' else '{}_Ventilation'.format(airflow_id)
-    inf_id = exp_vals[7] if exp_vals[7] != 'None' else '{}_Infiltration'.format(airflow_id)
+    airflow_id = clean_ep_string(exp_vals[0])
+    vent_id = clean_ep_string(exp_vals[1]) \
+        if exp_vals[1] != 'None' else '{}_Ventilation'.format(airflow_id)
+    inf_id = clean_ep_string(exp_vals[7]) \
+        if exp_vals[7] != 'None' else '{}_Infiltration'.format(airflow_id)
     exhaust_id = '{}_ExhaustAir'.format(airflow_id)
 
     # process the ventilation
@@ -1258,7 +1263,7 @@ def setpoint_from_exp(exp_str):
     """
     # deconstruct the string and get the identifier
     exp_vals = exp_str.split(';')
-    set_id = exp_vals[0]
+    set_id = clean_ep_string(exp_vals[0])
 
     # process the thermostat setpoints
     setpoint = None
@@ -1300,7 +1305,7 @@ def program_from_exp(room_exp_str, internal_loads, airflows, setpoints):
     """
     # deconstruct the string and get the identifier
     exp_vals = room_exp_str.split(';')
-    program = ProgramType(exp_vals[0])
+    program = ProgramType(clean_ep_string(exp_vals[0]))
     def_templates = ('Default', 'Metric Default')
     msg_t = 'Failed to find {} "{}" in the EXP file.'
 

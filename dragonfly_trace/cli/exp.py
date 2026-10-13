@@ -8,7 +8,7 @@ from ladybug.commandutil import process_content_to_output
 from honeybee_energy.programtype import ProgramType
 
 from dragonfly_trace.exp import program_to_exp, internal_loads_to_exp, \
-    airflow_to_exp, thermostat_to_exp
+    airflow_to_exp, thermostat_to_exp, programs_from_exp
 
 
 _logger = logging.getLogger(__name__)
@@ -133,3 +133,65 @@ def program_to_trace700_thermostat_cli(program_file, imperial, output_file):
         sys.exit(1)
     else:
         sys.exit(0)
+
+
+@exp.command('programs-from-trace700-exp')
+@click.argument('exp-file', type=click.Path(
+    exists=True, file_okay=True, dir_okay=False, resolve_path=True))
+@click.option('--full/--abridged', ' /-a', help='Flag to note whether the objects '
+              'should be translated as an abridged specification instead of a '
+              'specification that fully describes the object. This option should be '
+              'used when the schedules-from-osm command will be used to separately '
+              'translate all of the schedules from the OSM.',
+              default=True, show_default=True)
+@click.option('--indent', '-i', help='Optional integer to specify the indentation in '
+              'the output JSON file. Specifying an value here can produce more read-able'
+              ' JSONs.', type=int, default=None, show_default=True)
+@click.option('--output-file', '-f', help='Optional JSON file to output the string '
+              'of the translation. By default it printed out to stdout',
+              type=click.File('w'), default='-', show_default=True)
+def program_from_trace700_exp_cli(exp_file, full, indent, output_file):
+    """Translate all ProgramTypes in a TRACE 700 EXP file to a Honeybee JSON.
+
+    The resulting JSON can be written into a user standards folder to add the
+    programs to a users standards library.
+
+    \b
+    Args:
+        exp_file: Path to a TRACE 700 EXP file.
+    """
+    try:
+        abridged = not full
+        programs_from_trace700_exp(exp_file, abridged, indent, output_file)
+    except Exception as e:
+        _logger.exception('Program translation failed.\n{}'.format(e))
+        sys.exit(1)
+    else:
+        sys.exit(0)
+
+
+def programs_from_trace700_exp(
+    exp_file, abridged=False, indent=None, output_file=None, full=True
+):
+    """Translate all ProgramTypes in a TRACE 700 EXP file to a Honeybee JSON.
+
+    The resulting JSON can be written into a user standards folder to add the
+    programs to a users standards library.
+
+    Args:
+        exp_file: Path to a TRACE 700 EXP file.
+        abridged: Boolean to note whether the objects should be translated as
+            an abridged specification instead of a specification that fully
+            describes the object. This option should be used when the
+            schedules_from_osm function will be used to separately
+            translate all of the constructions from the OSM. (Default: False).
+        indent: Optional integer to specify the indentation in the output JSON file.
+            Specifying an value here can produce more read-able JSONs. (Default: None).
+        output_file: Optional JSON file to output the string of the translation.
+            If None, it will be returned from this method. (Default: None).
+    """
+    with open(exp_file) as exp_f:
+        file_contents = exp_f.read()
+    programs = programs_from_exp(file_contents)
+    out_dict = {p.identifier: p.to_dict(abridged=abridged) for p in programs}
+    return process_content_to_output(json.dumps(out_dict, indent=indent), output_file)

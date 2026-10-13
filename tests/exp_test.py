@@ -60,12 +60,12 @@ def test_construction_sets_to_exp():
 
 def test_programs_from_exp():
     """Test the programs_from_exp function."""
-    sample_path = './tests/assets/rac_basic_sample_project.exp'
+    sample_path = './tests/assets/custom_lib.EXP'
     with open(sample_path, 'r') as exp_f:
         exp_file_content = exp_f.read()
 
     programs = programs_from_exp(exp_file_content)
-    assert len(programs) == 5
+    assert len(programs) == 12
 
     for prog in programs:
         assert isinstance(prog, ProgramType)
