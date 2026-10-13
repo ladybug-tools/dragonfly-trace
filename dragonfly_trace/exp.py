@@ -64,9 +64,6 @@ def people_to_exp(people, si_units=False):
     people_amount = area_dt.to_unit([people.area_per_person], area_unit, 'm2')[0]
     sensible_ppl = power_dt.to_unit([people.activity_max_sensible], power_unit, 'W')[0]
     latent_ppl = power_dt.to_unit([people.activity_max_latent], power_unit, 'W')[0]
-    people_amount = round(people_amount, 1)
-    sensible_ppl = round(sensible_ppl, 1)
-    latent_ppl = round(latent_ppl, 1)
 
     # People;
     # Description;
@@ -79,8 +76,8 @@ def people_to_exp(people, si_units=False):
     # Latent load unit;
     # Longwave radiant %;
     exp_line = (
-        f'People;{description};1;{people_amount:.6f};{amount_unit_code};'
-        f'{sensible_ppl:.6f};{load_unit_code};{latent_ppl:.6f};{load_unit_code};{radiant_pct:.1f};'
+        f'People;{description};1;{people_amount:.1f};{amount_unit_code};'
+        f'{sensible_ppl:.0f};{load_unit_code};{latent_ppl:.0f};{load_unit_code};{radiant_pct:.0f};'
     )
     return exp_line
 
@@ -111,8 +108,8 @@ def lighting_to_exp(lighting, fixture_type='SUSFLUOR'):
     # Longwave radiant %;
     # Shortwave radiant %;
     exp_line = (
-        f'Lighting;{description};1;{fixture_type};{plenum_pct:.1f};1;'
-        f'{radiant_pct:.1f};{visible_pct:.1f};'
+        f'Lighting;{description};1;{fixture_type};{plenum_pct:.0f};1;'
+        f'{radiant_pct:.0f};{visible_pct:.0f};'
     )
     return exp_line
 
@@ -146,7 +143,6 @@ def equipment_to_exp(equipment, si_units=False, watts_per_area=None):
 
     lpd_val = watts_per_area if watts_per_area is not None else equipment.watts_per_area
     energy_value = flux_dt.to_unit([lpd_val], flux_unit, 'W/m2')[0]
-    energy_value = round(energy_value, 2)
 
     # Miscellaneous;
     # Description;
@@ -160,8 +156,8 @@ def equipment_to_exp(equipment, si_units=False, watts_per_area=None):
     # Energy meter;
     # Air path;
     exp_line = (
-        f'Miscellaneous;{description};1;{energy_value:.6f};{misc_unit_code};{sensible_pct:.1f};'
-        f'{room_pct:.1f};{plenum_pct:.1f};{radiant_pct:.1f};{meter_code};{air_path};'
+        f'Miscellaneous;{description};1;{energy_value:.2f};{misc_unit_code};{sensible_pct:.0f};'
+        f'{room_pct:.0f};{plenum_pct:.0f};{radiant_pct:.0f};{meter_code};{air_path};'
     )
     return exp_line
 
@@ -195,9 +191,6 @@ def program_to_trace700_internal_load_template(program, si_units=False):
         ppl_amount = area_dt.to_unit([ppl.area_per_person], area_unit, 'm2')[0]
         sensible_watts = power_dt.to_unit([ppl.activity_max_sensible], power_unit, 'W')[0]
         latent_watts = power_dt.to_unit([ppl.activity_max_latent], power_unit, 'W')[0]
-        ppl_amount = round(ppl_amount, 1)
-        sensible_watts = round(sensible_watts, 1)
-        latent_watts = round(latent_watts, 1)
     else:
         ppl_type = 'None'
         ppl_amount = 0
@@ -213,7 +206,6 @@ def program_to_trace700_internal_load_template(program, si_units=False):
     if ltg is not None:
         ltg_type = ltg.display_name
         ltg_lpd = flux_dt.to_unit([ltg.watts_per_area], flux_unit, 'W/m2')[0] if ltg else 0.0
-        ltg_lpd = round(ltg_lpd, 2)
     else:
         ltg_type = 'Fluorescent, hung below ceiling, 100% load to space'
         ltg_lpd = 0.0
@@ -228,7 +220,6 @@ def program_to_trace700_internal_load_template(program, si_units=False):
         combined_lpd = elec_lpd + gas_lpd
         if combined_lpd > 0:
             misc_energy = flux_dt.to_unit([combined_lpd], flux_unit, 'W/m2')[0]
-            misc_energy = round(misc_energy, 2)
             eq_obj = elec_eq if elec_lpd >= gas_lpd else gas_eq
             energy_meter = 1 if elec_lpd >= gas_lpd else 2
             misc_type = readable_short_name(eq_obj.display_name, max_length=40)
@@ -244,10 +235,10 @@ def program_to_trace700_internal_load_template(program, si_units=False):
     field_19, field_20 = 1, 2  # workstation, workstation unit
 
     exp_line = (
-        f"{template_name};{ppl_type};Cooling Only (Design);{ppl_amount:.6f};{ppl_amount_unit};"
-        f"{sensible_watts:.4f};{ppl_load_unit};{latent_watts:.4f};{ppl_load_unit};"
-        f"{ltg_type};Cooling Only (Design);{ltg_lpd:.6f};{ltg_unit};"
-        f"{misc_type};Cooling Only (Design);{misc_energy:.6f};{misc_unit};"
+        f"{template_name};{ppl_type};Cooling Only (Design);{ppl_amount:.1f};{ppl_amount_unit};"
+        f"{sensible_watts:.0f};{ppl_load_unit};{latent_watts:.0f};{ppl_load_unit};"
+        f"{ltg_type};Cooling Only (Design);{ltg_lpd:.2f};{ltg_unit};"
+        f"{misc_type};Cooling Only (Design);{misc_energy:.2f};{misc_unit};"
         f"{energy_meter};{field_19};{field_20};"
     )
     return exp_line
@@ -313,16 +304,16 @@ def program_to_trace700_airflow_template(
 
     if ventilation_method == 'ASHRAE 62.1':
         exp_line = (
-            f"{template_name};Default Std62;Available (100%);{ppl:.6f};{ppl_unit};{vent_val:.6f};{vent_unit};"
-            f"None;Available (100%);{inf_val:.6f};{inf_unit};{inf_val:.6f};{inf_unit};"
+            f"{template_name};Default Std62;Available (100%);{ppl:.3f};{ppl_unit};{vent_val:.3f};{vent_unit};"
+            f"None;Available (100%);{inf_val:.3f};{inf_unit};{inf_val:.3f};{inf_unit};"
             f"{blank_val};0;Available (100%);{blank_val};8;{blank_val};9;{blank_val};10;{blank_val};10;"
             f"{ea_val};{ea_unit};Available (100%);"
             f"1;0;{ez_cool};0;{ez_heat};1;{blank_val};{blank_val};0;0;{blank_val};0;"
         )
     else:
         exp_line = (
-            f"{template_name};None;Available (100%);{vent_val:.6f};{vent_unit};{vent_val:.6f};{vent_unit};"
-            f"None;Available (100%);{inf_val:.6f};{inf_unit};{inf_val:.6f};{inf_unit};"
+            f"{template_name};None;Available (100%);{vent_val:.3f};{vent_unit};{vent_val:.3f};{vent_unit};"
+            f"None;Available (100%);{inf_val:.3f};{inf_unit};{inf_val:.3f};{inf_unit};"
             f"{blank_val};0;Available (100%);{blank_val};8;{blank_val};9;{blank_val};10;{blank_val};10;"
             f"{ea_val};{ea_unit};Available (100%);0;0;"
             f"{blank_val};0;{blank_val};1;{blank_val};{blank_val};0;0;{blank_val};0;"
