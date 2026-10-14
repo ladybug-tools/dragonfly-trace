@@ -13,7 +13,7 @@ from ladybug.datatype.rvalue import RValue
 from ladybug.datatype.uvalue import UValue
 from honeybee.typing import readable_short_name, clean_ep_string
 
-from honeybee_energy.material.opaque import EnergyMaterialNoMass
+from honeybee_energy.material.opaque import EnergyMaterial, EnergyMaterialNoMass
 from honeybee_energy.schedule.ruleset import ScheduleRuleset
 from honeybee_energy.load.people import People
 from honeybee_energy.load.lighting import Lighting
@@ -642,7 +642,7 @@ def programs_to_exp(programs, si_units=False, ventilation_method='Sum of Outdoor
     return file_data
 
 
-def energy_material_to_trace700_material(material, si_units=False, id=999):
+def material_to_exp(material, si_units=False, id=999):
     """Converts a Honeybee EnergyMaterial or EnergyMaterialNoMass to a T.MATR_MATERIAL entry."""
     description = readable_short_name(material.display_name, max_length=40)
     material_id = f'M{id}' if not str(id).startswith('M') else str(id)
@@ -656,7 +656,7 @@ def energy_material_to_trace700_material(material, si_units=False, id=999):
     density_unit = 'kg/m3' if si_units else 'lb/ft3'
     density_code = 1 if si_units else 0
 
-    specific_heat_unit = 'J/kg-K' if si_units else 'Btu/lb-F'
+    specific_heat_unit = 'kJ/kg-K' if si_units else 'Btu/lb-F'
     specific_heat_code = 0 if si_units else 1
 
     resistance_unit = 'm2-K/W' if si_units else 'h-ft2-F/Btu'
@@ -687,7 +687,7 @@ def energy_material_to_trace700_material(material, si_units=False, id=999):
     return exp_line
 
 
-def opaque_construction_to_trace700_construction(
+def opaque_construction_to_exp(
     construction, const_type='Wall', si_units=False, starting_material_id=500, material_id_map=None
 ):
     """Converts a Honeybee OpaqueConstruction to a TRACE 700 construction entry."""
@@ -716,7 +716,7 @@ def opaque_construction_to_trace700_construction(
             mat_tag = material_id_map[mat_key]
         else:
             mat_tag = f'M{id_counter}'
-            mat_line = energy_material_to_trace700_material(mat, si_units=si_units, id=id_counter)
+            mat_line = material_to_exp(mat, si_units=si_units, id=id_counter)
             material_lines.append(mat_line)
             if material_id_map is not None:
                 material_id_map[mat_key] = mat_tag
@@ -780,7 +780,7 @@ def opaque_construction_to_trace700_construction(
     return exp_line, material_lines
 
 
-def window_construction_to_trace700_glass(construction, si_units=False, is_door=False):
+def window_construction_to_exp(construction, si_units=False, is_door=False):
     """Converts a Honeybee WindowConstruction object to a T.GLAS_GLASS entry."""
     description = construction.display_name
     if is_door and not description.lower().endswith('door'):
@@ -931,7 +931,7 @@ def construction_sets_to_exp(construction_sets, si_units=False):
     def _process_opaque(cnst, category):
         nonlocal material_counter
         if cnst is not None and cnst.identifier not in seen_constructions:
-            line, mat_lines = opaque_construction_to_trace700_construction(
+            line, mat_lines = opaque_construction_to_exp(
                 cnst, const_type=category, si_units=si_units,
                 starting_material_id=material_counter, material_id_map=material_id_map
             )
@@ -951,7 +951,7 @@ def construction_sets_to_exp(construction_sets, si_units=False):
         if cnst is not None:
             key = (cnst.identifier, is_door)
             if key not in seen_constructions:
-                line = window_construction_to_trace700_glass(cnst, si_units=si_units, is_door=is_door)
+                line = window_construction_to_exp(cnst, si_units=si_units, is_door=is_door)
                 seen_constructions.add(key)
                 return line
         return None
@@ -1388,3 +1388,57 @@ def programs_from_exp(exp_file_content):
             programs.append(program_from_exp(line, internal_loads, airflows, setpoints))
 
     return programs
+
+
+def material_from_exp(exp_str):
+    """Get an EnergyMaterial or EnergyMaterialNoMass from a TRACE 700 MATR_MATERIAL.
+
+    Args:
+        exp_str: A TRACE 700 MATR_MATERIAL entry string.
+
+    Returns:
+        A Honeybee EnergyMaterial or EnergyMaterialNoMass object.
+    """
+    # deconstruct the string and get the identifier
+    exp_vals = exp_str.split(';')
+    mat_id = clean_ep_string(exp_vals[1])
+
+    # first check if the material has no mass
+    r_value, r_unit = float(exp_vals[12]), int(exp_vals[13])
+    if r_value != 0:
+        if r_unit == 1:
+            r_value = rvalue_dt.to_unit([r_value], 'm2-K/W', 'h-ft2-F/Btu')[0]
+        return EnergyMaterialNoMass(mat_id, r_value)
+
+    # it is a material with mass
+    # get the thickness and convert it to the correct units
+    thickness, t_unit = float(exp_vals[4]), int(exp_vals[5])
+    if t_unit == 0:
+        thickness = distance_dt.to_unit([thickness], 'm', 'ft')[0]
+    elif t_unit == 1:
+        thickness = distance_dt.to_unit([thickness], 'm', 'in')[0]
+    elif t_unit == 3:
+        thickness = distance_dt.to_unit([thickness], 'm', 'cm')[0]
+    elif t_unit == 4:
+        thickness = distance_dt.to_unit([thickness], 'm', 'mm')[0]
+
+    # get the conductivity and convert it to the correct units
+    conductivity, c_unit = float(exp_vals[6]), int(exp_vals[7])
+    if c_unit == 1:
+        conductivity = conductivity_dt.to_unit([conductivity], 'W/m-K', 'Btu/h-ft-F')[0]
+
+    # get the density and convert it to the correct units
+    density, d_unit = float(exp_vals[8]), int(exp_vals[9])
+    if d_unit == 0:
+        density = density_dt.to_unit([density], 'kg/m3', 'lb/ft3')[0]
+    elif d_unit == 2:
+        density = density_dt.to_unit([density], 'kg/m3', 'g/cm3')[0]
+
+    # get the specific_heat and convert it to the correct units
+    sht, s_unit = float(exp_vals[10]), int(exp_vals[11])
+    if s_unit == 1:
+        sht = specific_heat_capacity_dt.to_unit([sht], 'J/kg-K', 'Btu/lb-F')[0]
+    elif s_unit == 0:
+        sht = specific_heat_capacity_dt.to_unit([sht], 'J/kg-K', 'kJ/kg-K')[0]
+
+    return EnergyMaterial(mat_id, thickness, conductivity, density, sht)
