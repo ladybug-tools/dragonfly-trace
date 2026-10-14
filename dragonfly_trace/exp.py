@@ -14,6 +14,9 @@ from ladybug.datatype.uvalue import UValue
 from honeybee.typing import readable_short_name, clean_ep_string
 
 from honeybee_energy.material.opaque import EnergyMaterial, EnergyMaterialNoMass
+from honeybee_energy.construction.opaque import OpaqueConstruction
+from honeybee_energy.material.glazing import EnergyWindowMaterialSimpleGlazSys
+from honeybee_energy.construction.window import WindowConstruction
 from honeybee_energy.schedule.ruleset import ScheduleRuleset
 from honeybee_energy.load.people import People
 from honeybee_energy.load.lighting import Lighting
@@ -24,6 +27,8 @@ from honeybee_energy.load.exhaust import ExhaustAir
 from honeybee_energy.load.setpoint import Setpoint
 from honeybee_energy.programtype import ProgramType
 from honeybee_energy.lib.scheduletypelimits import temperature, activity_level
+
+from .util import transmissivity_from_transmittance
 
 area_dt = Area()
 conductivity_dt = Conductivity()
@@ -787,19 +792,32 @@ def window_construction_to_exp(construction, si_units=False, is_door=False):
         description = f'{description} Door'
     description = readable_short_name(description, max_length=40)
 
+    # get the summertime U-Value
     u_value_unit = 'W/m2-K' if si_units else 'Btu/h-ft2-F'
-    u_value = uvalue_dt.to_unit([construction.u_factor], u_value_unit, 'W/m2-K')[0]
+    if isinstance(construction, OpaqueConstruction):  # same between winter and summer
+        u_factor = construction.u_factor
+    else:  # get the U-Value specifically for summertime
+        u_factor = construction.u_factor_summer
+    u_value = uvalue_dt.to_unit([u_factor], u_value_unit, 'W/m2-K')[0]
     u_value_code = 0 if si_units else 1
 
-    shgc = getattr(construction, 'shgc', 0.0)
+    # get shading coefficient
+    # defined as the ratio of solar heat compared to a standard 3mm clear float glass
+    sc = getattr(construction, 'shading_coefficient', 0.0)
+
+    # get the solar and optical properties
+    # TRACE asks for hemispherical transmissivity, which is challenging to compute
+    # we will use transmittance at normal incidence in the hope that
+    # transmissivity is higher than transmittance and this will cancel out the
+    # fact that hemispherical values are lower than those at normal incidence
     vt = getattr(construction, 'visible_transmittance', 0.5)
     panes = getattr(construction, 'glazing_count', 1)
-
     inside_vis_refl = construction.inside_solar_reflectance
     inside_sol_refl = construction.inside_solar_reflectance
+    solar_transmittance = getattr(construction, 'solar_transmittance', 0.0)
+    solar_transmissivity = transmissivity_from_transmittance(solar_transmittance)
 
-    solar_transmissivity = getattr(construction, 'solar_transmittance', 0.0)
-
+    # get the emissivity of the inside and outside
     outside_emissivity = construction.outside_emissivity
     inside_emissivity = construction.inside_emissivity
 
@@ -820,7 +838,7 @@ def window_construction_to_exp(construction, si_units=False, is_door=False):
     )
 
     exp_line = (
-        f'{description};Glass;1;{shgc:.6f};{u_value:.6f};{u_value_code};{panes};0;'
+        f'{description};Glass;1;{sc:.6f};{u_value:.6f};{u_value_code};{panes};0;'
         f'{vt:.4f};{inside_vis_refl:.4f};{solar_transmissivity:.4f};{inside_sol_refl:.4f};'
         f'{outside_emissivity:.4f};{inside_emissivity:.4f};{glass_tail}'
     )
@@ -1088,11 +1106,11 @@ def internal_loads_from_exp(exp_str):
     exp_vals = exp_str.split(';')
     load_id = clean_ep_string(exp_vals[0])
     people_id = clean_ep_string(exp_vals[1]) \
-        if exp_vals[1] != 'None' else '{}_People'.format(load_id)
+        if exp_vals[1] != 'None' else '{} People'.format(load_id)
     lights_id = clean_ep_string(exp_vals[9]) \
-        if exp_vals[9] != 'None' else '{}_Lighting'.format(load_id)
+        if exp_vals[9] != 'None' else '{} Lighting'.format(load_id)
     equip_id = clean_ep_string(exp_vals[13]) \
-        if exp_vals[13] != 'None' else '{}_Equipment'.format(load_id)
+        if exp_vals[13] != 'None' else '{} Equipment'.format(load_id)
 
     # process the people
     people = None
@@ -1164,10 +1182,10 @@ def airflow_from_exp(exp_str):
     exp_vals = exp_str.split(';')
     airflow_id = clean_ep_string(exp_vals[0])
     vent_id = clean_ep_string(exp_vals[1]) \
-        if exp_vals[1] != 'None' else '{}_Ventilation'.format(airflow_id)
+        if exp_vals[1] != 'None' else '{} Ventilation'.format(airflow_id)
     inf_id = clean_ep_string(exp_vals[7]) \
-        if exp_vals[7] != 'None' else '{}_Infiltration'.format(airflow_id)
-    exhaust_id = '{}_ExhaustAir'.format(airflow_id)
+        if exp_vals[7] != 'None' else '{} Infiltration'.format(airflow_id)
+    exhaust_id = '{} ExhaustAir'.format(airflow_id)
 
     # process the ventilation
     ventilation = None
@@ -1442,3 +1460,90 @@ def material_from_exp(exp_str):
         sht = specific_heat_capacity_dt.to_unit([sht], 'J/kg-K', 'kJ/kg-K')[0]
 
     return EnergyMaterial(mat_id, thickness, conductivity, density, sht)
+
+
+def opaque_construction_from_exp(exp_str, materials):
+    """Get an OpaqueConstruction from a TRACE 700 CNST_WALL, CNST_ROOF, CNST_FLOOR, etc.
+
+    Args:
+        exp_str: A TRACE 700 CNST_WALL, CNST_ROOF, CNST_FLOOR, CNST_EXFLOOR,
+            or CNST_PART entry string.
+        materials: A dictionary with identifiers of materials as keys and Python
+            material objects as values.
+
+    Returns:
+        A Honeybee OpaqueConstruction object.
+    """
+    # deconstruct the string and get the identifier
+    exp_vals = exp_str.split(';')
+    con_id = clean_ep_string(exp_vals[1])
+
+    # collect all of the material layers
+    mat_layers = []
+    for mat_id in exp_vals[4:14]:
+        if mat_id != 'None':
+            mat_layers.append(materials[mat_id])
+
+    # get the exterior and interior layers
+    ext_mat = mat_layers[0]
+    int_mat = mat_layers[-1]
+    ext_mat.unlock()
+    int_mat.unlock()
+
+    # assign the properties of solar and visible absorption
+    int_mat.solar_absorptance = float(exp_vals[51])
+    int_mat.visible_reflectance = float(exp_vals[53])
+    ext_mat.solar_absorptance = float(exp_vals[39])
+
+    # assign the properties of infrared absorption
+    int_mat.thermal_absorptance = float(exp_vals[52])
+    ext_mat.thermal_absorptance = float(exp_vals[50])
+
+    # assign the exterior roughness
+    roughness_map = {
+        0: 'VeryRough', 1: 'Rough', 2: 'MediumRough', 3: 'MediumSmooth',
+        4: 'Smooth', 5: 'VerySmooth'
+    }
+    ext_mat.roughness = roughness_map[int(exp_vals[55])]
+
+    return OpaqueConstruction(con_id, mat_layers)
+
+
+def window_construction_from_exp(exp_str):
+    """Get a WindowConstruction (or OpaqueConstruction) from a TRACE 700 GLAS_GLASS.
+
+    Args:
+        exp_str: A TRACE 700 GLAS_GLASS entry string.
+
+    Returns:
+        A Honeybee WindowConstruction object (or an OpaqueConstruction object if
+        the GLAS_GLASS refers to a door construciton with zero solar transmittance).
+    """
+    # deconstruct the string and get the critical properties
+    exp_vals = exp_str.split(';')
+    con_id = clean_ep_string(exp_vals[1])
+    mat_id = '{} Material'.format(con_id)
+    u_factor, u_unit = float(exp_vals[4]), int(exp_vals[5])
+    if u_unit == 1:
+        u_factor = uvalue_dt.to_unit([u_factor], 'W/m2-K', 'Btu/h-ft2-F')[0]
+    sc = float(exp_vals[3])
+    is_door = int(exp_vals[178])
+
+    # sense whether we will be returning an OpaqueConstruction for a door
+    if is_door == 2 and sc == 0:  # it's an opaque construction
+        r_val = 1 / u_factor
+        _ext_r = 1 / OpaqueConstruction.out_h_simple()  # exterior heat coefficient in m2-K/W
+        _int_r = 1 / OpaqueConstruction.in_h_simple()  # interior film
+        r_val = r_val - _ext_r - _int_r
+        r_val = 0.001 if r_val < 0.001 else r_val  # odd assumption about air films
+        door_mat = EnergyMaterialNoMass(mat_id, r_val)
+        door_mat.thermal_absorptance = float(exp_vals[12])
+        door_mat.solar_reflectance = float(exp_vals[11])
+        door_mat.visible_reflectance = float(exp_vals[9])
+        return OpaqueConstruction(con_id, [door_mat])
+
+    # create a simple galzing material from the proeprties
+    shgc = sc * 0.87  # convert from SC to SHGC
+    win_mat = EnergyWindowMaterialSimpleGlazSys(mat_id, u_factor, shgc)
+    win_mat.vt = float(exp_vals[9])
+    return WindowConstruction(con_id, [win_mat])
