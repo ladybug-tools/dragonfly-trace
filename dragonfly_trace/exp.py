@@ -17,6 +17,7 @@ from honeybee_energy.material.opaque import EnergyMaterial, EnergyMaterialNoMass
 from honeybee_energy.construction.opaque import OpaqueConstruction
 from honeybee_energy.material.glazing import EnergyWindowMaterialSimpleGlazSys
 from honeybee_energy.construction.window import WindowConstruction
+from honeybee_energy.constructionset import ConstructionSet
 from honeybee_energy.schedule.ruleset import ScheduleRuleset
 from honeybee_energy.load.people import People
 from honeybee_energy.load.lighting import Lighting
@@ -1547,3 +1548,99 @@ def window_construction_from_exp(exp_str):
     win_mat = EnergyWindowMaterialSimpleGlazSys(mat_id, u_factor, shgc)
     win_mat.vt = float(exp_vals[9])
     return WindowConstruction(con_id, [win_mat])
+
+
+def construction_set_from_exp(exp_str, constructions):
+    """Get a ConstructionSet from a TRACE 700 ConstructionTemplate.
+
+    Args:
+        exp_str: A TRACE 700 ConstructionTemplate entry string.
+        constructions: A dictionary with identifiers of constructions as keys
+            and Pythonconstruction objects as values.
+
+    Returns:
+        A Honeybee ConstructionSet object.
+    """
+    # deconstruct the string and create a base ConstructionSet with defaults
+    exp_vals = exp_str.split(';')
+    cs_id = clean_ep_string(exp_vals[0])
+    con_set = ConstructionSet(cs_id)
+
+    # get all of the standard constructions
+    con_set.floor_set.ground_construction = constructions[exp_vals[1]]
+    con_set.floor_set.exterior_construction = constructions[exp_vals[1]]
+    con_set.roof_ceiling_set.exterior_construction = constructions[exp_vals[4]]
+    con_set.aperture_set.skylight_construction = constructions[exp_vals[7]]
+    con_set.wall_set.exterior_construction = constructions[exp_vals[11]]
+    con_set.aperture_set.window_construction = constructions[exp_vals[14]]
+    con_set.aperture_set.operable_construction = constructions[exp_vals[14]]
+    con_set.wall_set.interior_construction = constructions[exp_vals[18]]
+
+    # assign the door construction depending on whether its glass or not
+    door_con = constructions[exp_vals[21]]
+    if isinstance(door_con, OpaqueConstruction):
+        con_set.door_set.exterior_construction = door_con
+    else:
+        con_set.door_set.exterior_glass_construction = door_con
+
+    return con_set
+
+
+def construction_set_from_exp(exp_file_content):
+    """Get a list of Honeybee ConstructionSet from the content of an EXP file.
+
+    Args:
+        exp_file_content: Text string for the contents of an EXP file.
+
+    Returns:
+        A tuple with three elements.
+
+        -   materials: A list of Honeybee materials.
+
+        -   constructions: A list of Honeybee OpaqueConstructions and WindowConstructions.
+
+        -   construction_sets: A list of Honeybee ConstructionSets.
+    """
+    file_lines = exp_file_content.split('\n')
+
+    # load the individual materials from the file contents
+    materials, mat_section = {}, False
+    for line in file_lines:
+        if line.startswith('T.MATR_MATERIAL'):
+            mat_section = True
+            continue
+        elif line.startswith('T.'):
+            mat_section = False
+        if mat_section:
+            materials[line.split(';')[1]] = material_from_exp(line)
+
+    # load the individual opaque constructions from the file contents
+    con_types = ('T.CNST_EXFLOOR', 'T.CNST_FLOOR', 'T.CNST_PART', 'T.CNST_ROOF', 'T.CNST_WALL')
+    constructions, con_section = {}, False
+    for line in file_lines:
+        if any(line.startswith(ct) for ct in con_types):
+            con_section = True
+            continue
+        elif line.startswith('T.'):
+            con_section = False
+        if con_section:
+            constructions[line.split(';')[1]] = opaque_construction_from_exp(line, materials)
+
+    # load the individual window constructions from the file contents
+    w_con_section = False
+    for line in file_lines:
+        if line.startswith('T.GLAS_GLASS'):
+            w_con_section = True
+            continue
+        elif line.startswith('T.'):
+            w_con_section = False
+        if w_con_section:
+            w_con = window_construction_from_exp(line)
+            constructions[line.split(';')[0]] = w_con
+            for mat in w_con.materials:
+                materials[mat.identifier] = mat
+
+    # create the construction sets
+    construction_sets = []
+
+    return list(materials.values), list(constructions.values()), construction_sets
