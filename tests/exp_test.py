@@ -1,9 +1,11 @@
 """Test the translators to TRACE."""
 from honeybee_energy.lib.programtypes import office_program
 from honeybee_energy.programtype import ProgramType
+from honeybee_energy.constructionset import ConstructionSet
 from dragonfly.model import Model
 
-from dragonfly_trace.exp import program_to_exp, construction_sets_to_exp, programs_from_exp
+from dragonfly_trace.exp import program_to_exp, construction_sets_to_exp, \
+    programs_from_exp, construction_sets_from_exp
 from dragonfly_trace.writer import model_to_exp
 
 
@@ -35,13 +37,19 @@ def test_model_to_exp():
     assert 'T.LOAD_MISEQUIP' in exp
     assert 'Miscellaneous;2019::SmllOffc::Elc/MchRmElctrc;1;0.27;8;100;100;0;50;1;1;' in exp
     assert 'T.InternalLoadTemplate' in exp
-    assert '2019::SmallOffice::Elec/MechRoom;None;Cooling Only (Design);0.0;1;250;7;250;7;2019::SmallOffice::Elec/MechRoom_Lighting;Cooling Only (Design);0.43;3;2019::SmllOffc::Elc/MchRmElctrc;Cooling Only (Design);0.27;8;1;1;2;' in exp
+    assert '2019::SmallOffice::Elec/MechRoom;None;Cooling Only (Design);0.0;1;250;7;250;' \
+        '7;2019::SmallOffice::Elec/MechRoom_Lighting;Cooling Only (Design);0.43;3;' \
+        '2019::SmllOffc::Elc/MchRmElctrc;Cooling Only (Design);0.27;8;1;1;2;' in exp
     assert 'T.AirflowTemplate' in exp
-    assert '2019::SmallOffice::Elec/MechRoom;None;Available (100%);0.000;3;0.000;3;None;Available (100%);0.112;3;0.112;3;9999.99;0;Available (100%);9999.99;8;9999.99;9;9999.99;10;9999.99;10;0;4;Available (100%);0;0;9999.99;0;9999.99;1;9999.99;9999.99;0;0;9999.99;0;' in exp
+    assert '2019::SmallOffice::Elec/MechRoom;None;Available (100%);0.000;3;0.000;3;' \
+        'None;Available (100%);0.112;3;0.112;3;9999.99;0;Available (100%);9999.99;' \
+        '8;9999.99;9;9999.99;10;9999.99;10;0;4;Available (100%);0;0;9999.99;' \
+        '0;9999.99;1;9999.99;9999.99;0;0;9999.99;0;' in exp
     assert 'T.ThermostatTemplate' in exp
     assert '2019::SmallOffice::Elec/MechRoom;75.0;1;70.0;1;50;85.0;None;60.0;None;1;0;2;1;' in exp
     assert 'T.RoomTemplate' in exp
-    assert '2019::SmallOffice::Elec/MechRoom;2019::SmallOffice::Elec/MechRoom;2019::SmallOffice::Elec/MechRoom;2019::SmallOffice::Elec/MechRoom;Default;' in exp
+    assert '2019::SmallOffice::Elec/MechRoom;2019::SmallOffice::Elec/MechRoom;' \
+        '2019::SmallOffice::Elec/MechRoom;2019::SmallOffice::Elec/MechRoom;Default;' in exp
 
 
 def test_construction_sets_to_exp():
@@ -69,3 +77,20 @@ def test_programs_from_exp():
 
     for prog in programs:
         assert isinstance(prog, ProgramType)
+
+
+def test_construction_sets_from_exp():
+    """Test the construction_sets_from_exp function."""
+    sample_path = './tests/assets/custom_lib.EXP'
+    with open(sample_path, 'r') as exp_f:
+        exp_file_content = exp_f.read()
+
+    materials, constructions, construction_sets = \
+        construction_sets_from_exp(exp_file_content)
+
+    assert len(materials) == 53
+    assert len(constructions) == 32
+    assert len(construction_sets) == 1
+
+    for c_set in construction_sets:
+        assert isinstance(c_set, ConstructionSet)

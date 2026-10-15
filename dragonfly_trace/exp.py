@@ -29,8 +29,6 @@ from honeybee_energy.load.setpoint import Setpoint
 from honeybee_energy.programtype import ProgramType
 from honeybee_energy.lib.scheduletypelimits import temperature, activity_level
 
-from .util import transmissivity_from_transmittance
-
 area_dt = Area()
 conductivity_dt = Conductivity()
 density_dt = Density()
@@ -816,7 +814,6 @@ def window_construction_to_exp(construction, si_units=False, is_door=False):
     inside_vis_refl = construction.inside_solar_reflectance
     inside_sol_refl = construction.inside_solar_reflectance
     solar_transmittance = getattr(construction, 'solar_transmittance', 0.0)
-    solar_transmissivity = transmissivity_from_transmittance(solar_transmittance)
 
     # get the emissivity of the inside and outside
     outside_emissivity = construction.outside_emissivity
@@ -840,7 +837,7 @@ def window_construction_to_exp(construction, si_units=False, is_door=False):
 
     exp_line = (
         f'{description};Glass;1;{sc:.6f};{u_value:.6f};{u_value_code};{panes};0;'
-        f'{vt:.4f};{inside_vis_refl:.4f};{solar_transmissivity:.4f};{inside_sol_refl:.4f};'
+        f'{vt:.4f};{inside_vis_refl:.4f};{solar_transmittance:.4f};{inside_sol_refl:.4f};'
         f'{outside_emissivity:.4f};{inside_emissivity:.4f};{glass_tail}'
     )
     return exp_line
@@ -1401,7 +1398,7 @@ def programs_from_exp(exp_file_content):
         if line.startswith('T.RoomTemplate'):
             programs_section = True
             continue
-        elif programs_section and len(line.split(';')) != 6:
+        elif line.startswith('T.'):
             programs_section = False
         if programs_section:
             programs.append(program_from_exp(line, internal_loads, airflows, setpoints))
@@ -1421,17 +1418,11 @@ def material_from_exp(exp_str):
     # deconstruct the string and get the identifier
     exp_vals = exp_str.split(';')
     mat_id = clean_ep_string(exp_vals[1])
+    mat_name = clean_ep_string(exp_vals[4])
 
     # first check if the material has no mass
-    r_value, r_unit = float(exp_vals[12]), int(exp_vals[13])
-    if r_value != 0:
-        if r_unit == 1:
-            r_value = rvalue_dt.to_unit([r_value], 'm2-K/W', 'h-ft2-F/Btu')[0]
-        return EnergyMaterialNoMass(mat_id, r_value)
-
-    # it is a material with mass
     # get the thickness and convert it to the correct units
-    thickness, t_unit = float(exp_vals[4]), int(exp_vals[5])
+    thickness, t_unit = float(exp_vals[5]), int(exp_vals[6])
     if t_unit == 0:
         thickness = distance_dt.to_unit([thickness], 'm', 'ft')[0]
     elif t_unit == 1:
@@ -1441,26 +1432,42 @@ def material_from_exp(exp_str):
     elif t_unit == 4:
         thickness = distance_dt.to_unit([thickness], 'm', 'mm')[0]
 
+    # use no mass whenever there is an r-value specified or thickness is < 1 mm
+    r_value, r_unit = float(exp_vals[13]), int(exp_vals[14])
+    if r_value != 0:
+        if r_unit == 1:
+            r_value = rvalue_dt.to_unit([r_value], 'm2-K/W', 'h-ft2-F/Btu')[0]
+        mat = EnergyMaterialNoMass(mat_id, r_value)
+        mat.display_name = mat_name
+        return mat
+    elif thickness < 0.001:
+        mat = EnergyMaterialNoMass(mat_id, 0.001)
+        mat.display_name = mat_name
+        return mat
+
+    # it is a material with mass
     # get the conductivity and convert it to the correct units
-    conductivity, c_unit = float(exp_vals[6]), int(exp_vals[7])
+    conductivity, c_unit = float(exp_vals[7]), int(exp_vals[8])
     if c_unit == 1:
         conductivity = conductivity_dt.to_unit([conductivity], 'W/m-K', 'Btu/h-ft-F')[0]
 
     # get the density and convert it to the correct units
-    density, d_unit = float(exp_vals[8]), int(exp_vals[9])
+    density, d_unit = float(exp_vals[9]), int(exp_vals[10])
     if d_unit == 0:
         density = density_dt.to_unit([density], 'kg/m3', 'lb/ft3')[0]
     elif d_unit == 2:
         density = density_dt.to_unit([density], 'kg/m3', 'g/cm3')[0]
 
     # get the specific_heat and convert it to the correct units
-    sht, s_unit = float(exp_vals[10]), int(exp_vals[11])
+    sht, s_unit = float(exp_vals[11]), int(exp_vals[12])
     if s_unit == 1:
         sht = specific_heat_capacity_dt.to_unit([sht], 'J/kg-K', 'Btu/lb-F')[0]
     elif s_unit == 0:
         sht = specific_heat_capacity_dt.to_unit([sht], 'J/kg-K', 'kJ/kg-K')[0]
 
-    return EnergyMaterial(mat_id, thickness, conductivity, density, sht)
+    mat = EnergyMaterial(mat_id, thickness, conductivity, density, sht)
+    mat.display_name = mat_name
+    return mat
 
 
 def opaque_construction_from_exp(exp_str, materials):
@@ -1478,12 +1485,47 @@ def opaque_construction_from_exp(exp_str, materials):
     # deconstruct the string and get the identifier
     exp_vals = exp_str.split(';')
     con_id = clean_ep_string(exp_vals[1])
+    custom_mat_id = '{} Material'.format(con_id)
 
     # collect all of the material layers
-    mat_layers = []
+    mat_layers, layers_available = [], True
     for mat_id in exp_vals[4:14]:
-        if mat_id != 'None':
-            mat_layers.append(materials[mat_id])
+        if mat_id != 'None' and mat_id not in ('A0', 'E0'):
+            try:
+                mat_layers.append(materials[mat_id])
+            except KeyError:
+                # TRACE fails to export some materials because their ID is beyond 8 bits
+                layers_available = False
+
+    # if layers were not included in the EXP, try to build a construction from properties
+    # to make a full material, we will assume a thickness of 0.15 m unless weight == 0
+    if not layers_available:
+        # compute the density and specific heat capacity
+        thickness = 0.15  # assumed thickness in meters
+        weight, w_unit = float(exp_vals[31]), int(exp_vals[32])
+        if w_unit == 1:
+            weight = weight * 4.88243  # convert to kg/m2
+        denisty = weight / thickness  # convert kg/m2 to kg/m3
+        sht, s_unit = float(exp_vals[33]), int(exp_vals[34])
+        if s_unit == 1:
+            sht = specific_heat_capacity_dt.to_unit([sht], 'J/kg-K', 'Btu/lb-F')[0]
+        # get the construction R-value in SI units
+        u_factor, u_unit = float(exp_vals[35]), int(exp_vals[36])
+        if u_unit == 1:
+            u_factor = uvalue_dt.to_unit([u_factor], 'W/m2-K', 'Btu/h-ft2-F')[0]
+        int_emiss = float(exp_vals[52])
+        _ext_r = 1 / 23  # exterior heat coefficient in m2-K/W
+        _int_r = 1 / (3.6 + (4.4 * int_emiss / 0.84))  # interior film
+        r_value = (1 / u_factor) - _ext_r - _int_r
+        r_value = 0.001 if r_value < 0.001 else r_value  # odd assumption about air films
+
+        # return either a no mass or energy material
+        if weight == 0:
+            mat_layers = [EnergyMaterialNoMass(custom_mat_id, r_value)]
+        else:
+            u_value = 1 / r_value
+            conductivity = u_value * thickness
+            mat_layers = [EnergyMaterial(custom_mat_id, thickness, conductivity, denisty, sht)]
 
     # get the exterior and interior layers
     ext_mat = mat_layers[0]
@@ -1505,7 +1547,7 @@ def opaque_construction_from_exp(exp_str, materials):
         0: 'VeryRough', 1: 'Rough', 2: 'MediumRough', 3: 'MediumSmooth',
         4: 'Smooth', 5: 'VerySmooth'
     }
-    ext_mat.roughness = roughness_map[int(exp_vals[55])]
+    ext_mat.roughness = roughness_map[int(exp_vals[-2])]
 
     return OpaqueConstruction(con_id, mat_layers)
 
@@ -1533,8 +1575,9 @@ def window_construction_from_exp(exp_str):
     # sense whether we will be returning an OpaqueConstruction for a door
     if is_door == 2 and sc == 0:  # it's an opaque construction
         r_val = 1 / u_factor
-        _ext_r = 1 / OpaqueConstruction.out_h_simple()  # exterior heat coefficient in m2-K/W
-        _int_r = 1 / OpaqueConstruction.in_h_simple()  # interior film
+        int_emiss = float(exp_vals[12])
+        _ext_r = 1 / 23  # exterior heat coefficient in m2-K/W
+        _int_r = 1 / (3.6 + (4.4 * int_emiss / 0.84))  # interior film
         r_val = r_val - _ext_r - _int_r
         r_val = 0.001 if r_val < 0.001 else r_val  # odd assumption about air films
         door_mat = EnergyMaterialNoMass(mat_id, r_val)
@@ -1567,27 +1610,29 @@ def construction_set_from_exp(exp_str, constructions):
     con_set = ConstructionSet(cs_id)
 
     # get all of the standard constructions
-    con_set.floor_set.ground_construction = constructions[exp_vals[1]]
-    con_set.floor_set.exterior_construction = constructions[exp_vals[1]]
-    con_set.roof_ceiling_set.exterior_construction = constructions[exp_vals[4]]
-    con_set.aperture_set.skylight_construction = constructions[exp_vals[7]]
-    con_set.wall_set.exterior_construction = constructions[exp_vals[11]]
-    con_set.aperture_set.window_construction = constructions[exp_vals[14]]
-    con_set.aperture_set.operable_construction = constructions[exp_vals[14]]
-    con_set.wall_set.interior_construction = constructions[exp_vals[18]]
+    con_set.floor_set.ground_construction = constructions[clean_ep_string(exp_vals[1])]
+    con_set.floor_set.exterior_construction = constructions[clean_ep_string(exp_vals[1])]
+    con_set.roof_ceiling_set.exterior_construction = constructions[clean_ep_string(exp_vals[4])]
+    con_set.aperture_set.skylight_construction = constructions[clean_ep_string(exp_vals[7])]
+    con_set.wall_set.exterior_construction = constructions[clean_ep_string(exp_vals[11])]
+    con_set.aperture_set.window_construction = constructions[clean_ep_string(exp_vals[14])]
+    con_set.aperture_set.operable_construction = constructions[clean_ep_string(exp_vals[14])]
+    con_set.wall_set.interior_construction = constructions[clean_ep_string(exp_vals[18])]
 
     # assign the door construction depending on whether its glass or not
-    door_con = constructions[exp_vals[21]]
-    if isinstance(door_con, OpaqueConstruction):
-        con_set.door_set.exterior_construction = door_con
-    else:
-        con_set.door_set.exterior_glass_construction = door_con
+    door_con_id = exp_vals[27]
+    if door_con_id != '':  # TRACE fails to write door constructions into the EXP
+        door_con = constructions[clean_ep_string(door_con_id)]
+        if isinstance(door_con, OpaqueConstruction):
+            con_set.door_set.exterior_construction = door_con
+        else:
+            con_set.door_set.exterior_glass_construction = door_con
 
     return con_set
 
 
-def construction_set_from_exp(exp_file_content):
-    """Get a list of Honeybee ConstructionSet from the content of an EXP file.
+def construction_sets_from_exp(exp_file_content):
+    """Get a list of Honeybee ConstructionSets from the content of an EXP file.
 
     Args:
         exp_file_content: Text string for the contents of an EXP file.
@@ -1624,7 +1669,11 @@ def construction_set_from_exp(exp_file_content):
         elif line.startswith('T.'):
             con_section = False
         if con_section:
-            constructions[line.split(';')[1]] = opaque_construction_from_exp(line, materials)
+            o_con = opaque_construction_from_exp(line, materials)
+            constructions[line.split(';')[1]] = o_con
+            for mat in o_con.materials:
+                if mat.identifier not in materials:
+                    materials[mat.identifier] = mat
 
     # load the individual window constructions from the file contents
     w_con_section = False
@@ -1642,5 +1691,16 @@ def construction_set_from_exp(exp_file_content):
 
     # create the construction sets
     construction_sets = []
+    con_set_section = False
+    for line in file_lines:
+        if line.startswith('T.ConstructionTemplate'):
+            con_set_section = True
+            continue
+        elif line.startswith('T.'):
+            con_set_section = False
+        if con_set_section:
+            if line.split(';')[0] in ('Default', 'Metric Default'):
+                continue  # TRACE 700 defaults do not have constructions in EXP
+            construction_sets.append(construction_set_from_exp(line, constructions))
 
-    return list(materials.values), list(constructions.values()), construction_sets
+    return list(materials.values()), list(constructions.values()), construction_sets
