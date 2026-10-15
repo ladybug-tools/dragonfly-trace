@@ -1,0 +1,6 @@
+exp
+===
+
+.. click:: dragonfly_trace.cli.exp:exp
+   :prog: dragonfly-trace exp
+   :show-nested:

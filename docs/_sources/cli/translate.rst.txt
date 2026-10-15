@@ -1,0 +1,6 @@
+translate
+=========
+
+.. click:: dragonfly_trace.cli.translate:translate
+   :prog: dragonfly-trace translate
+   :show-nested:
