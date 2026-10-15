@@ -7,14 +7,14 @@ import base64
 import json
 
 from ladybug.commandutil import process_content_to_output
-from honeybee_energy.programtype import ProgramType
 from dragonfly.model import Model
 
 from dragonfly_trace.writer import model_to_trace700_csv as model_to_csv
 from dragonfly_trace.writer import model_to_trace700_workbook as model_to_workbook
 from dragonfly_trace.writer import model_to_trace700_gbxml as model_to_gbxml
-from dragonfly_trace.writer import model_to_exp, model_to_trace700_zip_bytes
-from dragonfly_trace.exp import program_to_exp, programs_from_exp
+from dragonfly_trace.writer import model_to_trace700_zip_bytes
+from dragonfly_trace.writer import model_to_exp as model_to_exp_contents
+from dragonfly_trace.exp import programs_from_exp as programs_from_exp_contents
 from dragonfly_trace.exp import construction_sets_from_exp as c_set_from_exp
 
 _logger = logging.getLogger(__name__)
@@ -396,7 +396,7 @@ def model_to_trace700_gbxml(
     return process_content_to_output(gbxml_str, output_file)
 
 
-@translate.command('model-to-trace700-exp')
+@translate.command('model-to-exp')
 @click.argument('model-file', type=click.Path(
     exists=True, file_okay=True, dir_okay=False, resolve_path=True))
 @click.option('--imperial/--metric', '-ip/-si', help='Flag to note whether imperial '
@@ -408,8 +408,8 @@ def model_to_trace700_gbxml(
 @click.option('--output-file', '-f', help='Optional EXP file to output the string '
               'of the translation. By default it is printed out to stdout.',
               type=click.File('w'), default='-', show_default=True)
-def model_to_trace700_exp_cli(model_file, imperial, ventilation_method, output_file):
-    """Translate all unique ProgramTypes in a Dragonfly Model file into a single TRACE 700 EXP file.
+def model_to_exp_cli(model_file, imperial, ventilation_method, output_file):
+    """Translate all resources in a Dragonfly Model file into a single TRACE 700 EXP file.
 
     \b
     Args:
@@ -417,16 +417,38 @@ def model_to_trace700_exp_cli(model_file, imperial, ventilation_method, output_f
     """
     try:
         metric = not imperial
-        model = Model.from_file(model_file)
-        exp_contents = model_to_exp(
-            model, si_units=metric, ventilation_method=ventilation_method
-        )
-        process_content_to_output(exp_contents, output_file)
+        model_to_exp(model_file, metric, ventilation_method, output_file)
     except Exception as e:
         _logger.exception('Model EXP translation failed.\n{}'.format(e))
         sys.exit(1)
     else:
         sys.exit(0)
+
+
+def model_to_exp(
+    model_file, metric=False, ventilation_method='Sum of Outdoor Air',
+    output_file=None, imperial=True
+):
+    """Translate all resources in a Dragonfly Model file into a single TRACE 700 EXP file.
+
+    Args:
+        model_file: Full path to a Dragonfly Model file (DFJSON or DFpkl).
+        metric: Boolean to note whether the units of the values in the resulting
+            file are in SI (True) instead of IP (False). (Default: False).
+        ventilation_method: Optional text for the ventilation method to be used in the
+            resulting matrix. Choose from the following.
+
+            * Sum of Outdoor Air
+            * ASHRAE 62.1
+
+        output_file: Optional EXP file to output the string of the translation.
+            By default it is returned from this method.
+    """
+    model = Model.from_file(model_file)
+    exp_contents = model_to_exp_contents(
+        model, si_units=metric, ventilation_method=ventilation_method
+    )
+    return process_content_to_output(exp_contents, output_file)
 
 
 @translate.command('model-to-trace700-zip')
@@ -738,36 +760,7 @@ def construction_sets_from_exp(
     return process_content_to_output(json.dumps(out_dict, indent=indent), output_file)
 
 
-@translate.command('program-to-trace700-exp')
-@click.argument('program-file', type=click.Path(
-    exists=True, file_okay=True, dir_okay=False, resolve_path=True))
-@click.option('--imperial/--metric', '-ip/-si', help='Flag to note whether imperial '
-              'or metric units should be used for values in the output EXP file.',
-              default=True, show_default=True)
-@click.option('--output-file', '-f', help='Optional EXP file to output the string '
-              'of the translation. By default it is printed out to stdout.',
-              type=click.File('w'), default='-', show_default=True)
-def program_to_trace700_exp_cli(program_file, imperial, output_file):
-    """Translate a Honeybee ProgramType file to a TRACE 700 EXP file.
-
-    \b
-    Args:
-        program_file: Full path to a Honeybee ProgramType JSON file.
-    """
-    try:
-        metric = not imperial
-        with open(program_file, 'r') as f:
-            data = json.load(f)
-        program = ProgramType.from_dict(data)
-        process_content_to_output(program_to_exp(program, si_units=metric), output_file)
-    except Exception as e:
-        _logger.exception('Program EXP translation failed.\n{}'.format(e))
-        sys.exit(1)
-    else:
-        sys.exit(0)
-
-
-@translate.command('programs-from-trace700-exp')
+@translate.command('programs-from-exp')
 @click.argument('exp-file', type=click.Path(
     exists=True, file_okay=True, dir_okay=False, resolve_path=True))
 @click.option('--full/--abridged', ' /-a', help='Flag to note whether the objects '
@@ -780,7 +773,7 @@ def program_to_trace700_exp_cli(program_file, imperial, output_file):
 @click.option('--output-file', '-f', help='Optional JSON file to output the string '
               'of the translation. By default it printed out to stdout',
               type=click.File('w'), default='-', show_default=True)
-def program_from_trace700_exp_cli(exp_file, full, indent, output_file):
+def program_from_exp_cli(exp_file, full, indent, output_file):
     """Translate all ProgramTypes in a TRACE 700 EXP file to a Honeybee JSON.
 
     The resulting JSON can be written into a user standards folder to add the
@@ -792,7 +785,7 @@ def program_from_trace700_exp_cli(exp_file, full, indent, output_file):
     """
     try:
         abridged = not full
-        programs_from_trace700_exp(exp_file, abridged, indent, output_file)
+        programs_from_exp(exp_file, abridged, indent, output_file)
     except Exception as e:
         _logger.exception('Program translation failed.\n{}'.format(e))
         sys.exit(1)
@@ -800,7 +793,7 @@ def program_from_trace700_exp_cli(exp_file, full, indent, output_file):
         sys.exit(0)
 
 
-def programs_from_trace700_exp(
+def programs_from_exp(
     exp_file, abridged=False, indent=None, output_file=None, full=True
 ):
     """Translate all ProgramTypes in a TRACE 700 EXP file to a Honeybee JSON.
@@ -820,6 +813,6 @@ def programs_from_trace700_exp(
     """
     with open(exp_file) as exp_f:
         file_contents = exp_f.read()
-    programs = programs_from_exp(file_contents)
+    programs = programs_from_exp_contents(file_contents)
     out_dict = {p.identifier: p.to_dict(abridged=abridged) for p in programs}
     return process_content_to_output(json.dumps(out_dict, indent=indent), output_file)

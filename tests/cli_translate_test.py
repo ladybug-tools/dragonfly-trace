@@ -4,10 +4,10 @@ import json
 from click.testing import CliRunner
 
 from dragonfly_trace.cli.translate import model_to_trace700_csv_cli, \
-    model_to_trace700_xlsx_cli, model_to_trace700_gbxml_cli, model_to_trace700_exp_cli, \
-    model_to_trace700_zip_cli, program_to_trace700_exp_cli, \
+    model_to_trace700_xlsx_cli, model_to_trace700_gbxml_cli, model_to_exp_cli, \
+    model_to_trace700_zip_cli, \
     materials_from_exp_cli, constructions_from_exp_cli, construction_sets_from_exp_cli, \
-    program_from_trace700_exp_cli
+    program_from_exp_cli
 
 
 def test_model_to_trace700_csv():
@@ -61,7 +61,7 @@ def test_modeltrace700_exp():
 
     output_exp = './tests/assets/small_sample_exp_test.exp'
     result = runner.invoke(
-        model_to_trace700_exp_cli,
+        model_to_exp_cli,
         [input_df_model, '--output-file', output_exp]
     )
     assert result.exit_code == 0
@@ -83,21 +83,6 @@ def test_model_to_trace700_zip():
 
     assert os.path.isfile(output_zip)
     os.remove(output_zip)
-
-
-def test_program_to_trace700_exp():
-    runner = CliRunner()
-    input_json_program = './tests/assets/office_program.json'
-
-    output_exp = './tests/assets/office_program.exp'
-    result = runner.invoke(
-        program_to_trace700_exp_cli,
-        [input_json_program, '--output-file', output_exp]
-    )
-    assert result.exit_code == 0
-
-    assert os.path.isfile(output_exp)
-    os.remove(output_exp)
 
 
 def test_materials_from_exp():
@@ -159,7 +144,7 @@ def test_program_from_trace700_exp():
 
     output_json = './tests/assets/custom_lib.json'
     result = runner.invoke(
-        program_from_trace700_exp_cli,
+        program_from_exp_cli,
         [exp_path, '--output-file', output_json, '--abridged']
     )
     assert result.exit_code == 0
