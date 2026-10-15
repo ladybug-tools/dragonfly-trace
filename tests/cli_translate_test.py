@@ -1,10 +1,13 @@
 """Test cli translate module."""
 import os
+import json
 from click.testing import CliRunner
 
 from dragonfly_trace.cli.translate import model_to_trace700_csv_cli, \
     model_to_trace700_xlsx_cli, model_to_trace700_gbxml_cli, model_to_trace700_exp_cli, \
-    model_to_trace700_zip_cli
+    model_to_trace700_zip_cli, program_to_trace700_exp_cli, \
+    materials_from_exp_cli, constructions_from_exp_cli, construction_sets_from_exp_cli, \
+    program_from_trace700_exp_cli
 
 
 def test_model_to_trace700_csv():
@@ -80,3 +83,89 @@ def test_model_to_trace700_zip():
 
     assert os.path.isfile(output_zip)
     os.remove(output_zip)
+
+
+def test_program_to_trace700_exp():
+    runner = CliRunner()
+    input_json_program = './tests/assets/office_program.json'
+
+    output_exp = './tests/assets/office_program.exp'
+    result = runner.invoke(
+        program_to_trace700_exp_cli,
+        [input_json_program, '--output-file', output_exp]
+    )
+    assert result.exit_code == 0
+
+    assert os.path.isfile(output_exp)
+    os.remove(output_exp)
+
+
+def test_materials_from_exp():
+    runner = CliRunner()
+    exp_path = './tests/assets/custom_lib.EXP'
+
+    output_json = './tests/assets/custom_lib.json'
+    result = runner.invoke(
+        materials_from_exp_cli, [exp_path, '--output-file', output_json]
+    )
+    assert result.exit_code == 0
+
+    assert os.path.isfile(output_json)
+    with open(output_json, 'r') as of:
+        result_dict = json.load(of)
+    assert len(result_dict) == 63
+    os.remove(output_json)
+
+
+def test_constructions_from_exp():
+    runner = CliRunner()
+    exp_path = './tests/assets/custom_lib.EXP'
+
+    output_json = './tests/assets/custom_lib.json'
+    result = runner.invoke(
+        constructions_from_exp_cli,
+        [exp_path, '--output-file', output_json, '--abridged']
+    )
+    assert result.exit_code == 0
+
+    assert os.path.isfile(output_json)
+    with open(output_json, 'r') as of:
+        result_dict = json.load(of)
+    assert len(result_dict) == 32
+    os.remove(output_json)
+
+
+def test_construction_sets_from_exp():
+    runner = CliRunner()
+    exp_path = './tests/assets/custom_lib.EXP'
+
+    output_json = './tests/assets/custom_lib.json'
+    result = runner.invoke(
+        construction_sets_from_exp_cli,
+        [exp_path, '--output-file', output_json, '--abridged']
+    )
+    assert result.exit_code == 0
+
+    assert os.path.isfile(output_json)
+    with open(output_json, 'r') as of:
+        result_dict = json.load(of)
+    assert len(result_dict) == 1
+    os.remove(output_json)
+
+
+def test_program_from_trace700_exp():
+    runner = CliRunner()
+    exp_path = './tests/assets/custom_lib.EXP'
+
+    output_json = './tests/assets/custom_lib.json'
+    result = runner.invoke(
+        program_from_trace700_exp_cli,
+        [exp_path, '--output-file', output_json, '--abridged']
+    )
+    assert result.exit_code == 0
+
+    assert os.path.isfile(output_json)
+    with open(output_json, 'r') as of:
+        result_dict = json.load(of)
+    assert len(result_dict) == 11
+    os.remove(output_json)

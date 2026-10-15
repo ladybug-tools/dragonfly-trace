@@ -4,19 +4,23 @@ import sys
 import logging
 import io
 import base64
+import json
 
 from ladybug.commandutil import process_content_to_output
+from honeybee_energy.programtype import ProgramType
 from dragonfly.model import Model
+
 from dragonfly_trace.writer import model_to_trace700_csv as model_to_csv
 from dragonfly_trace.writer import model_to_trace700_workbook as model_to_workbook
 from dragonfly_trace.writer import model_to_trace700_gbxml as model_to_gbxml
 from dragonfly_trace.writer import model_to_exp, model_to_trace700_zip_bytes
-
+from dragonfly_trace.exp import program_to_exp, programs_from_exp
+from dragonfly_trace.exp import construction_sets_from_exp as c_set_from_exp
 
 _logger = logging.getLogger(__name__)
 
 
-@click.group(help='Commands for translating URBANopt systems to OSM/IDF.')
+@click.group(help='Commands for translating dragonfly models to/from TRACE.')
 def translate():
     pass
 
@@ -130,9 +134,9 @@ def model_to_trace700_csv(
 
         geometry_names: Boolean to note whether a cleaned version of all geometry
             display names should be used instead of identifiers when translating
-            the Model to OSM and IDF. Using this flag will affect all Rooms, Faces,
+            the Model to CSV. Using this flag will affect all Rooms, Faces,
             Apertures, Doors, and Shades. It will generally result in more read-able
-            names in the OSM and IDF but this means that it will not be easy to map
+            names in the CSV but this means that it will not be easy to map
             the EnergyPlus results back to the original Honeybee Model. Cases
             of duplicate IDs resulting from non-unique names will be resolved
             by adding integers to the ends of the new IDs that are derived from
@@ -259,9 +263,9 @@ def model_to_trace700_xlsx(
 
         geometry_names: Boolean to note whether a cleaned version of all geometry
             display names should be used instead of identifiers when translating
-            the Model to OSM and IDF. Using this flag will affect all Rooms, Faces,
+            the Model to XLSX. Using this flag will affect all Rooms, Faces,
             Apertures, Doors, and Shades. It will generally result in more read-able
-            names in the OSM and IDF but this means that it will not be easy to map
+            names in the XLSX but this means that it will not be easy to map
             the EnergyPlus results back to the original Honeybee Model. Cases
             of duplicate IDs resulting from non-unique names will be resolved
             by adding integers to the ends of the new IDs that are derived from
@@ -541,3 +545,281 @@ def model_to_trace700_zip(
                 output_file.write(f_contents)
             else:
                 output_file.write(b)
+
+
+@translate.command('materials-from-exp')
+@click.argument('exp-file', type=click.Path(
+    exists=True, file_okay=True, dir_okay=False, resolve_path=True))
+@click.option('--indent', '-i', help='Optional integer to specify the indentation in '
+              'the output JSON file. Specifying an value here can produce more read-able'
+              ' JSONs.', type=int, default=None, show_default=True)
+@click.option('--output-file', '-f', help='Optional JSON file to output the JSON '
+              'string of the translation. By default this will be printed out to stdout',
+              type=click.File('w'), default='-', show_default=True)
+def materials_from_exp_cli(exp_file, indent, output_file):
+    """Translate all materials in an EXP file to a honeybee JSON.
+
+    \b
+    Args:
+        exp_file: Full path to a TRACE 700 EXP file. Only the materials in this file
+            will be extracted.
+    """
+    try:
+        materials_from_exp(exp_file, indent, output_file)
+    except Exception as e:
+        _logger.exception('Material translation failed.\n{}'.format(e))
+        sys.exit(1)
+    else:
+        sys.exit(0)
+
+
+def materials_from_exp(exp_file, indent=None, output_file=None):
+    """Translate all materials in an EXP file to a honeybee JSON.
+
+    The resulting JSON can be written into a user standards folder to add the
+    materials to a users standards library.
+
+    Args:
+        exp_file: Full path to an TRACE 700 EXP file. Only the materials in this file
+            will be extracted.
+        indent: Optional integer to specify the indentation in the output JSON file.
+            Specifying an value here can produce more read-able JSONs. (Default: None).
+        output_file: Optional JSON file to output the string of the translation.
+            If None, it will be returned from this method. (Default: None).
+    """
+    # re-serialize the Materials to Python
+    with open(exp_file, 'r') as exp_f:
+        exp_file_content = exp_f.read()
+    materials, _, _ = c_set_from_exp(exp_file_content)
+    # create the honeybee dictionaries
+    out_dict = {}
+    for mat in materials:
+        out_dict[mat.identifier] = mat.to_dict()
+    # write out the JSON file
+    return process_content_to_output(json.dumps(out_dict, indent=indent), output_file)
+
+
+@translate.command('constructions-from-exp')
+@click.argument('exp-file', type=click.Path(
+    exists=True, file_okay=True, dir_okay=False, resolve_path=True))
+@click.option('--full/--abridged', ' /-a', help='Flag to note whether the objects '
+              'should be translated as an abridged specification instead of a '
+              'specification that fully describes the object. This option should be '
+              'used when the materials-from-exp command will be used to separately '
+              'translate all of the materials from the EXP.',
+              default=True, show_default=True)
+@click.option('--indent', '-i', help='Optional integer to specify the indentation in '
+              'the output JSON file. Specifying an value here can produce more read-able'
+              ' JSONs.', type=int, default=None, show_default=True)
+@click.option('--output-file', '-f', help='Optional JSON file to output the JSON '
+              'string of the translation. By default this will be printed out to stdout',
+              type=click.File('w'), default='-', show_default=True)
+def constructions_from_exp_cli(exp_file, full, indent, output_file):
+    """Translate all constructions in an EXP file to a honeybee JSON.
+
+    \b
+    Args:
+        exp_file: Full path to a TRACE 700 EXP file. Only the constructions
+            and materials in this file will be extracted.
+    """
+    try:
+        abridged = not full
+        constructions_from_exp(exp_file, abridged, indent, output_file)
+    except Exception as e:
+        _logger.exception('Construction translation failed.\n{}'.format(e))
+        sys.exit(1)
+    else:
+        sys.exit(0)
+
+
+def constructions_from_exp(
+    exp_file, abridged=False, indent=None, output_file=None, full=True
+):
+    """Translate all constructions in an EXP file to a honeybee JSON.
+
+    The resulting JSON can be written into a user standards folder to add the
+    constructions to a users standards library.
+
+    Args:
+        exp_file: Full path to a TRACE 700 EXP file. Only the constructions
+            and materials in this file will be extracted.
+        abridged: Boolean to note whether the objects should be translated as
+            an abridged specification instead of a specification that fully
+            describes the object. This option should be used when the
+            materials_from_exp function will be used to separately translate
+            all of the materials from the EXP. (Default: False).
+        indent: Optional integer to specify the indentation in the output JSON file.
+            Specifying an value here can produce more read-able JSONs. (Default: None).
+        output_file: Optional JSON file to output the string of the translation.
+            If None, it will be returned from this method. (Default: None).
+    """
+    # re-serialize the Constructions to Python
+    with open(exp_file, 'r') as exp_f:
+        exp_file_content = exp_f.read()
+    _, constructions, _ = c_set_from_exp(exp_file_content)
+    # create the honeybee dictionaries
+    out_dict = {}
+    for con in constructions:
+        try:
+            out_dict[con.identifier] = con.to_dict(abridged=abridged)
+        except TypeError:  # no abridged option
+            out_dict[con.identifier] = con.to_dict()
+    # write out the JSON file
+    return process_content_to_output(json.dumps(out_dict, indent=indent), output_file)
+
+
+@translate.command('construction-sets-from-exp')
+@click.argument('exp-file', type=click.Path(
+    exists=True, file_okay=True, dir_okay=False, resolve_path=True))
+@click.option('--full/--abridged', ' /-a', help='Flag to note whether the objects '
+              'should be translated as an abridged specification instead of a '
+              'specification that fully describes the object. This option should be '
+              'used when the constructions-from-exp command will be used to separately '
+              'translate all of the constructions from the EXP.',
+              default=True, show_default=True)
+@click.option('--indent', '-i', help='Optional integer to specify the indentation in '
+              'the output JSON file. Specifying an value here can produce more read-able'
+              ' JSONs.', type=int, default=None, show_default=True)
+@click.option('--output-file', '-f', help='Optional JSON file to output the string '
+              'of the translation. By default it printed out to stdout',
+              type=click.File('w'), default='-', show_default=True)
+def construction_sets_from_exp_cli(exp_file, full, indent, output_file):
+    """Translate all ConstructionTemplates in an TRACE 700 EXP to Honeybee ConstructionSets.
+
+    The resulting JSON can be written into a user standards folder to add the
+    constructions to a users standards library.
+
+    \b
+    Args:
+        exp_file: Path to a TRACE 700 EXP file.
+    """
+    try:
+        abridged = not full
+        construction_sets_from_exp(exp_file, abridged, indent, output_file)
+    except Exception as e:
+        _logger.exception('ConstructionSet translation failed.\n{}'.format(e))
+        sys.exit(1)
+    else:
+        sys.exit(0)
+
+
+def construction_sets_from_exp(
+    exp_file, abridged=False, indent=None, output_file=None, full=True
+):
+    """Translate all ConstructionTemplates in an TRACE 700 EXP to Honeybee ConstructionSets.
+
+    The resulting JSON can be written into a user standards folder to add the
+    construction sets to a users standards library.
+
+    Args:
+        exp_file: Path to a TRACE 700 EXP file.
+        abridged: Boolean to note whether the objects should be translated as
+            an abridged specification instead of a specification that fully
+            describes the object. This option should be used when the
+            constructions_from_exp function will be used to separately translate
+            all of the constructions from the EXP. (Default: False).
+        indent: Optional integer to specify the indentation in the output JSON file.
+            Specifying an value here can produce more read-able JSONs. (Default: None).
+        output_file: Optional JSON file to output the string of the translation.
+            If None, it will be returned from this method. (Default: None).
+    """
+    # re-serialize the Constructions to Python
+    with open(exp_file, 'r') as exp_f:
+        exp_file_content = exp_f.read()
+    _, _, construction_sets = c_set_from_exp(exp_file_content)
+    # create the honeybee dictionaries
+    out_dict = {}
+    for cs in construction_sets:
+        try:
+            out_dict[cs.identifier] = cs.to_dict(abridged=abridged)
+        except TypeError:  # no abridged option
+            out_dict[cs.identifier] = cs.to_dict()
+    # write out the JSON file
+    return process_content_to_output(json.dumps(out_dict, indent=indent), output_file)
+
+
+@translate.command('program-to-trace700-exp')
+@click.argument('program-file', type=click.Path(
+    exists=True, file_okay=True, dir_okay=False, resolve_path=True))
+@click.option('--imperial/--metric', '-ip/-si', help='Flag to note whether imperial '
+              'or metric units should be used for values in the output EXP file.',
+              default=True, show_default=True)
+@click.option('--output-file', '-f', help='Optional EXP file to output the string '
+              'of the translation. By default it is printed out to stdout.',
+              type=click.File('w'), default='-', show_default=True)
+def program_to_trace700_exp_cli(program_file, imperial, output_file):
+    """Translate a Honeybee ProgramType file to a TRACE 700 EXP file.
+
+    \b
+    Args:
+        program_file: Full path to a Honeybee ProgramType JSON file.
+    """
+    try:
+        metric = not imperial
+        with open(program_file, 'r') as f:
+            data = json.load(f)
+        program = ProgramType.from_dict(data)
+        process_content_to_output(program_to_exp(program, si_units=metric), output_file)
+    except Exception as e:
+        _logger.exception('Program EXP translation failed.\n{}'.format(e))
+        sys.exit(1)
+    else:
+        sys.exit(0)
+
+
+@translate.command('programs-from-trace700-exp')
+@click.argument('exp-file', type=click.Path(
+    exists=True, file_okay=True, dir_okay=False, resolve_path=True))
+@click.option('--full/--abridged', ' /-a', help='Flag to note whether the objects '
+              'should be translated as an abridged specification instead of a '
+              'specification that fully describes the object.',
+              default=True, show_default=True)
+@click.option('--indent', '-i', help='Optional integer to specify the indentation in '
+              'the output JSON file. Specifying an value here can produce more read-able'
+              ' JSONs.', type=int, default=None, show_default=True)
+@click.option('--output-file', '-f', help='Optional JSON file to output the string '
+              'of the translation. By default it printed out to stdout',
+              type=click.File('w'), default='-', show_default=True)
+def program_from_trace700_exp_cli(exp_file, full, indent, output_file):
+    """Translate all ProgramTypes in a TRACE 700 EXP file to a Honeybee JSON.
+
+    The resulting JSON can be written into a user standards folder to add the
+    programs to a users standards library.
+
+    \b
+    Args:
+        exp_file: Path to a TRACE 700 EXP file.
+    """
+    try:
+        abridged = not full
+        programs_from_trace700_exp(exp_file, abridged, indent, output_file)
+    except Exception as e:
+        _logger.exception('Program translation failed.\n{}'.format(e))
+        sys.exit(1)
+    else:
+        sys.exit(0)
+
+
+def programs_from_trace700_exp(
+    exp_file, abridged=False, indent=None, output_file=None, full=True
+):
+    """Translate all ProgramTypes in a TRACE 700 EXP file to a Honeybee JSON.
+
+    The resulting JSON can be written into a user standards folder to add the
+    programs to a users standards library.
+
+    Args:
+        exp_file: Path to a TRACE 700 EXP file.
+        abridged: Boolean to note whether the objects should be translated as
+            an abridged specification instead of a specification that fully
+            describes the object. (Default: False).
+        indent: Optional integer to specify the indentation in the output JSON file.
+            Specifying an value here can produce more read-able JSONs. (Default: None).
+        output_file: Optional JSON file to output the string of the translation.
+            If None, it will be returned from this method. (Default: None).
+    """
+    with open(exp_file) as exp_f:
+        file_contents = exp_f.read()
+    programs = programs_from_exp(file_contents)
+    out_dict = {p.identifier: p.to_dict(abridged=abridged) for p in programs}
+    return process_content_to_output(json.dumps(out_dict, indent=indent), output_file)

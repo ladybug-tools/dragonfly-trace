@@ -1401,6 +1401,8 @@ def programs_from_exp(exp_file_content):
         elif line.startswith('T.'):
             programs_section = False
         if programs_section:
+            if line.split(';')[0] == 'Default':
+                continue  # ignore the default template with no properties
             programs.append(program_from_exp(line, internal_loads, airflows, setpoints))
 
     return programs
@@ -1564,7 +1566,7 @@ def window_construction_from_exp(exp_str):
     """
     # deconstruct the string and get the critical properties
     exp_vals = exp_str.split(';')
-    con_id = clean_ep_string(exp_vals[1])
+    con_id = clean_ep_string(exp_vals[0])
     mat_id = '{} Material'.format(con_id)
     u_factor, u_unit = float(exp_vals[4]), int(exp_vals[5])
     if u_unit == 1:

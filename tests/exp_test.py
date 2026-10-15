@@ -73,7 +73,7 @@ def test_programs_from_exp():
         exp_file_content = exp_f.read()
 
     programs = programs_from_exp(exp_file_content)
-    assert len(programs) == 12
+    assert len(programs) == 11
 
     for prog in programs:
         assert isinstance(prog, ProgramType)
@@ -88,7 +88,7 @@ def test_construction_sets_from_exp():
     materials, constructions, construction_sets = \
         construction_sets_from_exp(exp_file_content)
 
-    assert len(materials) == 53
+    assert len(materials) == 63
     assert len(constructions) == 32
     assert len(construction_sets) == 1
 
