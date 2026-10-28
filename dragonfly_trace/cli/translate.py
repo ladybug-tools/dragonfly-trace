@@ -390,7 +390,8 @@ def model_to_trace700_gbxml(
     # re-serialize the Dragonfly Model and translate it
     model = Model.from_file(model_file)
     gbxml_str = model_to_gbxml(
-        model, metric, opening_simplification, program_name, program_version
+        model, metric, opening_simplification,
+        program_name=program_name, program_version=program_version
     )
     # write out the gbXML file
     return process_content_to_output(gbxml_str, output_file)
@@ -547,7 +548,7 @@ def model_to_trace700_zip(
     model = Model.from_file(model_file)
     zip_bytes = model_to_trace700_zip_bytes(
         model, metric, opening_simplification, ventilation_method,
-        program_name, program_version
+        program_name=program_name, program_version=program_version
     )
     # write out the ZIP file
     if isinstance(output_file, str):

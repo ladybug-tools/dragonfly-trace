@@ -772,6 +772,8 @@ def _add_calc_workbook_table(ws, title, matrix):
 
 def model_to_trace700_gbxml(
     model, si_units=False, opening_simplification='MergeAdjWindows',
+    face_name_format=None, subface_name_format=None,
+    name_decimal_count=None, include_units=True,
     program_name=None, program_version=None
 ):
     """Generate a gbXML of a model, which can be imported to TRACE 700.
@@ -788,6 +790,28 @@ def model_to_trace700_gbxml(
             * MergeAdjWindows - Adjacent windows are merged; doors are left as is
             * SingleWindow - All doors removed; windows are merged into one per wall
 
+        face_name_format: An optional text string for the pattern with which
+            faces will be renamed. Any property on the honeybee Face class may be
+            used (eg. gbxml_type) and each property should be put in curly brackets.
+            Nested properties can be specified by using "." to denote nesting levels
+            (eg. properties.energy.construction.display_name). Functions that
+            return string outputs can also be passed here as long as these
+            functions defaults specified for all arguments.
+        subface_name_format: An optional text string for the pattern with which
+            apertures and doors will be renamed. Any property that exists on both
+            the honeybee Aperture and honeybee Door class may be used (eg. type)
+            and each property should be put in curly brackets. Nested
+            properties can be specified by using "." to denote nesting levels
+            (eg. properties.energy.construction.display_name). Functions that
+            return string outputs can also be passed here as long as these
+            functions defaults specified for all arguments.
+        name_decimal_count: An integer to be used to round all properties in
+            face_name_format and subface_name_format to a number of decimal
+            places when they are numbers. If None, the number of decimal places
+            are determined by the model tolerance. (Default: None).
+        include_units: Boolean for whether the units should be included in all
+            length, area and volume attributes of face_name_format and
+            subface_name_format. (Default: True).
         program_name: Optional text to set the name of the software that will
             appear under the programId and ProductName tags of the DocumentHistory
             section. This can be set things like "Ladybug Tools" or "Pollination"
@@ -822,6 +846,12 @@ def model_to_trace700_gbxml(
     gbxml_par.geometry_format.opening_simplification = opening_simplification
     if str(gbxml_par.geometry_format.opening_simplification) == 'None':
         gbxml_par.geometry_format.rect_geo_format = 'SimpleAreaForNonRectOnly'
+    if face_name_format:
+        gbxml_par.name_format.face_rename_format = face_name_format
+    if subface_name_format:
+        gbxml_par.name_format.subface_rename_format = subface_name_format
+    gbxml_par.name_format.decimal_count = name_decimal_count
+    gbxml_par.name_format.include_units = include_units
     gbxml_par.version_format.program_name = program_name
     gbxml_par.version_format.program_version = program_version
 
@@ -870,6 +900,8 @@ def model_to_exp(model, si_units=False, ventilation_method='Sum of Outdoor Air')
 def model_to_trace700_zip_bytes(
     model, si_units=False, opening_simplification='MergeAdjWindows',
     ventilation_method='Sum of Outdoor Air',
+    face_name_format=None, subface_name_format=None,
+    name_decimal_count=None, include_units=True,
     program_name=None, program_version=None
 ):
     """Get the bytes of a .zip file containing files for import to TRACE 700.
@@ -898,6 +930,28 @@ def model_to_trace700_zip_bytes(
             * Sum of Outdoor Air
             * ASHRAE 62.1
 
+        face_name_format: An optional text string for the pattern with which
+            faces will be renamed. Any property on the honeybee Face class may be
+            used (eg. gbxml_type) and each property should be put in curly brackets.
+            Nested properties can be specified by using "." to denote nesting levels
+            (eg. properties.energy.construction.display_name). Functions that
+            return string outputs can also be passed here as long as these
+            functions defaults specified for all arguments.
+        subface_name_format: An optional text string for the pattern with which
+            apertures and doors will be renamed. Any property that exists on both
+            the honeybee Aperture and honeybee Door class may be used (eg. type)
+            and each property should be put in curly brackets. Nested
+            properties can be specified by using "." to denote nesting levels
+            (eg. properties.energy.construction.display_name). Functions that
+            return string outputs can also be passed here as long as these
+            functions defaults specified for all arguments.
+        name_decimal_count: An integer to be used to round all properties in
+            face_name_format and subface_name_format to a number of decimal
+            places when they are numbers. If None, the number of decimal places
+            are determined by the model tolerance. (Default: None).
+        include_units: Boolean for whether the units should be included in all
+            length, area and volume attributes of face_name_format and
+            subface_name_format. (Default: True).
         program_name: Optional text to set the name of the software that will
             appear under the programId and ProductName tags of the DocumentHistory
             section. This can be set things like "Ladybug Tools" or "Pollination"
