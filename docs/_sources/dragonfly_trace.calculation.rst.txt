@@ -1,0 +1,7 @@
+dragonfly\_trace.calculation module
+===================================
+
+.. automodule:: dragonfly_trace.calculation
+   :members:
+   :undoc-members:
+   :show-inheritance:
