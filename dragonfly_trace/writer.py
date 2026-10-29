@@ -969,7 +969,10 @@ def model_to_trace700_zip_bytes(
     """
     # get the contents of the gbxml file
     gbxml_str = model_to_trace700_gbxml(
-        model, si_units, opening_simplification, program_name, program_version
+        model, si_units, opening_simplification,
+        face_name_format, subface_name_format,
+        name_decimal_count, include_units,
+        program_name, program_version
     )
     # get the bytes of the XLSX workbook
     xlsx_wb = model_to_trace700_workbook(model, si_units, ventilation_method)
